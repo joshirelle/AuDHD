@@ -5,6 +5,7 @@ import '../../../core/services/sensory_calculator_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/sensory_profile_result.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/step_progress_header.dart';
 import 'sensory_result_screen.dart';
 
 class SensoryChecklistScreen extends StatefulWidget {
@@ -70,7 +71,6 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
   Widget build(BuildContext context) {
     final questions = SensoryConstants.questions;
     final currentQ = questions[_currentIndex];
-    final double progress = (_currentIndex + 1) / questions.length;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -80,45 +80,16 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Top Header with Progress Bar
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (_currentIndex > 0) {
-                        setState(() => _currentIndex--);
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: Color(0xFF2A80B9)),
-                        SizedBox(width: 4),
-                        Text('Bumalik', style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 12,
-                          backgroundColor: Colors.grey.shade200,
-                          color: AppColors.mintGreen,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '${_currentIndex + 1} / ${questions.length}',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
-                  ),
-                ],
+              StepProgressHeader(
+                currentIndex: _currentIndex,
+                totalCount: questions.length,
+                onBack: () {
+                  if (_currentIndex > 0) {
+                    setState(() => _currentIndex--);
+                  } else {
+                    Navigator.pop(context);
+                  }
+                },
               ),
               const SizedBox(height: 24),
 
