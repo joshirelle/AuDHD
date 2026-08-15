@@ -23,6 +23,7 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
 
   List<SensoryActivity> _activities = [];
   bool _isLoading = true;
+  bool _hasError = false;
 
   @override
   void initState() {
@@ -37,15 +38,24 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
         ? SensoryRecommendationService.profileMixed
         : results.first.primaryProfile;
 
-    final picks = await SensoryRecommendationService.getDailyRecommendations(
-      userProfileResult: profile,
-    );
-
-    if (!mounted) return;
-    setState(() {
-      _activities = picks;
-      _isLoading = false;
-    });
+    try {
+      final picks = await SensoryRecommendationService.getDailyRecommendations(
+        userProfileResult: profile,
+      );
+      if (!mounted) return;
+      setState(() {
+        _activities = picks;
+        _isLoading = false;
+      });
+    } catch (error) {
+      // Kung tatahimik lang ito, mawawala ang card nang walang paliwanag.
+      debugPrint('DailySensoryGamesCard: $error');
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+      });
+    }
   }
 
   void _openActivity(SensoryActivity activity) {
@@ -59,9 +69,41 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading || _activities.isEmpty) {
-      return const SizedBox.shrink();
+    if (_isLoading) return const SizedBox.shrink();
+
+    if (_hasError) {
+      return KikoCard(
+        backgroundColor: AppColors.butterYellow,
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: Color(0xFF7A5C00)),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Text(
+                'Hindi mabuksan ang mga larong sensory ngayon.',
+                style: TextStyle(fontSize: 13, color: AppColors.textDark, fontFamily: 'Nunito'),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _isLoading = true;
+                  _hasError = false;
+                });
+                _load();
+              },
+              child: const Text(
+                'Subukan ulit',
+                style: TextStyle(color: Color(0xFF7A5C00), fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      );
     }
+
+    if (_activities.isEmpty) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
