@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/services/vanderbilt_scoring.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/adhd_question.dart';
 import '../../../data/models/screening_result.dart';
@@ -27,23 +28,22 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
   }
 
   int _totalIn(String category) =>
-      widget.questions.where((q) => q.category == category).length;
+      VanderbiltScoring.totalIn(widget.questions, category);
 
-  // Sa Vanderbilt, ang "Madalas" (2) o "Palagi" (3) lang ang binibilang na sintomas.
-  int _symptomCount(String category) {
-    int count = 0;
-    for (var q in widget.questions.where((item) => item.category == category)) {
-      if ((widget.userAnswers[q.id] ?? 0) >= 2) count++;
-    }
-    return count;
-  }
+  int _symptomCount(String category) => VanderbiltScoring.symptomCount(
+    widget.questions,
+    widget.userAnswers,
+    category,
+  );
 
   bool _isHighRisk(int inattention, int hyperactivity) =>
-      inattention >= 6 || hyperactivity >= 6;
+      VanderbiltScoring.isHighRisk(inattention, hyperactivity);
 
   Future<void> _saveToDatabase() async {
-    final int inattention = _symptomCount('Inattention');
-    final int hyperactivity = _symptomCount('Hyperactivity');
+    final int inattention = _symptomCount(VanderbiltScoring.categoryInattention);
+    final int hyperactivity = _symptomCount(
+      VanderbiltScoring.categoryHyperactivity,
+    );
 
     final result = ScreeningResult(
       id: const Uuid().v4(),

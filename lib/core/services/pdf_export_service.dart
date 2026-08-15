@@ -6,10 +6,11 @@ import '../../data/models/behavior_log.dart';
 import '../../data/models/screening_answer_row.dart';
 import '../../data/models/screening_result.dart';
 import '../../data/models/sensory_profile_result.dart';
+import 'pdf_report_theme.dart';
 
 class PdfExportService {
-  static const String _unknown = 'Hindi nakatala';
-  static const PdfColor _headerColor = PdfColors.teal800;
+  static const String _unknown = PdfReportTheme.unknown;
+  static const PdfColor _headerColor = PdfReportTheme.headerColor;
 
   static Future<Uint8List> generateScreeningReport(
     ScreeningResult result,
@@ -409,139 +410,32 @@ class PdfExportService {
     return pdf.save();
   }
 
-  static String _nameOr(String? childName) =>
-      (childName != null && childName.trim().isNotEmpty)
-      ? childName.trim()
-      : _unknown;
+  static String _nameOr(String? childName) => PdfReportTheme.nameOr(childName);
 
-  static String _formatDate(DateTime date) =>
-      '${date.day}/${date.month}/${date.year}';
+  static String _formatDate(DateTime date) => PdfReportTheme.formatDate(date);
 
-  static String _formatTime(DateTime date) {
-    final hour = date.hour % 12 == 0 ? 12 : date.hour % 12;
-    final minute = date.minute.toString().padLeft(2, '0');
-    return '$hour:$minute ${date.hour < 12 ? 'AM' : 'PM'}';
-  }
+  static String _formatTime(DateTime date) => PdfReportTheme.formatTime(date);
 
-  static pw.Widget _reportHeader(String title, String dateText) {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          children: [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text(
-                  title,
-                  style: pw.TextStyle(
-                    fontSize: 18,
-                    fontWeight: pw.FontWeight.bold,
-                    color: _headerColor,
-                  ),
-                ),
-                pw.Text(
-                  'Tala ng Obserbasyon ng Magulang',
-                  style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
-                ),
-              ],
-            ),
-            pw.Text('Petsa: $dateText', style: const pw.TextStyle(fontSize: 11)),
-          ],
-        ),
-        pw.SizedBox(height: 16),
-        pw.Divider(color: PdfColors.grey400),
-        pw.SizedBox(height: 16),
-      ],
-    );
-  }
+  static pw.Widget _reportHeader(String title, String dateText) =>
+      PdfReportTheme.reportHeader(title, dateText);
 
   static pw.Widget _profileCard({
     required String nameText,
     required String birthDateText,
     required String ageLabel,
     required String ageText,
-  }) {
-    return pw.Container(
-      width: double.infinity,
-      padding: const pw.EdgeInsets.all(14),
-      decoration: pw.BoxDecoration(
-        color: PdfColors.grey50,
-        borderRadius: pw.BorderRadius.circular(8),
-        border: pw.Border.all(color: PdfColors.grey300),
-      ),
-      child: pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(
-            'DETALYE NG BATA',
-            style: pw.TextStyle(
-              fontSize: 10,
-              fontWeight: pw.FontWeight.bold,
-              color: PdfColors.grey700,
-            ),
-          ),
-          pw.SizedBox(height: 8),
-          _profileRow('Pangalan', nameText),
-          _profileRow('Kaarawan', birthDateText),
-          _profileRow(ageLabel, ageText),
-        ],
-      ),
-    );
-  }
+  }) => PdfReportTheme.profileCard(
+    nameText: nameText,
+    birthDateText: birthDateText,
+    ageLabel: ageLabel,
+    ageText: ageText,
+  );
 
-  static pw.Widget _disclaimer() {
-    return pw.Container(
-      padding: const pw.EdgeInsets.all(10),
-      decoration: pw.BoxDecoration(
-        color: PdfColors.grey100,
-        borderRadius: pw.BorderRadius.circular(6),
-      ),
-      child: pw.Text(
-        'PAALALA: Ang ulat na ito ay pampasimulang screening lamang batay sa obserbasyon ng magulang at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
-        style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
-      ),
-    );
-  }
+  static pw.Widget _disclaimer() => PdfReportTheme.disclaimer();
 
-  static pw.Widget _profileRow(String label, String value) {
-    return pw.Padding(
-      padding: const pw.EdgeInsets.only(bottom: 4),
-      child: pw.Row(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.SizedBox(
-            width: 150,
-            child: pw.Text(
-              '$label:',
-              style: const pw.TextStyle(fontSize: 11, color: PdfColors.grey800),
-            ),
-          ),
-          pw.Expanded(
-            child: pw.Text(
-              value,
-              style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  static pw.Widget _profileRow(String label, String value) =>
+      PdfReportTheme.profileRow(label, value);
 
-  /// Katulad ng lohika sa MChatAgeCheckScreen para hindi magkaiba ang edad na ipinapakita.
-  static String _formatAge(DateTime birthDate, DateTime asOf) {
-    int months =
-        (asOf.year - birthDate.year) * 12 + asOf.month - birthDate.month;
-    if (asOf.day < birthDate.day) months--;
-    if (months < 0) return 'Hindi wasto ang kaarawan';
-
-    final years = months ~/ 12;
-    final remainder = months % 12;
-    final parts = <String>[];
-    if (years > 0) parts.add('$years taon');
-    if (remainder > 0) parts.add('$remainder buwan');
-    if (parts.isEmpty) return 'Wala pang isang buwan (0 buwan)';
-    return '${parts.join(', ')} ($months buwan)';
-  }
+  static String _formatAge(DateTime birthDate, DateTime asOf) =>
+      PdfReportTheme.formatAge(birthDate, asOf);
 }
