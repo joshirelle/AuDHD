@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:printing/printing.dart';
+import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/sensory_profile_result.dart';
+import '../../../data/services/hive_service.dart';
 
 class SensoryResultScreen extends StatelessWidget {
   final SensoryProfileResult result;
@@ -19,6 +22,13 @@ class SensoryResultScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
+            tooltip: 'Export as PDF',
+            onPressed: _exportPdf,
+          ),
+        ],
       ),
       backgroundColor: AppColors.background,
       body: ListView(
@@ -84,6 +94,25 @@ class SensoryResultScreen extends StatelessWidget {
           }),
         ],
       ),
+    );
+  }
+
+  Future<void> _exportPdf() async {
+    final child = HiveService.getChildProfile();
+    final pdfData = await PdfExportService.generateSensoryReport(
+      result,
+      childName: child?.name,
+      birthDate: child?.birthDate,
+    );
+
+    // Malayang teksto ang pangalan, kaya sinasala ang mga bawal sa filename.
+    final safeName = (child?.name ?? 'Bata').replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
+    final d = result.timestamp;
+    final fileDate = '${d.year}-${d.month}-${d.day}';
+
+    await Printing.layoutPdf(
+      onLayout: (format) => pdfData,
+      name: 'Sensory_Profile_${safeName}_$fileDate.pdf',
     );
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:printing/printing.dart';
+import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
@@ -16,6 +18,13 @@ class BehaviorHistoryScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
+            tooltip: 'Export as PDF',
+            onPressed: () => _exportPdf(context),
+          ),
+        ],
       ),
       backgroundColor: AppColors.background,
       floatingActionButton: FloatingActionButton.extended(
@@ -70,6 +79,36 @@ class BehaviorHistoryScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Future<void> _exportPdf(BuildContext context) async {
+    final logs = HiveService.getAllLogs();
+    if (logs.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wala pang maitatalang insidente sa ulat.'),
+          backgroundColor: Color(0xFFD9A000),
+        ),
+      );
+      return;
+    }
+
+    final child = HiveService.getChildProfile();
+    final pdfData = await PdfExportService.generateBehaviorReport(
+      logs,
+      childName: child?.name,
+      birthDate: child?.birthDate,
+    );
+
+    // Malayang teksto ang pangalan, kaya sinasala ang mga bawal sa filename.
+    final safeName = (child?.name ?? 'Bata').replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
+    final now = DateTime.now();
+    final fileDate = '${now.year}-${now.month}-${now.day}';
+
+    await Printing.layoutPdf(
+      onLayout: (format) => pdfData,
+      name: 'Behavior_Log_${safeName}_$fileDate.pdf',
     );
   }
 
