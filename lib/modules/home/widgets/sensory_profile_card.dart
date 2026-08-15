@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
-import '../../sensory/screens/sensory_checklist_screen.dart';
+import '../../sensory/screens/sensory_history_screen.dart';
 
 class SensoryProfileCard extends StatelessWidget {
   const SensoryProfileCard({super.key});
@@ -18,7 +18,7 @@ class SensoryProfileCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const SensoryChecklistScreen(),
+            builder: (context) => const SensoryHistoryScreen(),
           ),
         );
       },

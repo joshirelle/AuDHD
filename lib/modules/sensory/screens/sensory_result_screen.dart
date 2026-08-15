@@ -15,6 +15,7 @@ class SensoryResultScreen extends StatelessWidget {
     const maxScore = 15;
     final seekingPct = result.totalSeekingScore / maxScore;
     final avoidingPct = result.totalAvoidingScore / maxScore;
+    final moodOnDay = HiveService.getMood(result.timestamp);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,6 +50,24 @@ class SensoryResultScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1E5631)),
                   ),
+                  if (moodOnDay != null) ...[
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.button),
+                      ),
+                      child: Text(
+                        'Mood noong araw na iyon: $moodOnDay',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1E5631),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/theme/app_theme.dart';
+import '../../data/services/hive_service.dart';
 import '../../widgets/kiko_card.dart';
 import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
+import 'widgets/doctor_report_card.dart';
 import 'widgets/sensory_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +19,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedNavIndex = 0;
-  String _selectedMood = 'Kalmado';
+  // `null` ang ibig sabihin ay wala pang sagot ngayong araw.
+  String? _selectedMood;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedMood = HiveService.getMood(DateTime.now());
+  }
+
+  Future<void> _selectMood(String mood) async {
+    await HiveService.saveMood(DateTime.now(), mood);
+    if (!mounted) return;
+    setState(() => _selectedMood = mood);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
 
               // 7. Progress Report Full-Width Card
-              _buildProgressReportCard(),
+              const DoctorReportCard(),
               const SizedBox(height: 20),
             ],
           ),
@@ -165,24 +181,39 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Magandang\naraw,\nPamilya Santos!',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                  fontFamily: 'Nunito',
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Kumusta ang pakiramdam\nni Kiko ngayon?',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textDark,
-                  fontFamily: 'Nunito',
-                ),
+              // Nakikinig sa box para agad magbago kapag naitala o pinalitan ang bata.
+              ValueListenableBuilder<Box>(
+                valueListenable: HiveService.getProfileBox().listenable(),
+                builder: (context, box, child) {
+                  final name = HiveService.getChildProfile()?.name.trim();
+                  final hasName = name != null && name.isNotEmpty;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Magandang\naraw,\n${hasName ? name : 'Magulang'}!',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
+                          fontFamily: 'Nunito',
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Kumusta ang pakiramdam\n'
+                        '${hasName ? 'ni $name' : 'ng iyong anak'} ngayon?',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textDark,
+                          fontFamily: 'Nunito',
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 16),
               // Mood Chips Row
@@ -216,13 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMoodChip(String label) {
-    final bool isSelected = _selectedMood == label.split(' ').last;
+    final mood = label.split(' ').last;
+    final bool isSelected = _selectedMood == mood;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedMood = label.split(' ').last;
-        });
-      },
+      onTap: () => _selectMood(mood),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
@@ -301,55 +329,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildProgressReportCard() {
-    return KikoCard(
-      backgroundColor: AppColors.skyBlueLight,
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.bar_chart_rounded,
-              color: Color(0xFF2A80B9),
-              size: 32,
-            ),
-          ),
-          const SizedBox(width: 14),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'PROGRESS REPORT FOR DOCTOR',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                    fontFamily: 'Nunito',
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Tingnan at i-export ang summary report para sa DevPed.',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.textDark,
-                    fontFamily: 'Nunito',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBottomNavigationBar() {
     return Container(
       height: 70,
@@ -378,22 +357,29 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _onNavTap(int index) async {
+    setState(() => _selectedNavIndex = index);
+    if (index == 0) return;
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => index == 1
+            ? const HomeActivitiesScreen()
+            : const ProfileScreen(),
+      ),
+    );
+
+    // Nasa Bahay ang user pagkabalik, kaya doon dapat bumalik ang highlight.
+    if (mounted) setState(() => _selectedNavIndex = 0);
+  }
+
   Widget _buildNavItem(int index, IconData icon, String label) {
     final bool isActive = _selectedNavIndex == index;
     final Color activeColor = const Color(0xFF2A80B9);
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedNavIndex = index;
-        });
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ProfileScreen()),
-          );
-        }
-      },
+      onTap: () => _onNavTap(index),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
