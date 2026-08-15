@@ -122,67 +122,67 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
               ),
               const SizedBox(height: 24),
 
+              Center(
+                child: Text(
+                  '${currentQ.domain.toUpperCase()}  •  ${currentQ.type == SensoryType.seeking ? 'SEEKING' : 'AVOIDING'}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.grey.shade600,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Main Question Card
               Expanded(
-                child: SingleChildScrollView(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.skyBlueLight, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.02),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: Text(
-                          '${currentQ.domain.toUpperCase()}  •  ${currentQ.type == SensoryType.seeking ? 'SEEKING' : 'AVOIDING'}',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.grey.shade600,
-                            letterSpacing: 1.0,
-                          ),
+                      SizedBox(
+                        height: 110,
+                        child: Image.asset(
+                          'assets/images/kiko_pointing.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 16),
-
-                      // Main Question Card
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: AppColors.skyBlueLight, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.02),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
+                      // Umaanguplo sa loob ng card kapag mahaba ang tanong.
+                      Flexible(
+                        child: SingleChildScrollView(
+                          child: Text(
+                            currentQ.textTagalog,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textDark,
+                              height: 1.3,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 110,
-                              child: Image.asset(
-                                'assets/images/kiko_pointing.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              currentQ.textTagalog,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textDark,
-                                height: 1.3,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
 
               _buildChoiceButton(currentQ.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
               const SizedBox(height: 10),

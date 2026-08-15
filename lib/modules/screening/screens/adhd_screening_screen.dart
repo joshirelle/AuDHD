@@ -144,82 +144,86 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
               ),
               const SizedBox(height: 24),
 
+              Center(
+                child: Text(
+                  'TANONG #${currentQ.number}  •  ${currentQ.category.toUpperCase()}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.grey.shade600,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Main Question Card
               Expanded(
-                child: SingleChildScrollView(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.skyBlueLight, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.02),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: Text(
-                          'TANONG #${currentQ.number}  •  ${currentQ.category.toUpperCase()}',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.grey.shade600,
-                            letterSpacing: 1.0,
-                          ),
+                      SizedBox(
+                        height: 110,
+                        child: Image.asset(
+                          'assets/images/kiko_pointing.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 16),
-
-                      // Main Question Card
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: AppColors.skyBlueLight, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.02),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 110,
-                              child: Image.asset(
-                                'assets/images/kiko_pointing.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              currentQ.textTagalog,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textDark,
-                                height: 1.3,
-                              ),
-                            ),
-                            if (currentQ.exampleTagalog.isNotEmpty) ...[
-                              const SizedBox(height: 16),
-                              OutlinedButton.icon(
-                                style: OutlinedButton.styleFrom(
-                                  side: const BorderSide(color: AppColors.skyBlue),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                ),
-                                onPressed: () => _showExampleDialog(currentQ.exampleTagalog),
-                                icon: const Icon(Icons.help_outline_rounded, size: 18, color: Color(0xFF2A80B9)),
-                                label: const Text(
-                                  'Paano ito sa bahay?',
-                                  style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold, fontSize: 13),
+                      // Umaanguplo sa loob ng card kapag mahaba ang tanong.
+                      Flexible(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Text(
+                                currentQ.textTagalog,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textDark,
+                                  height: 1.3,
                                 ),
                               ),
+                              if (currentQ.exampleTagalog.isNotEmpty) ...[
+                                const SizedBox(height: 16),
+                                OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: AppColors.skyBlue),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                  ),
+                                  onPressed: () => _showExampleDialog(currentQ.exampleTagalog),
+                                  icon: const Icon(Icons.help_outline_rounded, size: 18, color: Color(0xFF2A80B9)),
+                                  label: const Text(
+                                    'Paano ito sa bahay?',
+                                    style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold, fontSize: 13),
+                                  ),
+                                ),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
 
               // Gaano kadalas ito nangyayari
               _buildChoiceButton(currentQ.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
