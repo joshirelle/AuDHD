@@ -26,11 +26,12 @@ class SensoryRecommendationService {
   /// Tatlong gawain: dalawang tugma sa profile ng bata, isang regulation.
   static Future<List<SensoryActivity>> getDailyRecommendations({
     required String userProfileResult,
+    DateTime? date,
   }) async {
     final all = await loadAll();
     final profile = normalizeProfile(userProfileResult);
     // Iisang seed kada araw para hindi magbago ang pili sa bawat rebuild.
-    final random = Random(_todaySeed());
+    final random = Random(_seedFor(date ?? DateTime.now()));
 
     final picks = <SensoryActivity>[];
 
@@ -70,8 +71,7 @@ class SensoryRecommendationService {
     return matches.take(count).toList();
   }
 
-  static int _todaySeed() {
-    final now = DateTime.now();
-    return now.year * 10000 + now.month * 100 + now.day;
+  static int _seedFor(DateTime date) {
+    return date.year * 10000 + date.month * 100 + date.day;
   }
 }

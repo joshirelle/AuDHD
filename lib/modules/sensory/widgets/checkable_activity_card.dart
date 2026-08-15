@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../data/services/hive_service.dart';
+import '../../../widgets/kiko_card.dart';
+import '../models/sensory_activity.dart';
+import 'activity_detail_sheet.dart';
+
+class CheckableActivityCard extends StatelessWidget {
+  final SensoryActivity activity;
+  final DateTime date;
+  final bool isCompleted;
+  final VoidCallback onToggled;
+
+  const CheckableActivityCard({
+    super.key,
+    required this.activity,
+    required this.date,
+    required this.isCompleted,
+    required this.onToggled,
+  });
+
+  static const Color _completedTint = Color(0xFFE7F6EC);
+  static const Color _completedGreen = Color(0xFF1E7145);
+
+  static const Map<String, IconData> _domainIcons = {
+    'proprioceptive': Icons.fitness_center_rounded,
+    'vestibular': Icons.rotate_right_rounded,
+    'tactile': Icons.back_hand_rounded,
+    'visual': Icons.visibility_rounded,
+    'auditory': Icons.hearing_rounded,
+  };
+
+  static const Map<String, Color> _domainColors = {
+    'proprioceptive': AppColors.mintGreen,
+    'vestibular': AppColors.skyBlue,
+    'tactile': AppColors.butterYellow,
+    'visual': AppColors.skyBlueLight,
+    'auditory': AppColors.coralPeach,
+  };
+
+  Future<void> _toggle() async {
+    await HiveService.setActivityCompleted(date, activity.id, !isCompleted);
+    onToggled();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final domainColor = _domainColors[activity.domain] ?? AppColors.skyBlueLight;
+
+    return KikoCard(
+      backgroundColor: isCompleted ? _completedTint : Colors.white,
+      borderColor: isCompleted ? _completedGreen : Colors.grey.shade200,
+      padding: const EdgeInsets.all(14),
+      onTap: () => ActivityDetailSheet.show(context, activity),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildCheckbox(),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  activity.titleTagalog,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                    decoration: isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${activity.estimatedMinutes} mins - ${activity.domainLabel}',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: domainColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              _domainIcons[activity.domain] ?? Icons.auto_awesome_rounded,
+              size: 20,
+              color: AppColors.textDark,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCheckbox() {
+    return Semantics(
+      checked: isCompleted,
+      label: activity.titleTagalog,
+      child: InkWell(
+        onTap: _toggle,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: isCompleted ? _completedGreen : Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: isCompleted ? _completedGreen : Colors.grey.shade400,
+              width: 2,
+            ),
+          ),
+          child: isCompleted
+              ? const Icon(Icons.check_rounded, size: 20, color: Colors.white)
+              : null,
+        ),
+      ),
+    );
+  }
+}
