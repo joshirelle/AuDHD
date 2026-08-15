@@ -1,44 +1,45 @@
 class BehaviorConstants {
-  // Common Antecedents / Triggers
   static const List<String> commonAntecedents = [
-    'Malakas na ingay / Kaluskos',
-    'Maliwanag / Kumukutitap na ilaw',
+    'Malakas na ingay / Kaluskos (Auditory)',
+    'Maliwanag / Kumukutitap na ilaw (Visual)',
     'Biglaang pagbabago sa routine (Transition)',
+    'Mahirap na gawain / Multi-step task (Frustration)',
     'Pagod / Kakulangan sa tulog',
-    'Gutom / Nauuhaw',
-    'Sikip o tekstura ng damit',
-    'Maraming tao / Overcrowded',
+    'Gutom / Nauuhaw / Masakit ang katawan',
+    'Sikip o tekstura ng damit (Tactile)',
+    'Maraming tao / Bagong kapaligiran',
     'Inagawan ng laruan / Pinagbawalan sa screen time',
+    'Iba pa (Custom)',
   ];
 
-  // Common Sensory Triggers Tags
+  static const List<String> commonBehaviors = [
+    'Meltdown / Pag-iyak nang malakas',
+    'Pagtakip ng tainga o mata',
+    'Self-Stimulating (Hand flapping / Spinning / Rocking)',
+    'Pambabato / Paghahagis ng gamit',
+    'Self-Injurious (Pangangagat sa sarili / Pag-uuntog)',
+    'Pagtakbo nang malayo / Tago (Elopement)',
+    'Pagtili / Pag-angil nang malakas',
+    'Pagmamatigas / Non-compliance',
+    'Iba pa (Custom)',
+  ];
+
+  static const List<String> commonConsequences = [
+    'Inilipat sa quiet corner / Tinanggal ang stimulus',
+    'Ginamitan ng noise-canceling headphones / sensory item',
+    'Binigyan ng weighted blanket / Deep pressure therapy',
+    'Verbal Co-regulation / Pakiusap at yakap',
+    'Inalis muna ang mahirap na gawain (Task Delay)',
+    'Binigyan ng gustong laruan / pagkain / gadget',
+    'Iba pa (Custom)',
+  ];
+
   static const List<String> sensoryCategories = [
     'Auditory (Pandinig)',
     'Visual (Paningin)',
     'Tactile (Panalat / Tekstura)',
-    'Vestibular / Balance (Paggalaw)',
-    'Proprioceptive (Kalamnan / Presyon)',
-    'Oral / Taste (Panlasa)',
-  ];
-
-  // Behaviors Observed
-  static const List<String> commonBehaviors = [
-    'Meltdown / Pag-iyak nang malakas',
-    'Pagtakip ng tainga',
-    'Pagtatakip ng mata / Pag-iwas sa liwanag',
-    'Pambabato / Paghahagis ng gamit',
-    'Self-injurious behavior (Pangangagat sa sarili / Pag-uuntog)',
-    'Pagtakbo nang malayo (Elopement)',
-    'Pagmamatigas / Non-compliance',
-  ];
-
-  // Effective Consequences / Interventions
-  static const List<String> commonConsequences = [
-    'Inilipat sa tahimik na silid (Quiet Corner)',
-    'Ginamitan ng Noise-Canceling Headphones',
-    'Deep Pressure Therapy / Masikip na yakap',
-    'Pinainom ng tubig / Binigyan ng meryenda',
-    'Paggamit ng Fidget Toy / Sensory item',
-    'Verbal Co-regulation / Kalmadong pakikipag-usap',
+    'Vestibular (Balanse at Paggalaw)',
+    'Proprioceptive (Kalamnan at Presyon)',
+    'Interoception (Internal Body Signals - Gutom/Sakit)',
   ];
 }
