@@ -1,4 +1,4 @@
-package com.example.kiko_app
+package com.audhd.app
 
 import io.flutter.embedding.android.FlutterActivity
 
