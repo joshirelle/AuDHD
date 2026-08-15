@@ -1,3 +1,5 @@
+// lib/core/services/sensory_calculator_service.dart
+
 import '../constants/sensory_constants.dart';
 
 class SensoryCalculatorService {
@@ -13,26 +15,25 @@ class SensoryCalculatorService {
 
       if (q.type == SensoryType.seeking) {
         totalSeeking += score;
-        domainSeekingScores[q.domain] = (domainSeekingScores[q.domain] ?? 0) + score;
+        domainSeekingScores[q.domain] = score;
       } else {
         totalAvoiding += score;
-        domainAvoidingScores[q.domain] = (domainAvoidingScores[q.domain] ?? 0) + score;
+        domainAvoidingScores[q.domain] = score;
       }
     }
 
-    // Pangkalahatang Classification Logic
-    String overallProfile = 'Typical Sensory Processing';
-    final scoreDiff = totalSeeking - totalAvoiding;
+    // Inayos na Classification Logic (Max = 15 bawat kategorya)
+    String overallProfile = 'Typical / Balanced Processing';
 
-    if (totalSeeking > 12 && totalAvoiding > 12) {
+    if (totalSeeking >= 8 && totalAvoiding >= 8) {
       overallProfile = 'Mixed Profile (Seeking & Sensitive)';
-    } else if (scoreDiff >= 5) {
-      overallProfile = 'Sensory Seeking (High Movement/Input Need)';
-    } else if (scoreDiff <= -5) {
-      overallProfile = 'Sensory Avoiding (Hyper-sensitive / Over-responsive)';
+    } else if ((totalSeeking - totalAvoiding) >= 4) {
+      overallProfile = 'Sensory Seeking (High Movement / Input Need)';
+    } else if ((totalAvoiding - totalSeeking) >= 4) {
+      overallProfile = 'Sensory Avoiding (Hyper-sensitive / Sensitive)';
     }
 
-    // Per Domain Breakdown
+    // Per-Domain Breakdown
     final Map<String, String> domainBreakdown = {};
     final domains = ['Auditory', 'Visual', 'Tactile', 'Vestibular', 'Proprioceptive'];
 
@@ -40,14 +41,14 @@ class SensoryCalculatorService {
       final sScore = domainSeekingScores[d] ?? 0;
       final aScore = domainAvoidingScores[d] ?? 0;
 
-      if (sScore > aScore && sScore >= 2) {
-        domainBreakdown[d] = 'Sensory Seeking';
-      } else if (aScore > sScore && aScore >= 2) {
-        domainBreakdown[d] = 'Sensory Avoiding';
-      } else if (sScore >= 2 && aScore >= 2) {
-        domainBreakdown[d] = 'Mixed Responsiveness';
+      if (sScore >= 2 && aScore >= 2) {
+        domainBreakdown[d] = 'Mixed';
+      } else if (sScore >= 2 && sScore > aScore) {
+        domainBreakdown[d] = 'Seeking';
+      } else if (aScore >= 2 && aScore > sScore) {
+        domainBreakdown[d] = 'Avoiding';
       } else {
-        domainBreakdown[d] = 'Typical / Balanced';
+        domainBreakdown[d] = 'Typical';
       }
     }
 
