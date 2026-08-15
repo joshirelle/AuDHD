@@ -1,0 +1,128 @@
+[
+  {
+    "id": "adhd_1",
+    "number": 1,
+    "textTagalog": "Hindi nagbibigay ng masusing atensyon sa mga detalye o gumagawa ng mga simpleng pagkakamali sa gawaing pampaaralan o iba pang gawain.",
+    "textEnglish": "Fails to give close attention to details or makes careless mistakes in schoolwork or other activities.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_2",
+    "number": 2,
+    "textTagalog": "Nahihirapang panatilihin ang atensyon sa mga gawain o paglalaro.",
+    "textEnglish": "Has difficulty sustaining attention in tasks or play activities.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_3",
+    "number": 3,
+    "textTagalog": "Tila hindi nakikinig kapag direktang kinakausap.",
+    "textEnglish": "Does not seem to listen when spoken to directly.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_4",
+    "number": 4,
+    "textTagalog": "Hindi sinusunod ang mga tagubilin at hindi natatapos ang mga gawaing-bahay o pampaaralan.",
+    "textEnglish": "Does not follow through on instructions and fails to finish schoolwork or chores.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_5",
+    "number": 5,
+    "textTagalog": "Nahihirapang mag-organisa ng mga gawain at aktibidad.",
+    "textEnglish": "Has difficulty organizing tasks and activities.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_6",
+    "number": 6,
+    "textTagalog": "Iniiwasan, ayaw, o atubiling gumawa ng mga gawaing nangangailangan ng matagal na pag-iisip.",
+    "textEnglish": "Avoids, dislikes, or is reluctant to engage in tasks requiring sustained mental effort.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_7",
+    "number": 7,
+    "textTagalog": "Madalas na nawawalan ng mga gamit na kailangan para sa mga gawain (hal. laruan, notebook, lapis).",
+    "textEnglish": "Loses things necessary for tasks or activities.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_8",
+    "number": 8,
+    "textTagalog": "Madaling madistract o mawala sa pokus dahil sa mga ingay o nangyayari sa paligid.",
+    "textEnglish": "Is easily distracted by extraneous stimuli.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_9",
+    "number": 9,
+    "textTagalog": "Makakalimutin sa mga pang-araw-araw na gawain.",
+    "textEnglish": "Is forgetful in daily activities.",
+    "category": "Inattention"
+  },
+  {
+    "id": "adhd_10",
+    "number": 10,
+    "textTagalog": "Madalas na malikot ang mga kamay o paa, o nagmamadaling gumalaw habang nakaupo.",
+    "textEnglish": "Fidgets with hands or feet or squirms in seat.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_11",
+    "number": 11,
+    "textTagalog": "Umalis sa upuan sa mga sitwasyong inaasahang manatiling nakaupo.",
+    "textEnglish": "Leaves seat in situations when remaining seated is expected.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_12",
+    "number": 12,
+    "textTagalog": "Sobra-sobrang tumatakbo o umaakyat sa mga sitwasyong hindi angkop.",
+    "textEnglish": "Runs about or climbs excessively in situations in which it is inappropriate.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_13",
+    "number": 13,
+    "textTagalog": "Nahihirapang maglaro o gumawa ng mga libangan nang tahimik.",
+    "textEnglish": "Has difficulty playing or engaging in leisure activities quietly.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_14",
+    "number": 14,
+    "textTagalog": "Palaging gumagalaw o kumikilos na tila itinutulak ng isang motor.",
+    "textEnglish": "Is 'on the go' or acts as if 'driven by a motor'.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_15",
+    "number": 15,
+    "textTagalog": "Sobra-sobrang magsalita.",
+    "textEnglish": "Talks excessively.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_16",
+    "number": 16,
+    "textTagalog": "Pabigla-biglang nagsasalita o sumasagot bago pa matapos ang tanong.",
+    "textEnglish": "Blurts out answers before questions have been completed.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_17",
+    "number": 17,
+    "textTagalog": "Nahihirapang maghintay sa kaniyang pagkakataon o pila.",
+    "textEnglish": "Has difficulty waiting turn.",
+    "category": "Hyperactivity"
+  },
+  {
+    "id": "adhd_18",
+    "number": 18,
+    "textTagalog": "Nang-aabala o sumisingit sa usapan o laro ng iba.",
+    "textEnglish": "Interrupts or intrudes on others.",
+    "category": "Hyperactivity"
+  }
+]

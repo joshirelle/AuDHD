@@ -1,0 +1,162 @@
+[
+  {
+    "id": "mchat_1",
+    "questionNumber": 1,
+    "textTagalog": "Kapag may itinuro ka sa kabilang dako ng kuwarto, tumitingin ba ang iyong anak doon?",
+    "textEnglish": "If you point at something across the room, does your child look at it?",
+    "example": "Halimbawa: Kapag itinuro mo ang isang laruan o ibon, titingin ba siya sa itinuturo mo?",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_2",
+    "questionNumber": 2,
+    "textTagalog": "Naisip mo ba kailanman na baka bingi o mahina ang pandinig ng iyong anak?",
+    "textEnglish": "Have you ever wondered if your child might be deaf?",
+    "example": "Halimbawa: Hindi siya tumutugon kahit malakas ang tunog o kapag tinatawag ang pangalan.",
+    "atRiskAnswer": true
+  },
+  {
+    "id": "mchat_3",
+    "questionNumber": 3,
+    "textTagalog": "Naglalaro ba ang iyong anak ng 'pretend play' o nagkukunwari?",
+    "textEnglish": "Does your child play pretend or make-believe?",
+    "example": "Halimbawa: Nagkukunwaring umiinom sa bakanteng tasa, nagpapakain ng dambana/doll, o nagmamaneho ng laruang kotse.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_4",
+    "questionNumber": 4,
+    "textTagalog": "Gusto ba ng iyong anak na umakyat sa mga bagay-bagay?",
+    "textEnglish": "Does your child like climbing on things?",
+    "example": "Halimbawa: Pag-akyat sa hagdan, muwebles, o kagamitan sa playground.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_5",
+    "questionNumber": 5,
+    "textTagalog": "Gumagawa ba ang iyong anak ng hindi karaniwang galaw ng daliri malapit sa kanyang mga mata?",
+    "textEnglish": "Does your child make unusual finger movements near his or her eyes?",
+    "example": "Halimbawa: Pag-ikot o pagwagayway ng mga daliri nang napakalapit sa mata.",
+    "atRiskAnswer": true
+  },
+  {
+    "id": "mchat_6",
+    "questionNumber": 6,
+    "textTagalog": "Ipinututuro ba ng iyong anak ang isang daliri para humingi ng tulong o magpasaklolo?",
+    "textEnglish": "Does your child point with one finger to ask for something or to get help?",
+    "example": "Halimbawa: Nagtuturo sa pagkain o laruan na hindi niya maabot.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_7",
+    "questionNumber": 7,
+    "textTagalog": "Ipinututuro ba ng iyong anak ang isang daliri para ipakita sa iyo ang isang interesanteng bagay?",
+    "textEnglish": "Does your child point with one finger to show you something interesting?",
+    "example": "Halimbawa: Nagtuturo sa eroplano sa langit o malaking trak sa kalsada para lang ipakita sa iyo.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_8",
+    "questionNumber": 8,
+    "textTagalog": "Interesado ba ang iyong anak sa ibang mga bata?",
+    "textEnglish": "Is your child interested in other children?",
+    "example": "Halimbawa: Tinititigan sila, ngumingiti sa kanila, o sinusubukang lumapit sa ibang bata.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_9",
+    "questionNumber": 9,
+    "textTagalog": "Ipinapakita ba ng iyong anak ang mga bagay sa iyo sa pamamagitan ng pagdadala o pagtataas nito?",
+    "textEnglish": "Does your child show you things by bringing them to you or holding them up for you to see?",
+    "example": "Hindi para humingi ng tulong, kundi para lang ibahagi ang nakita niya sa iyo.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_10",
+    "questionNumber": 10,
+    "textTagalog": "Tumutugon ba ang iyong anak kapag tinawag mo ang kanyang pangalan?",
+    "textEnglish": "Does your child respond when you call his or her name?",
+    "example": "Halimbawa: Tumingin sa iyo, nagsasalita, o humihinto sa ginagawa kapag tinawag ang pangalan.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_11",
+    "questionNumber": 11,
+    "textTagalog": "Kapag nginitian mo ang iyong anak, ngumingiti rin ba siya pabalik sa iyo?",
+    "textEnglish": "When you smile at your child, does he or she smile back at you?",
+    "example": "Tugon na ngiti bilang pakikipagkapwa o pagtugon sa iyong emosyon.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_12",
+    "questionNumber": 12,
+    "textTagalog": "Naiinis o naiirita ba ang iyong anak sa mga karaniwang ingay sa bahay?",
+    "textEnglish": "Does your child get upset by everyday noises?",
+    "example": "Halimbawa: Pagtatakip ng tainga o pag-iyak sa ingay ng vacuum cleaner, blender, o electric fan.",
+    "atRiskAnswer": true
+  },
+  {
+    "id": "mchat_13",
+    "questionNumber": 13,
+    "textTagalog": "Marunong na bang maglakad ang iyong anak?",
+    "textEnglish": "Does your child walk?",
+    "example": "Kahit walang hawak o tulong mula sa iba.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_14",
+    "questionNumber": 14,
+    "textTagalog": "Tinititigan ka ba ng iyong anak sa mata kapag kausap mo siya, kalaro, o habang binibihisan?",
+    "textEnglish": "Does your child look you in the eye when you are talking to him/her, playing, or dressing him/her?",
+    "example": "Paghawak ng eye contact habang may interaction sa iyo.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_15",
+    "questionNumber": 15,
+    "textTagalog": "Sinusubukan bang gayahin ng iyong anak ang ginagawa mo?",
+    "textEnglish": "Does your child try to copy what you do?",
+    "example": "Halimbawa: Kumaway, pumalakpak, o gumawa ng nakatutuwang tunog gaya ng ginagawa mo.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_16",
+    "questionNumber": 16,
+    "textTagalog": "Kapag lumingon ka para tumingin sa isang bagay, lumingon din ba ang iyong anak para tignan ang tinitingnan mo?",
+    "textEnglish": "If you turn your head to look at something, does your child look around to see what you are looking at?",
+    "example": "Pagsunod sa tingin ng magulang (Joint Attention).",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_17",
+    "questionNumber": 17,
+    "textTagalog": "Sinusubukan ba ng iyong anak na pasayahin ka o ipatingin sa iyo ang kanyang ginagawa?",
+    "textEnglish": "Does your child try to get you to watch him or her?",
+    "example": "Halimbawa: Nagsasabi ng 'Tignan mo ako!' o tumitingin sa iyo para humingi ng papuri.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_18",
+    "questionNumber": 18,
+    "textTagalog": "Naiintindihan ba ng iyong anak kapag sinabihan mo siyang gumawa ng isang bagay?",
+    "textEnglish": "Does your child understand when you tell him or her to do something?",
+    "example": "Halimbawa: 'Ilagay mo ang sapatos doon' o 'Akin na ang bola' nang hindi nagpapakita ng pahiwatig sa kamay.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_19",
+    "questionNumber": 19,
+    "textTagalog": "Kapag may bagong nangyari, tumitingin ba ang iyong anak sa mukha mo para makita ang nararamdaman mo?",
+    "textEnglish": "If something new happens, does your child look at your face to see how you feel about it?",
+    "example": "Halimbawa: Kapag nakarinig ng kakaibang tunog, tumitingin siya sa mukha mo kung natatakot ka o ngumingiti.",
+    "atRiskAnswer": false
+  },
+  {
+    "id": "mchat_20",
+    "questionNumber": 20,
+    "textTagalog": "Gusto ba ng iyong anak ang mga gawaing may galaw o pag-ugoy?",
+    "textEnglish": "Does your child like movement activities?",
+    "example": "Halimbawa: Ang i-swing sa duyan o i-bounce sa iyong kandungan.",
+    "atRiskAnswer": false
+  }
+]
