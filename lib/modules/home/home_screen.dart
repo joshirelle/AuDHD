@@ -4,6 +4,7 @@ import '../../widgets/kiko_card.dart';
 import '../behavior/screens/behavior_history_screen.dart';
 import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
+import 'widgets/sensory_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -88,7 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildBehaviorLogCard(),
               const SizedBox(height: 16),
 
-              // 6. Progress Report Full-Width Card
+              // 6. Sensory Profile Checklist Card
+              const SensoryProfileCard(),
+              const SizedBox(height: 16),
+
+              // 7. Progress Report Full-Width Card
               _buildProgressReportCard(),
               const SizedBox(height: 20),
             ],
