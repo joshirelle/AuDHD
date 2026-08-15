@@ -1,3 +1,5 @@
+import '../../core/utils/age_formatter.dart';
+
 class ChildProfile {
   final String name;
   final DateTime birthDate;
@@ -5,11 +7,8 @@ class ChildProfile {
   ChildProfile({required this.name, required this.birthDate});
 
   /// Edad sa buwan sa isang partikular na petsa — hindi sa ngayon, para tama ang lumang record.
-  int ageInMonthsOn(DateTime date) {
-    int months = (date.year - birthDate.year) * 12 + date.month - birthDate.month;
-    if (date.day < birthDate.day) months--;
-    return months;
-  }
+  int ageInMonthsOn(DateTime date) =>
+      AgeFormatter.monthsBetween(birthDate, date);
 
   Map<String, dynamic> toMap() {
     return {

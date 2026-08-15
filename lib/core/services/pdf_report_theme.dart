@@ -1,5 +1,6 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../utils/age_formatter.dart';
 
 /// Magkatulad na header, profile card, at disclaimer sa lahat ng PDF na ulat.
 class PdfReportTheme {
@@ -21,25 +22,10 @@ class PdfReportTheme {
   }
 
   /// Katulad ng lohika sa MChatAgeCheckScreen para hindi magkaiba ang edad na ipinapakita.
-  static String formatAge(DateTime birthDate, DateTime asOf) {
-    int months =
-        (asOf.year - birthDate.year) * 12 + asOf.month - birthDate.month;
-    if (asOf.day < birthDate.day) months--;
-    if (months < 0) return 'Hindi wasto ang kaarawan';
-    return formatMonths(months);
-  }
+  static String formatAge(DateTime birthDate, DateTime asOf) =>
+      AgeFormatter.formatAge(birthDate, asOf);
 
-  static String formatMonths(int months) {
-    if (months < 0) return unknown;
-
-    final years = months ~/ 12;
-    final remainder = months % 12;
-    final parts = <String>[];
-    if (years > 0) parts.add('$years taon');
-    if (remainder > 0) parts.add('$remainder buwan');
-    if (parts.isEmpty) return 'Wala pang isang buwan (0 buwan)';
-    return '${parts.join(', ')} ($months buwan)';
-  }
+  static String formatMonths(int months) => AgeFormatter.formatMonths(months);
 
   static pw.Widget reportHeader(
     String title,
