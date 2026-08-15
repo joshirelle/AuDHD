@@ -12,6 +12,7 @@ class HiveService {
   static const String _sensoryBoxName = 'sensory_profiles';
   static const String _completionBoxName = 'sensory_completion_box';
   static const String _moodBoxName = 'daily_mood';
+  static const String _milestoneBoxName = 'milestone_progress';
 
   /// I-initialize ang Hive sa app startup
   static Future<void> init() async {
@@ -27,6 +28,33 @@ class HiveService {
     await Hive.openBox<SensoryProfileResult>(_sensoryBoxName);
     await Hive.openBox<bool>(_completionBoxName);
     await Hive.openBox<String>(_moodBoxName);
+    await Hive.openBox<int>(_milestoneBoxName);
+  }
+
+  /// Iniimbak ang petsa ng pag-abot; ang pagkakaroon ng key ang ibig sabihin ng naabot.
+  static Box<int> getMilestoneBox() => Hive.box<int>(_milestoneBoxName);
+
+  static String milestoneKey(String milestoneId) => '${milestoneId}_achieved';
+
+  static bool isMilestoneAchieved(String milestoneId) =>
+      getMilestoneBox().containsKey(milestoneKey(milestoneId));
+
+  static DateTime? milestoneAchievedDate(String milestoneId) {
+    final millis = getMilestoneBox().get(milestoneKey(milestoneId));
+    return millis == null ? null : DateTime.fromMillisecondsSinceEpoch(millis);
+  }
+
+  static Future<void> setMilestoneAchieved(
+    String milestoneId,
+    bool isAchieved,
+  ) async {
+    final box = getMilestoneBox();
+    final key = milestoneKey(milestoneId);
+    if (isAchieved) {
+      await box.put(key, DateTime.now().millisecondsSinceEpoch);
+    } else {
+      await box.delete(key);
+    }
   }
 
   static Box<String> getMoodBox() => Hive.box<String>(_moodBoxName);
