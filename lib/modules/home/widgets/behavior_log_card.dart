@@ -1,24 +1,22 @@
-// lib/modules/home/widgets/sensory_profile_card.dart
-
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
-import '../../sensory/screens/sensory_checklist_screen.dart';
+import '../../behavior/screens/behavior_history_screen.dart';
 
-class SensoryProfileCard extends StatelessWidget {
-  const SensoryProfileCard({super.key});
+class BehaviorLogCard extends StatelessWidget {
+  const BehaviorLogCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return KikoCard(
-      backgroundColor: const Color(0xFFF0F7F7), // Soft pastel teal/cyan
-      borderColor: AppColors.logoGreen.withValues(alpha: 0.3),
+      backgroundColor: const Color(0xFFFFF7ED), // Soft pastel orange/amber
+      borderColor: Colors.orange.shade200,
       padding: const EdgeInsets.all(16),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const SensoryChecklistScreen(),
+            builder: (context) => const BehaviorHistoryScreen(),
           ),
         );
       },
@@ -27,12 +25,12 @@ class SensoryProfileCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.logoGreen.withValues(alpha: 0.15),
+              color: Colors.orange.shade100,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(
-              Icons.psychology_rounded,
-              color: AppColors.logoGreen,
+            child: Icon(
+              Icons.assignment_outlined,
+              color: Colors.orange.shade800,
               size: 28,
             ),
           ),
@@ -42,7 +40,7 @@ class SensoryProfileCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Sensory Profile Checklist',
+                  'Tala ng Ugali (ABC Log)',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -51,15 +49,15 @@ class SensoryProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'Alamin kung Sensory Seeking o Avoiding ang bata sa 5 sensory domains.',
+                  'Mag-tala ng Antecedent, Behavior, at Consequence para sa OT/ABA.',
                   style: TextStyle(fontSize: 12, color: Colors.black54),
                 ),
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.chevron_right_rounded,
-            color: AppColors.logoGreen,
+            color: Colors.orange.shade800,
           ),
         ],
       ),

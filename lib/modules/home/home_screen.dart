@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../widgets/kiko_card.dart';
-import '../behavior/screens/behavior_history_screen.dart';
 import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
+import 'widgets/behavior_log_card.dart';
 import 'widgets/sensory_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
 
               // 5. Behavior Log Full-Width Card
-              _buildBehaviorLogCard(),
+              const BehaviorLogCard(),
               const SizedBox(height: 16),
 
               // 6. Sensory Profile Checklist Card
@@ -291,64 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 1.2,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBehaviorLogCard() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const BehaviorHistoryScreen()),
-        );
-      },
-      child: KikoCard(
-        backgroundColor: AppColors.butterYellow,
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.edit_note_rounded,
-                color: Color(0xFFD9A000),
-                size: 32,
-              ),
-            ),
-            const SizedBox(width: 14),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'TALA NG UGALI (A-B-C LOG)',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textDark,
-                      fontFamily: 'Nunito',
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Itala ang meltdown at sensory trigger habang sariwa pa.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textDark,
-                      fontFamily: 'Nunito',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
           ],
         ),
       ),

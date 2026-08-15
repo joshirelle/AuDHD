@@ -7,21 +7,28 @@ class KikoCard extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
   final EdgeInsetsGeometry padding;
+  final Color? borderColor;
+  final VoidCallback? onTap;
 
   const KikoCard({
     super.key,
     required this.child,
     required this.backgroundColor,
     this.padding = const EdgeInsets.all(20),
+    this.borderColor,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final card = Container(
       padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppRadius.card), // 24px radius
+        border: borderColor == null
+            ? null
+            : Border.all(color: borderColor!, width: 2),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -31,6 +38,14 @@ class KikoCard extends StatelessWidget {
         ],
       ),
       child: child,
+    );
+
+    if (onTap == null) return card;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppRadius.card),
+      child: card,
     );
   }
 }
