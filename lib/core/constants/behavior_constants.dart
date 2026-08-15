@@ -9,7 +9,6 @@ class BehaviorConstants {
     'Sikip o tekstura ng damit (Tactile)',
     'Maraming tao / Bagong kapaligiran',
     'Inagawan ng laruan / Pinagbawalan sa screen time',
-    'Iba pa (Custom)',
   ];
 
   static const List<String> commonBehaviors = [
@@ -21,7 +20,6 @@ class BehaviorConstants {
     'Pagtakbo nang malayo / Tago (Elopement)',
     'Pagtili / Pag-angil nang malakas',
     'Pagmamatigas / Non-compliance',
-    'Iba pa (Custom)',
   ];
 
   static const List<String> commonConsequences = [
@@ -31,7 +29,6 @@ class BehaviorConstants {
     'Verbal Co-regulation / Pakiusap at yakap',
     'Inalis muna ang mahirap na gawain (Task Delay)',
     'Binigyan ng gustong laruan / pagkain / gadget',
-    'Iba pa (Custom)',
   ];
 
   static const List<String> sensoryCategories = [

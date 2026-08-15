@@ -4,6 +4,7 @@ import '../../../core/constants/behavior_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/step_progress_header.dart';
 
 class AddBehaviorLogScreen extends StatefulWidget {
   const AddBehaviorLogScreen({super.key});
@@ -14,21 +15,24 @@ class AddBehaviorLogScreen extends StatefulWidget {
 
 class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
   static const String _customOption = 'Iba pa (Custom)';
+  static const int _totalSteps = 7;
 
-  final _formKey = GlobalKey<FormState>();
+  int _currentStep = 0;
 
-  // Form State Values
   String? _selectedAntecedent;
-  final TextEditingController _customAntecedentController = TextEditingController();
+  final TextEditingController _customAntecedentController =
+      TextEditingController();
 
   String? _selectedBehavior;
-  final TextEditingController _customBehaviorController = TextEditingController();
+  final TextEditingController _customBehaviorController =
+      TextEditingController();
 
   String? _selectedConsequence;
-  final TextEditingController _customConsequenceController = TextEditingController();
+  final TextEditingController _customConsequenceController =
+      TextEditingController();
 
   final List<String> _selectedSensoryTriggers = [];
-  double _intensity = 3.0; // 1 to 5 (Default 3 - Moderate)
+  double _intensity = 3.0;
   int _durationMinutes = 10;
   final TextEditingController _notesController = TextEditingController();
 
@@ -41,63 +45,98 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     super.dispose();
   }
 
-  void _saveLog() async {
-    if (_formKey.currentState!.validate()) {
-      if (_selectedAntecedent == null) {
-        _showSnackBar('Mangyaring pumili ng Antecedent (Sanhi).');
-        return;
-      }
-      if (_selectedBehavior == null) {
-        _showSnackBar('Mangyaring pumili ng Behavior (Kilos).');
-        return;
-      }
-      if (_selectedConsequence == null) {
-        _showSnackBar('Mangyaring pumili ng Consequence (Tugon).');
-        return;
-      }
+  static const List<String> _stepTags = [
+    'ANTECEDENT (A)',
+    'BEHAVIOR (B)',
+    'CONSEQUENCE (C)',
+    'SENSORY DOMAIN TAGS',
+    'SEVERITY / INTENSITY',
+    'TAGAL',
+    'KARAGDAGANG TALA',
+  ];
 
-      final finalAntecedent = _selectedAntecedent == _customOption
-          ? _customAntecedentController.text.trim()
-          : _selectedAntecedent!;
+  static const List<String> _stepQuestions = [
+    'Ano ang nangyari bago ang insidente?',
+    'Anong kilos o reaksyon ang ipinakita?',
+    'Ano ang naging tugon o resulta?',
+    'Ano ang maaaring pumukaw sa kanya?',
+    'Gaano kalubha ang naging insidente?',
+    'Gaano ito katagal?',
+    'May nais ka pa bang idagdag?',
+  ];
 
-      final finalBehavior = _selectedBehavior == _customOption
-          ? _customBehaviorController.text.trim()
-          : _selectedBehavior!;
-
-      final finalConsequence = _selectedConsequence == _customOption
-          ? _customConsequenceController.text.trim()
-          : _selectedConsequence!;
-
-      final log = BehaviorLog(
-        id: const Uuid().v4(),
-        timestamp: DateTime.now(),
-        antecedent: finalAntecedent,
-        behavior: finalBehavior,
-        consequence: finalConsequence,
-        sensoryTriggers: _selectedSensoryTriggers,
-        intensity: _intensity.toInt(),
-        durationMinutes: _durationMinutes,
-        notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
-      );
-
-      await HiveService.addLog(log);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Matagumpay na naitala ang Behavior Log!'),
-            backgroundColor: AppColors.logoGreen,
-          ),
+  /// Hindi puwedeng lumipat hangga't kulang ang A, B, o C.
+  bool get _canProceed {
+    switch (_currentStep) {
+      case 0:
+        return _isChoiceComplete(
+          _selectedAntecedent,
+          _customAntecedentController,
         );
-        Navigator.pop(context);
-      }
+      case 1:
+        return _isChoiceComplete(_selectedBehavior, _customBehaviorController);
+      case 2:
+        return _isChoiceComplete(
+          _selectedConsequence,
+          _customConsequenceController,
+        );
+      default:
+        return true;
     }
   }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: const Color(0xFFD9383A)),
+  bool _isChoiceComplete(String? selected, TextEditingController controller) {
+    if (selected == null) return false;
+    if (selected == _customOption) return controller.text.trim().isNotEmpty;
+    return true;
+  }
+
+  void _goBack() {
+    if (_currentStep > 0) {
+      setState(() => _currentStep--);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  void _goNext() {
+    if (!_canProceed) return;
+    if (_currentStep < _totalSteps - 1) {
+      setState(() => _currentStep++);
+    } else {
+      _saveLog();
+    }
+  }
+
+  String _resolve(String? selected, TextEditingController controller) {
+    return selected == _customOption ? controller.text.trim() : selected!;
+  }
+
+  Future<void> _saveLog() async {
+    final log = BehaviorLog(
+      id: const Uuid().v4(),
+      timestamp: DateTime.now(),
+      antecedent: _resolve(_selectedAntecedent, _customAntecedentController),
+      behavior: _resolve(_selectedBehavior, _customBehaviorController),
+      consequence: _resolve(_selectedConsequence, _customConsequenceController),
+      sensoryTriggers: _selectedSensoryTriggers,
+      intensity: _intensity.toInt(),
+      durationMinutes: _durationMinutes,
+      notes: _notesController.text.trim().isEmpty
+          ? null
+          : _notesController.text.trim(),
     );
+
+    await HiveService.addLog(log);
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Matagumpay na naitala ang Behavior Log!'),
+        backgroundColor: AppColors.logoGreen,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   // Kapareho ng risk colours na ginagamit sa screening result at history.
@@ -117,206 +156,294 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final severityColor = _getSeverityColor(_intensity);
+    final bool isLastStep = _currentStep == _totalSteps - 1;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mag-tala ng Kilos / Insidente'),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textDark,
-        elevation: 0,
-      ),
       backgroundColor: AppColors.background,
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              StepProgressHeader(
+                currentIndex: _currentStep,
+                totalCount: _totalSteps,
+                onBack: _goBack,
+              ),
+              const SizedBox(height: 24),
+
+              Center(
+                child: Text(
+                  'HAKBANG ${_currentStep + 1}  \u2022  ${_stepTags[_currentStep]}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.grey.shade600,
+                    letterSpacing: 1.0,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              Expanded(child: _buildStepCard()),
+              const SizedBox(height: 20),
+
+              SizedBox(
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _canProceed ? _goNext : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.logoGreen,
+                    disabledBackgroundColor: Colors.grey.shade300,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text(
+                    isLastStep ? 'I-SAVE ANG BEHAVIOR LOG' : 'SUSUNOD',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: _canProceed ? Colors.white : Colors.grey.shade600,
+                      fontFamily: 'Nunito',
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStepCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.skyBlueLight, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // --- 1. ANTECEDENT (A) ---
-            _buildSectionHeader('1. Antecedent (A) - Ano ang nangyari bago ang insidente?'),
-            _buildSingleSelectChips(
-              options: BehaviorConstants.commonAntecedents,
-              selectedOption: _selectedAntecedent,
-              onSelected: (val) => setState(() => _selectedAntecedent = val),
-            ),
-            if (_selectedAntecedent == _customOption) ...[
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _customAntecedentController,
-                decoration: const InputDecoration(
-                  labelText: 'Tukuyin ang sanhi...',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang sanhi' : null,
-              ),
-            ],
-            const SizedBox(height: 28),
-
-            // --- 2. BEHAVIOR (B) ---
-            _buildSectionHeader('2. Behavior (B) - Anong kilos o reaksyon ang ipinakita?'),
-            _buildSingleSelectChips(
-              options: BehaviorConstants.commonBehaviors,
-              selectedOption: _selectedBehavior,
-              onSelected: (val) => setState(() => _selectedBehavior = val),
-            ),
-            if (_selectedBehavior == _customOption) ...[
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _customBehaviorController,
-                decoration: const InputDecoration(
-                  labelText: 'Tukuyin ang kilos...',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang kilos' : null,
-              ),
-            ],
-            const SizedBox(height: 28),
-
-            // --- 3. CONSEQUENCE (C) ---
-            _buildSectionHeader('3. Consequence (C) - Ano ang naging tugon o resulta?'),
-            _buildSingleSelectChips(
-              options: BehaviorConstants.commonConsequences,
-              selectedOption: _selectedConsequence,
-              onSelected: (val) => setState(() => _selectedConsequence = val),
-            ),
-            if (_selectedConsequence == _customOption) ...[
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _customConsequenceController,
-                decoration: const InputDecoration(
-                  labelText: 'Tukuyin ang tugon...',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang tugon' : null,
-              ),
-            ],
-            const SizedBox(height: 28),
-
-            // --- 4. SENSORY TRIGGERS (MULTI-SELECT) ---
-            _buildSectionHeader('4. Sensory Domain Tags (Pumili ng 1 o higit pa)'),
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: BehaviorConstants.sensoryCategories.map((sensory) {
-                final isSelected = _selectedSensoryTriggers.contains(sensory);
-                return FilterChip(
-                  label: Text(sensory, style: const TextStyle(fontSize: 13)),
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  selected: isSelected,
-                  selectedColor: AppColors.mintGreen,
-                  checkmarkColor: const Color(0xFF1E5631),
-                  shape: const StadiumBorder(side: BorderSide(color: AppColors.mintGreen)),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        _selectedSensoryTriggers.add(sensory);
-                      } else {
-                        _selectedSensoryTriggers.remove(sensory);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 28),
-
-            // --- 5. INTENSITY SLIDER ---
-            _buildSectionHeader('5. Severity / Intensity Level'),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: severityColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: severityColor, width: 2),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    _getSeverityLabel(_intensity),
-                    style: TextStyle(fontWeight: FontWeight.bold, color: severityColor, fontSize: 15),
-                  ),
-                  Slider(
-                    value: _intensity,
-                    min: 1.0,
-                    max: 5.0,
-                    divisions: 4,
-                    activeColor: severityColor,
-                    onChanged: (val) => setState(() => _intensity = val),
-                  ),
-                ],
+            SizedBox(
+              height: 96,
+              child: Image.asset(
+                'assets/images/kiko_pointing.png',
+                fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 28),
-
-            // --- 6. DURATION & NOTES ---
-            _buildSectionHeader('Tagal (Minutes)'),
-            DropdownButtonFormField<int>(
-              initialValue: _durationMinutes,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              items: [5, 10, 15, 20, 30, 45, 60, 90, 120]
-                  .map((m) => DropdownMenuItem(value: m, child: Text('$m mins')))
-                  .toList(),
-              onChanged: (v) => setState(() => _durationMinutes = v ?? 10),
-            ),
-            const SizedBox(height: 28),
-
-            _buildSectionHeader('Karagdagang Tala (Optional Notes)'),
-            TextFormField(
-              controller: _notesController,
-              maxLines: 4,
-              decoration: const InputDecoration(
-                hintText: 'Halimbawa: Pagod mula sa biyahe, hindi gaanong nakakain ng tanghalian...',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 16),
+            Text(
+              _stepQuestions[_currentStep],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+                height: 1.3,
+                fontFamily: 'Nunito',
               ),
             ),
-            const SizedBox(height: 32),
-
-            // SAVE BUTTON
-            ElevatedButton(
-              onPressed: _saveLog,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.logoGreen,
-                minimumSize: const Size.fromHeight(54),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              child: const Text('I-SAVE ANG BEHAVIOR LOG', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white)),
-            ),
+            const SizedBox(height: 20),
+            _buildStepInput(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textDark),
+  Widget _buildStepInput() {
+    switch (_currentStep) {
+      case 0:
+        return _buildChoiceStep(
+          options: BehaviorConstants.commonAntecedents,
+          selected: _selectedAntecedent,
+          controller: _customAntecedentController,
+          hint: 'Tukuyin ang sanhi...',
+          onSelected: (val) => setState(() => _selectedAntecedent = val),
+        );
+      case 1:
+        return _buildChoiceStep(
+          options: BehaviorConstants.commonBehaviors,
+          selected: _selectedBehavior,
+          controller: _customBehaviorController,
+          hint: 'Tukuyin ang kilos...',
+          onSelected: (val) => setState(() => _selectedBehavior = val),
+        );
+      case 2:
+        return _buildChoiceStep(
+          options: BehaviorConstants.commonConsequences,
+          selected: _selectedConsequence,
+          controller: _customConsequenceController,
+          hint: 'Tukuyin ang tugon...',
+          onSelected: (val) => setState(() => _selectedConsequence = val),
+        );
+      case 3:
+        return _buildSensoryStep();
+      case 4:
+        return _buildIntensityStep();
+      case 5:
+        return _buildDurationStep();
+      default:
+        return _buildNotesStep();
+    }
+  }
+
+  Widget _buildChoiceStep({
+    required List<String> options,
+    required String? selected,
+    required TextEditingController controller,
+    required String hint,
+    required ValueChanged<String> onSelected,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8.0,
+          runSpacing: 8.0,
+          // Idinudugtong ang custom option dito para hindi na ulitin sa bawat tawag.
+          children: [...options, _customOption].map((opt) {
+            final isSelected = selected == opt;
+            return ChoiceChip(
+              label: Text(
+                opt,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: isSelected ? Colors.white : AppColors.textDark,
+                ),
+              ),
+              labelPadding: const EdgeInsets.symmetric(
+                horizontal: 6,
+                vertical: 4,
+              ),
+              selected: isSelected,
+              selectedColor: AppColors.logoGreen,
+              shape: const StadiumBorder(
+                side: BorderSide(color: AppColors.mintGreen),
+              ),
+              onSelected: (_) => onSelected(opt),
+            );
+          }).toList(),
+        ),
+        if (selected == _customOption) ...[
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            onChanged: (_) => setState(() {}),
+            decoration: InputDecoration(
+              labelText: hint,
+              border: const OutlineInputBorder(),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildSensoryStep() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: BehaviorConstants.sensoryCategories.map((sensory) {
+        final isSelected = _selectedSensoryTriggers.contains(sensory);
+        return FilterChip(
+          label: Text(sensory, style: const TextStyle(fontSize: 13)),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          selected: isSelected,
+          selectedColor: AppColors.mintGreen,
+          checkmarkColor: const Color(0xFF1E5631),
+          shape: const StadiumBorder(
+            side: BorderSide(color: AppColors.mintGreen),
+          ),
+          onSelected: (selected) {
+            setState(() {
+              if (selected) {
+                _selectedSensoryTriggers.add(sensory);
+              } else {
+                _selectedSensoryTriggers.remove(sensory);
+              }
+            });
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildIntensityStep() {
+    final severityColor = _getSeverityColor(_intensity);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: severityColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: severityColor, width: 2),
+      ),
+      child: Column(
+        children: [
+          Text(
+            _getSeverityLabel(_intensity),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: severityColor,
+              fontSize: 15,
+              fontFamily: 'Nunito',
+            ),
+          ),
+          Slider(
+            value: _intensity,
+            min: 1.0,
+            max: 5.0,
+            divisions: 4,
+            activeColor: severityColor,
+            onChanged: (val) => setState(() => _intensity = val),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildSingleSelectChips({
-    required List<String> options,
-    required String? selectedOption,
-    required Function(String) onSelected,
-  }) {
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 8.0,
-      // Idinudugtong ang custom option dito para hindi na ulitin sa bawat tawag.
-      children: [...options, _customOption].map((opt) {
-        final isSelected = selectedOption == opt;
-        return ChoiceChip(
-          label: Text(opt, style: TextStyle(fontSize: 13, color: isSelected ? Colors.white : AppColors.textDark)),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-          selected: isSelected,
-          selectedColor: AppColors.logoGreen,
-          shape: const StadiumBorder(side: BorderSide(color: AppColors.mintGreen)),
-          onSelected: (_) => onSelected(opt),
-        );
-      }).toList(),
+  Widget _buildDurationStep() {
+    return DropdownButtonFormField<int>(
+      initialValue: _durationMinutes,
+      decoration: const InputDecoration(border: OutlineInputBorder()),
+      items: [5, 10, 15, 20, 30, 45, 60, 90, 120]
+          .map((m) => DropdownMenuItem(value: m, child: Text('$m mins')))
+          .toList(),
+      onChanged: (v) => setState(() => _durationMinutes = v ?? 10),
+    );
+  }
+
+  Widget _buildNotesStep() {
+    return TextField(
+      controller: _notesController,
+      maxLines: 4,
+      decoration: const InputDecoration(
+        hintText:
+            'Halimbawa: Pagod mula sa biyahe, hindi gaanong nakakain ng tanghalian...',
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }
