@@ -1,19 +1,39 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/child_profile.dart';
 import '../models/screening_result.dart';
+import '../models/behavior_log.dart';
 
 class HiveService {
   static const String _screeningBoxName = 'screening_results';
   static const String _profileBoxName = 'child_profiles';
   static const String _settingsBoxName = 'app_settings';
   static const String _activeChildKey = 'active_child_id';
+  static const String _behaviorBoxName = 'behavior_logs';
 
   /// I-initialize ang Hive sa app startup
   static Future<void> init() async {
     await Hive.initFlutter();
+    // Register Adapters
+    Hive.registerAdapter(BehaviorLogAdapter());
+
     await Hive.openBox(_screeningBoxName);
     await Hive.openBox(_profileBoxName);
     await Hive.openBox(_settingsBoxName);
+    // Open Boxes
+    await Hive.openBox<BehaviorLog>(_behaviorBoxName);
+  }
+
+  static Box<BehaviorLog> getBehaviorBox() =>
+      Hive.box<BehaviorLog>(_behaviorBoxName);
+
+  static Future<void> addLog(BehaviorLog log) async {
+    final box = getBehaviorBox();
+    await box.put(log.id, log);
+  }
+
+  static List<BehaviorLog> getAllLogs() {
+    final box = getBehaviorBox();
+    return box.values.toList()..sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 
   /// I-save ang bagong screening result
