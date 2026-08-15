@@ -171,13 +171,18 @@ class _MChatScreeningScreenState extends State<MChatScreeningScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Kiko Illustration Banner
+                      // Kiko Illustration Banner — kada tanong may sariling larawan.
                       Expanded(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: Image.asset(
-                            'assets/images/kiko_pointing.png',
+                            'assets/images/${currentQ.id}.png',
                             fit: BoxFit.contain,
+                            // Bumabalik sa default kapag wala pang larawan ang tanong.
+                            errorBuilder: (context, error, stackTrace) => Image.asset(
+                              'assets/images/kiko_pointing.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
