@@ -3,6 +3,7 @@ class ADHDQuestion {
   final int number;
   final String textTagalog;
   final String textEnglish;
+  final String exampleTagalog;
   final String category; // 'Inattention' o 'Hyperactivity'
 
   ADHDQuestion({
@@ -10,6 +11,7 @@ class ADHDQuestion {
     required this.number,
     required this.textTagalog,
     required this.textEnglish,
+    required this.exampleTagalog,
     required this.category,
   });
 
@@ -19,6 +21,7 @@ class ADHDQuestion {
       number: json['number'] as int,
       textTagalog: json['textTagalog'] as String,
       textEnglish: json['textEnglish'] as String,
+      exampleTagalog: json['exampleTagalog'] as String? ?? '',
       category: json['category'] as String,
     );
   }

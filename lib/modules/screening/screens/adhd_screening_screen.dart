@@ -33,6 +33,37 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
     });
   }
 
+  void _showExampleDialog(String example) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Row(
+          children: [
+            Icon(Icons.help_outline_rounded, color: AppColors.logoGreen),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Paano ito sa bahay?',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: Text(example, style: const TextStyle(fontSize: 14, fontFamily: 'Nunito')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'Nakuha ko!',
+              style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.logoGreen),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _answerQuestion(int score) {
     final currentQ = _questions[_currentIndex];
     _scores[currentQ.id] = score;
@@ -166,6 +197,21 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
                                 height: 1.3,
                               ),
                             ),
+                            if (currentQ.exampleTagalog.isNotEmpty) ...[
+                              const SizedBox(height: 16),
+                              OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: AppColors.skyBlue),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                ),
+                                onPressed: () => _showExampleDialog(currentQ.exampleTagalog),
+                                icon: const Icon(Icons.help_outline_rounded, size: 18, color: Color(0xFF2A80B9)),
+                                label: const Text(
+                                  'Paano ito sa bahay?',
+                                  style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold, fontSize: 13),
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
