@@ -61,17 +61,8 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       return;
     }
 
-    final profile = ChildProfile(
-      id: widget.existing?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      name: name,
-      birthDate: _birthDate!,
-    );
+    final profile = ChildProfile(name: name, birthDate: _birthDate!);
     await HiveService.saveChildProfile(profile);
-
-    // Kapag ito ang unang bata, gawin nang aktibo agad para may magamit ang screening.
-    if (HiveService.getActiveChildId() == null) {
-      await HiveService.setActiveChildId(profile.id);
-    }
 
     if (mounted) Navigator.pop(context, true);
   }

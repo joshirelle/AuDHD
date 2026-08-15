@@ -65,7 +65,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
             ),
             tooltip: 'Export as PDF',
             onPressed: () async {
-              final child = HiveService.getChildProfile(result.childId);
+              final child = HiveService.getChildProfile();
               final pdfData = await PdfExportService.generateScreeningReport(
                 result,
                 _rows,

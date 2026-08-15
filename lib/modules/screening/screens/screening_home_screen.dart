@@ -9,43 +9,15 @@ import 'adhd_screening_screen.dart';
 class ScreeningHomeScreen extends StatelessWidget {
   const ScreeningHomeScreen({super.key});
 
-  /// Walang paraan para iugnay ang resulta sa isang bata kung walang aktibo, kaya rito huminto.
-  Future<bool> _ensureActiveChild(BuildContext context) async {
-    if (HiveService.getActiveChild() != null) return true;
+  /// Walang mailalagay na pangalan o edad sa ulat kung walang naitalang bata, kaya rito huminto.
+  Future<bool> _ensureChildProfile(BuildContext context) async {
+    if (HiveService.getChildProfile() != null) return true;
 
-    final children = HiveService.getAllChildProfiles();
-    if (children.isEmpty) {
-      final added = await showDialog<bool>(
-        context: context,
-        builder: (context) => const ChildEditorDialog(),
-      );
-      return added == true;
-    }
-
-    final chosenId = await showDialog<String>(
+    final added = await showDialog<bool>(
       context: context,
-      builder: (context) => SimpleDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Sino ang susuriin?'),
-        children: [
-          for (final child in children)
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, child.id),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(
-                  child.name,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-        ],
-      ),
+      builder: (context) => const ChildEditorDialog(),
     );
-
-    if (chosenId == null) return false;
-    await HiveService.setActiveChildId(chosenId);
-    return true;
+    return added == true;
   }
 
   @override
@@ -71,7 +43,7 @@ class ScreeningHomeScreen extends StatelessWidget {
               icon: Icons.child_care_rounded,
               color: AppColors.logoGreen,
               onTap: () async {
-                if (!await _ensureActiveChild(context)) return;
+                if (!await _ensureChildProfile(context)) return;
                 if (!context.mounted) return;
                 Navigator.push(
                   context,
@@ -91,7 +63,7 @@ class ScreeningHomeScreen extends StatelessWidget {
               icon: Icons.psychology_rounded,
               color: const Color(0xFF3B82F6),
               onTap: () async {
-                if (!await _ensureActiveChild(context)) return;
+                if (!await _ensureChildProfile(context)) return;
                 if (!context.mounted) return;
                 Navigator.push(
                   context,

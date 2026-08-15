@@ -47,7 +47,6 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
       score: score,
       riskLevel: risk,
       type: ScreeningResult.typeMChat,
-      childId: HiveService.getActiveChildId(),
       answers: widget.userAnswers,
     );
 

@@ -12,8 +12,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  List<ChildProfile> _children = [];
-  String? _activeId;
+  ChildProfile? _child;
 
   @override
   void initState() {
@@ -22,15 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _load() {
-    setState(() {
-      _children = HiveService.getAllChildProfiles();
-      _activeId = HiveService.getActiveChildId();
-    });
-  }
-
-  Future<void> _setActive(String id) async {
-    await HiveService.setActiveChildId(id);
-    _load();
+    setState(() => _child = HiveService.getChildProfile());
   }
 
   Future<void> _confirmDelete(ChildProfile child) async {
@@ -41,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const Text('Burahin ang profile?'),
         content: Text(
           'Buburahin si ${child.name}. Mananatili ang mga naitalang screening result, '
-          'ngunit hindi na sila maiuugnay sa isang bata.',
+          'ngunit mawawala ang pangalan at edad sa mga PDF report.',
         ),
         actions: [
           TextButton(
@@ -60,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (ok == true) {
-      await HiveService.deleteChildProfile(child.id);
+      await HiveService.deleteChildProfile();
       _load();
     }
   }
@@ -75,6 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final child = _child;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile ng Bata'),
@@ -83,16 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
       ),
       backgroundColor: AppColors.background,
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppColors.logoGreen,
-        onPressed: () => _openEditor(),
-        icon: const Icon(Icons.add_rounded, color: Colors.white),
-        label: const Text(
-          'Magdagdag',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: _children.isEmpty
+      body: child == null
           ? Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
@@ -111,67 +95,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12, color: Colors.grey.shade600, height: 1.3),
                     ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.logoGreen,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      ),
+                      onPressed: () => _openEditor(),
+                      icon: const Icon(Icons.add_rounded, color: Colors.white),
+                      label: const Text(
+                        'Itala ang Bata',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ],
                 ),
               ),
             )
-          : RadioGroup<String>(
-              groupValue: _activeId,
-              onChanged: (value) {
-                if (value != null) _setActive(value);
-              },
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-                itemCount: _children.length,
-                itemBuilder: (context, index) {
-                  final child = _children[index];
-                  final isActive = child.id == _activeId;
-                  final months = child.ageInMonthsOn(DateTime.now());
-                  final birth =
-                      '${child.birthDate.day}/${child.birthDate.month}/${child.birthDate.year}';
-
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    color: isActive ? const Color(0xFFF1FAF4) : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: BorderSide(
-                        color: isActive ? AppColors.logoGreen : Colors.transparent,
-                        width: 2,
+          : ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.logoGreen, width: 2),
+                  ),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 34,
+                        backgroundColor: AppColors.mintGreen,
+                        child: const Icon(Icons.child_care_rounded, size: 38, color: AppColors.logoGreen),
                       ),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      leading: Radio<String>(
-                        value: child.id,
-                        activeColor: AppColors.logoGreen,
-                      ),
-                      title: Text(
+                      const SizedBox(height: 14),
+                      Text(
                         child.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
                       ),
-                      subtitle: Text('Kaarawan: $birth  •  $months buwan ngayon'),
-                      onTap: () => _setActive(child.id),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit_rounded, color: AppColors.logoGreen),
-                            tooltip: 'Baguhin',
-                            onPressed: () => _openEditor(existing: child),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFD9383A)),
-                            tooltip: 'Burahin',
-                            onPressed: () => _confirmDelete(child),
-                          ),
-                        ],
+                      const SizedBox(height: 16),
+                      _infoRow(
+                        'Kaarawan',
+                        '${child.birthDate.day}/${child.birthDate.month}/${child.birthDate.year}',
                       ),
-                    ),
-                  );
-                },
-              ),
+                      const SizedBox(height: 8),
+                      _infoRow('Edad ngayon', _ageLabel(child.ageInMonthsOn(DateTime.now()))),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    side: const BorderSide(color: AppColors.logoGreen),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
+                  onPressed: () => _openEditor(existing: child),
+                  icon: const Icon(Icons.edit_rounded, color: AppColors.logoGreen),
+                  label: const Text(
+                    'Baguhin ang Detalye',
+                    style: TextStyle(color: AppColors.logoGreen, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextButton.icon(
+                  onPressed: () => _confirmDelete(child),
+                  icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFD9383A)),
+                  label: const Text(
+                    'Burahin ang Profile',
+                    style: TextStyle(color: Color(0xFFD9383A), fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
+    );
+  }
+
+  static String _ageLabel(int months) {
+    final years = months ~/ 12;
+    final remainder = months % 12;
+    final parts = <String>[];
+    if (years > 0) parts.add('$years taon');
+    if (remainder > 0) parts.add('$remainder buwan');
+    if (parts.isEmpty) return 'Wala pang isang buwan';
+    return '${parts.join(', ')} ($months buwan)';
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
+        Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+      ],
     );
   }
 }

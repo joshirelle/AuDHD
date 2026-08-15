@@ -5,9 +5,8 @@ import '../models/behavior_log.dart';
 
 class HiveService {
   static const String _screeningBoxName = 'screening_results';
-  static const String _profileBoxName = 'child_profiles';
-  static const String _settingsBoxName = 'app_settings';
-  static const String _activeChildKey = 'active_child_id';
+  static const String _profileBoxName = 'child_profile';
+  static const String _profileKey = 'child';
   static const String _behaviorBoxName = 'behavior_logs';
 
   /// I-initialize ang Hive sa app startup
@@ -18,7 +17,6 @@ class HiveService {
 
     await Hive.openBox(_screeningBoxName);
     await Hive.openBox(_profileBoxName);
-    await Hive.openBox(_settingsBoxName);
     // Open Boxes
     await Hive.openBox<BehaviorLog>(_behaviorBoxName);
   }
@@ -54,44 +52,15 @@ class HiveService {
   }
 
   static Future<void> saveChildProfile(ChildProfile profile) async {
-    final box = Hive.box(_profileBoxName);
-    await box.put(profile.id, profile.toMap());
+    await Hive.box(_profileBoxName).put(_profileKey, profile.toMap());
   }
 
-  static Future<void> deleteChildProfile(String id) async {
-    await Hive.box(_profileBoxName).delete(id);
-    if (getActiveChildId() == id) {
-      await Hive.box(_settingsBoxName).delete(_activeChildKey);
-    }
+  static Future<void> deleteChildProfile() async {
+    await Hive.box(_profileBoxName).delete(_profileKey);
   }
 
-  static List<ChildProfile> getAllChildProfiles() {
-    final box = Hive.box(_profileBoxName);
-    final profiles = [
-      for (final item in box.values) ChildProfile.fromMap(item as Map),
-    ];
-    profiles.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-    return profiles;
-  }
-
-  static ChildProfile? getChildProfile(String? id) {
-    if (id == null) return null;
-    final raw = Hive.box(_profileBoxName).get(id);
+  static ChildProfile? getChildProfile() {
+    final raw = Hive.box(_profileBoxName).get(_profileKey);
     return raw == null ? null : ChildProfile.fromMap(raw as Map);
   }
-
-  static String? getActiveChildId() {
-    return Hive.box(_settingsBoxName).get(_activeChildKey) as String?;
-  }
-
-  static Future<void> setActiveChildId(String? id) async {
-    final box = Hive.box(_settingsBoxName);
-    if (id == null) {
-      await box.delete(_activeChildKey);
-    } else {
-      await box.put(_activeChildKey, id);
-    }
-  }
-
-  static ChildProfile? getActiveChild() => getChildProfile(getActiveChildId());
 }

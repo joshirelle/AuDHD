@@ -1,9 +1,8 @@
 class ChildProfile {
-  final String id;
   final String name;
   final DateTime birthDate;
 
-  ChildProfile({required this.id, required this.name, required this.birthDate});
+  ChildProfile({required this.name, required this.birthDate});
 
   /// Edad sa buwan sa isang partikular na petsa — hindi sa ngayon, para tama ang lumang record.
   int ageInMonthsOn(DateTime date) {
@@ -14,7 +13,6 @@ class ChildProfile {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'birthDate': birthDate.toIso8601String(),
     };
@@ -22,7 +20,6 @@ class ChildProfile {
 
   factory ChildProfile.fromMap(Map<dynamic, dynamic> map) {
     return ChildProfile(
-      id: map['id'] as String,
       name: map['name'] as String,
       birthDate: DateTime.parse(map['birthDate'] as String),
     );

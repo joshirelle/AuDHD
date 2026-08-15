@@ -18,7 +18,7 @@ class _MChatAgeCheckScreenState extends State<MChatAgeCheckScreen> {
   @override
   void initState() {
     super.initState();
-    _child = HiveService.getActiveChild();
+    _child = HiveService.getChildProfile();
   }
 
   Future<void> _editProfile(ChildProfile child) async {
@@ -27,7 +27,7 @@ class _MChatAgeCheckScreenState extends State<MChatAgeCheckScreen> {
       builder: (context) => ChildEditorDialog(existing: child),
     );
     if (saved == true) {
-      setState(() => _child = HiveService.getActiveChild());
+      setState(() => _child = HiveService.getChildProfile());
     }
   }
 
