@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/services/hive_service.dart';
+import '../../widgets/child_avatar.dart';
 import '../../widgets/kiko_card.dart';
 import '../profile/profile_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
@@ -111,33 +112,41 @@ class _HomeScreenState extends State<HomeScreen> {
             fontFamily: 'Fredoka',
           ),
         ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.skyBlueLight,
-                border: Border.all(color: Colors.white, width: 2),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/kiko_waving.png'),
-                  fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () => _onNavTap(2),
+          behavior: HitTestBehavior.opaque,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ChildAvatar(size: 42),
+              const SizedBox(height: 2),
+              ConstrainedBox(
+                // Malayang teksto ang pangalan, kaya hinahangganan ang lapad.
+                constraints: const BoxConstraints(maxWidth: 76),
+                child: ValueListenableBuilder<Box>(
+                  valueListenable: HiveService.getProfileBox().listenable(),
+                  builder: (context, box, child) {
+                    final name = HiveService.getChildProfile()?.name.trim();
+                    final label = (name == null || name.isEmpty)
+                        ? 'Profile'
+                        : name;
+                    return Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                        fontFamily: 'Nunito',
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-            const SizedBox(height: 2),
-            const Text(
-              'Kiko',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                fontFamily: 'Nunito',
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
