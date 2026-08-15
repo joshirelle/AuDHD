@@ -4,10 +4,11 @@ import '../../core/theme/app_theme.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/kiko_card.dart';
 import '../profile/profile_screen.dart';
-import '../screening/screens/screening_home_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
 import 'widgets/doctor_report_card.dart';
+import 'widgets/milestones_card.dart';
+import 'widgets/screening_card.dart';
 import 'widgets/sensory_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,42 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 14),
 
-              // 4. Two-Column Grid Cards (Screening & Activities)
-              Row(
+              // 4. Two-Column Grid Cards (Screening & Milestones)
+              const Row(
                 children: [
-                  Expanded(
-                    child: _buildGridCard(
-                      title: 'PAGSUSURI\n(SCREENING)',
-                      subtitle: 'Alamin ang developmental milestone ng bata.',
-                      iconData: Icons.fact_check_rounded,
-                      backgroundColor: AppColors.mintGreen,
-                      iconBgColor: Colors.white,
-                      iconColor: AppColors.logoGreen,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ScreeningHomeScreen()),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: _buildGridCard(
-                      title: 'HOME\nACTIVITIES',
-                      subtitle: 'Mga simpleng home therapy at sensory games.',
-                      iconData: Icons.extension_rounded,
-                      backgroundColor: AppColors.butterYellow,
-                      iconBgColor: Colors.white,
-                      iconColor: const Color(0xFFD9A000),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomeActivitiesScreen()),
-                        );
-                      },
-                    ),
-                  ),
+                  Expanded(child: ScreeningCard()),
+                  SizedBox(width: 14),
+                  Expanded(child: MilestonesCard()),
                 ],
               ),
               const SizedBox(height: 16),
@@ -272,58 +243,6 @@ class _HomeScreenState extends State<HomeScreen> {
             color: isSelected ? Colors.white : AppColors.textDark,
             fontFamily: 'Nunito',
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGridCard({
-    required String title,
-    required String subtitle,
-    required IconData iconData,
-    required Color backgroundColor,
-    required Color iconBgColor,
-    required Color iconColor,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: KikoCard(
-        backgroundColor: backgroundColor,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: iconBgColor,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(iconData, color: iconColor, size: 28),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                fontFamily: 'Nunito',
-                height: 1.1,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 11,
-                color: AppColors.textDark,
-                fontFamily: 'Nunito',
-                height: 1.2,
-              ),
-            ),
-          ],
         ),
       ),
     );
