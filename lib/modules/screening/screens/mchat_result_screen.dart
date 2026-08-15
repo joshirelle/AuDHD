@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/services/mchat_scoring.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/mchat_question.dart';
 import '../../../data/models/screening_result.dart';
@@ -26,21 +27,12 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
     _saveToDatabase();
   }
 
-  int _calculateScore() {
-    int score = 0;
-    for (var q in widget.questions) {
-      if (widget.userAnswers[q.id] == q.atRiskAnswer) {
-        score++;
-      }
-    }
-    return score;
-  }
+  int _calculateScore() =>
+      MChatScoring.calculateScore(widget.questions, widget.userAnswers);
 
   Future<void> _saveToDatabase() async {
     final int score = _calculateScore();
-    String risk = "LOW RISK";
-    if (score >= 3 && score <= 7) risk = "MEDIUM RISK";
-    if (score >= 8) risk = "HIGH RISK";
+    final String risk = MChatScoring.riskLevelFor(score);
 
     final result = ScreeningResult(
       id: const Uuid().v4(),

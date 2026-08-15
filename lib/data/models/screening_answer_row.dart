@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import '../../core/services/mchat_scoring.dart';
+import '../../core/services/vanderbilt_scoring.dart';
 import 'adhd_question.dart';
 import 'mchat_question.dart';
 import 'screening_result.dart';
@@ -57,7 +59,7 @@ class ScreeningAnswerRow {
           // Sa items 2, 5 at 12 ang "OO" ang at-risk na sagot, kaya hindi sapat ang oo/hindi bilang batayan.
           isAtRisk:
               byId[entry.key] != null &&
-              entry.value == byId[entry.key]!.atRiskAnswer,
+              MChatScoring.isAtRisk(byId[entry.key]!, entry.value),
         ),
     ];
   }
@@ -79,7 +81,8 @@ class ScreeningAnswerRow {
           text: byId[entry.key]?.textTagalog ?? 'Tanong ${entry.key}',
           answerLabel: _adhdLabels[(entry.value as int).clamp(0, 3)],
           // Sa Vanderbilt, "Madalas" (2) pataas lang ang binibilang na sintomas.
-          isAtRisk: (entry.value as int) >= 2,
+          isAtRisk:
+              (entry.value as int) >= VanderbiltScoring.symptomThreshold,
         ),
     ];
   }
