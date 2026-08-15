@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
+import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -74,6 +75,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: 'Seguridad',
+            icon: const Icon(Icons.lock_outline_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SecurityScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       backgroundColor: AppColors.background,
       body: child == null

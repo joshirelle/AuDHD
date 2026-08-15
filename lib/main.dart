@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'core/services/auth_service.dart';
 import 'core/theme/app_theme.dart';
 import 'data/services/hive_service.dart';
+import 'modules/auth/widgets/auth_gate.dart';
 import 'modules/home/home_screen.dart';
 
 Future<void> main() async {
@@ -8,6 +10,7 @@ Future<void> main() async {
 
   // Initialize Hive Storage
   await HiveService.init();
+  await AuthService.init();
 
   runApp(const AuDHDApp());
 }
@@ -33,7 +36,7 @@ class AuDHDApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: const AuthGate(child: HomeScreen()),
     );
   }
 }

@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Gagamitin ang Face ID upang ma-unlock ang AuDHD at maprotektahan ang datos ng bata.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
