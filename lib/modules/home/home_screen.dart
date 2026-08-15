@@ -4,6 +4,7 @@ import '../../widgets/kiko_card.dart';
 import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
 import 'widgets/behavior_log_card.dart';
+import 'widgets/daily_sensory_games_card.dart';
 import 'widgets/sensory_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -93,7 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SensoryProfileCard(),
               const SizedBox(height: 16),
 
-              // 7. Progress Report Full-Width Card
+              // 7. Mga Larong Sensory Ngayong Araw
+              const DailySensoryGamesCard(),
+              const SizedBox(height: 16),
+
+              // 8. Progress Report Full-Width Card
               _buildProgressReportCard(),
               const SizedBox(height: 20),
             ],
