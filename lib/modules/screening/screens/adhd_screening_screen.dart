@@ -15,6 +15,7 @@ class ADHDScreeningScreen extends StatefulWidget {
 class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
   final Map<String, int> _scores = {}; // 0 = Never, 1 = Sometimes, 2 = Often, 3 = Very Often
   List<ADHDQuestion> _questions = [];
+  int _currentIndex = 0;
   bool _isLoading = true;
 
   @override
@@ -32,6 +33,25 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
     });
   }
 
+  void _answerQuestion(int score) {
+    final currentQ = _questions[_currentIndex];
+    _scores[currentQ.id] = score;
+
+    if (_currentIndex < _questions.length - 1) {
+      setState(() => _currentIndex++);
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ADHDResultScreen(
+            questions: _questions,
+            userAnswers: _scores,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -40,78 +60,133 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
       );
     }
 
-    bool isComplete = _scores.length == _questions.length;
+    final currentQ = _questions[_currentIndex];
+    final double progress = (_currentIndex + 1) / _questions.length;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ADHD Screening'),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textDark,
-        elevation: 0,
-      ),
       backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: _questions.length,
-              itemBuilder: (context, index) {
-                final q = _questions[index];
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Top Header with Progress Bar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (_currentIndex > 0) {
+                        setState(() => _currentIndex--);
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Row(
                       children: [
-                        Text(
-                          'Tanong ${q.number} (${q.category})',
-                          style: const TextStyle(fontSize: 12, color: AppColors.logoGreen, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(q.textTagalog, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 12),
-                        _buildChoiceButton(q.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
-                        const SizedBox(height: 8),
-                        _buildChoiceButton(q.id, 1, 'Minsan', AppColors.skyBlue, const Color(0xFF16537E)),
-                        const SizedBox(height: 8),
-                        _buildChoiceButton(q.id, 2, 'Madalas', AppColors.butterYellow, const Color(0xFF7A5C00)),
-                        const SizedBox(height: 8),
-                        _buildChoiceButton(q.id, 3, 'Palagi', AppColors.coralPeach, const Color(0xFF8A2B12)),
+                        Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: Color(0xFF2A80B9)),
+                        SizedBox(width: 4),
+                        Text('Bumalik', style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.logoGreen,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          minHeight: 12,
+                          backgroundColor: Colors.grey.shade200,
+                          color: AppColors.mintGreen,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${_currentIndex + 1} / ${_questions.length}',
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  ),
+                ],
               ),
-              onPressed: isComplete
-                  ? () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ADHDResultScreen(
-                            questions: _questions,
-                            userAnswers: _scores,
+              const SizedBox(height: 24),
+
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          'TANONG #${currentQ.number}  •  ${currentQ.category.toUpperCase()}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.grey.shade600,
+                            letterSpacing: 1.0,
                           ),
                         ),
-                      );
-                    }
-                  : null,
-              child: const Text('Tapusin ang Assessment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
-          )
-        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Main Question Card
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: AppColors.skyBlueLight, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.02),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 150,
+                              child: Image.asset(
+                                'assets/images/kiko_pointing.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              currentQ.textTagalog,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textDark,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Gaano kadalas ito nangyayari
+              _buildChoiceButton(currentQ.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 1, 'Minsan', AppColors.skyBlue, const Color(0xFF16537E)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 2, 'Madalas', AppColors.butterYellow, const Color(0xFF7A5C00)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 3, 'Palagi', AppColors.coralPeach, const Color(0xFF8A2B12)),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -119,7 +194,7 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
   Widget _buildChoiceButton(String qId, int val, String label, Color color, Color textColor) {
     final bool isSelected = _scores[qId] == val;
     return SizedBox(
-      height: 48,
+      height: 52,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -130,11 +205,7 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
             side: BorderSide(color: isSelected ? textColor : Colors.transparent, width: 3),
           ),
         ),
-        onPressed: () {
-          setState(() {
-            _scores[qId] = val;
-          });
-        },
+        onPressed: () => _answerQuestion(val),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -144,7 +215,7 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
             ],
             Text(
               label,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: textColor),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
             ),
           ],
         ),

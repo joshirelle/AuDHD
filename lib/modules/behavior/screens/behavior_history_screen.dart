@@ -61,17 +61,17 @@ class BehaviorHistoryScreen extends StatelessWidget {
           }
 
           return ListView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 90),
             children: [
               // 1. SENSORY TRIGGER ANALYTICS SUMMARY
               _buildSensorySummaryCard(logs),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
 
               const Text(
                 'Mga Naitalang Insidente',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textDark),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
 
               // 2. INCIDENT CARDS LIST
               ...logs.map((log) => _buildBehaviorCard(context, log)),
@@ -129,11 +129,14 @@ class BehaviorHistoryScreen extends StatelessWidget {
     final sortedEntries = triggerCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.skyBlueLight, width: 2),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -142,15 +145,15 @@ class BehaviorHistoryScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Top Sensory Triggers',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.logoGreen),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.logoGreen),
                 ),
                 Text(
-                  'Kabuuan: ${logs.length} insidente',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  '${logs.length} insidente',
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             if (sortedEntries.isEmpty)
               const Text(
                 'Walang sensory tags na naitala.',
@@ -163,7 +166,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
                     : 0.0;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
+                  padding: const EdgeInsets.only(bottom: 14.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -172,20 +175,20 @@ class BehaviorHistoryScreen extends StatelessWidget {
                         children: [
                           Text(
                             entry.key,
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                           ),
                           Text(
                             '${entry.value} ulit (${(percentage * 100).toStringAsFixed(0)}%)',
-                            style: const TextStyle(fontSize: 11, color: Colors.grey),
+                            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
                           value: percentage,
-                          minHeight: 8,
+                          minHeight: 10,
                           backgroundColor: Colors.grey.shade200,
                           valueColor: const AlwaysStoppedAnimation<Color>(AppColors.logoGreen),
                         ),
@@ -206,11 +209,15 @@ class BehaviorHistoryScreen extends StatelessWidget {
         '${log.timestamp.day}/${log.timestamp.month}/${log.timestamp.year} • ${_formatTime(log.timestamp)}';
     final severityColor = _getSeverityColor(log.intensity);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: severityColor.withValues(alpha: 0.35), width: 2),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.all(18.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -220,19 +227,19 @@ class BehaviorHistoryScreen extends StatelessWidget {
               children: [
                 Text(
                   formattedDate,
-                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: severityColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: severityColor),
                   ),
                   child: Text(
-                    'Intensity: ${log.intensity}/5 (${log.durationMinutes} min)',
+                    '${log.intensity}/5  •  ${log.durationMinutes} min',
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: severityColor,
                     ),
@@ -240,26 +247,26 @@ class BehaviorHistoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 14),
 
             // ABC Summary
             _buildAbcRow('A (Antecedent):', log.antecedent),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             _buildAbcRow('B (Behavior):', log.behavior),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             _buildAbcRow('C (Consequence):', log.consequence),
 
             if (log.sensoryTriggers.isNotEmpty) ...[
-              const SizedBox(height: 10),
+              const SizedBox(height: 14),
               Wrap(
-                spacing: 6,
-                runSpacing: 4,
+                spacing: 8,
+                runSpacing: 6,
                 children: log.sensoryTriggers.map((tag) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.skyBlueLight,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '# $tag',
@@ -278,7 +285,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
   Widget _buildAbcRow(String label, String value) {
     return RichText(
       text: TextSpan(
-        style: const TextStyle(fontSize: 12, color: AppColors.textDark),
+        style: const TextStyle(fontSize: 13, color: AppColors.textDark, height: 1.35),
         children: [
           TextSpan(text: '$label ', style: const TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: value),

@@ -16,6 +16,7 @@ class SensoryChecklistScreen extends StatefulWidget {
 
 class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
   final Map<String, int> _answers = {};
+  int _currentIndex = 0;
 
   void _submitChecklist() async {
     if (_answers.length < SensoryConstants.questions.length) {
@@ -54,107 +55,178 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
     }
   }
 
+  void _answerQuestion(int score) {
+    final questions = SensoryConstants.questions;
+    _answers[questions[_currentIndex].id] = score;
+
+    if (_currentIndex < questions.length - 1) {
+      setState(() => _currentIndex++);
+    } else {
+      _submitChecklist();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final questions = SensoryConstants.questions;
+    final currentQ = questions[_currentIndex];
+    final double progress = (_currentIndex + 1) / questions.length;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sensory Profile Checklist'),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textDark,
-        elevation: 0,
-      ),
       backgroundColor: AppColors.background,
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          const Text(
-            'Obserbasyon sa Sensory Processing',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Pumili mula 0 (Hindi kelanman) hanggang 3 (Palagi) batay sa pang-araw-araw na kilos ng bata.',
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          const SizedBox(height: 16),
-
-          ...SensoryConstants.questions.map((q) {
-            final currentScore = _answers[q.id];
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Top Header with Progress Bar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (_currentIndex > 0) {
+                        setState(() => _currentIndex--);
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.mintGreen,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            q.domain,
-                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF1E5631)),
-                          ),
-                        ),
+                        Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: Color(0xFF2A80B9)),
+                        SizedBox(width: 4),
+                        Text('Bumalik', style: TextStyle(color: Color(0xFF2A80B9), fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      q.textTagalog,
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          minHeight: 12,
+                          backgroundColor: Colors.grey.shade200,
+                          color: AppColors.mintGreen,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 10),
+                  ),
+                  Text(
+                    '${_currentIndex + 1} / ${questions.length}',
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
 
-                    // Choice Chips 0-3
-                    Wrap(
-                      spacing: 6,
-                      children: [0, 1, 2, 3].map((score) {
-                        final isSelected = currentScore == score;
-                        return ChoiceChip(
-                          label: Text(
-                            score == 0 ? '0 - Hindi' : score == 1 ? '1 - Minsan' : score == 2 ? '2 - Madalas' : '3 - Palagi',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: isSelected ? Colors.white : AppColors.textDark,
-                            ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          '${currentQ.domain.toUpperCase()}  •  ${currentQ.type == SensoryType.seeking ? 'SEEKING' : 'AVOIDING'}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.grey.shade600,
+                            letterSpacing: 1.0,
                           ),
-                          selected: isSelected,
-                          selectedColor: AppColors.logoGreen,
-                          onSelected: (_) {
-                            setState(() {
-                              _answers[q.id] = score;
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Main Question Card
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: AppColors.skyBlueLight, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.02),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 150,
+                              child: Image.asset(
+                                'assets/images/kiko_pointing.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              currentQ.textTagalog,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textDark,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            );
-          }),
 
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _submitChecklist,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.logoGreen,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            child: const Text(
-              'TINGNAN ANG RESULTA',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
+              _buildChoiceButton(currentQ.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 1, 'Minsan', AppColors.skyBlue, const Color(0xFF16537E)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 2, 'Madalas', AppColors.butterYellow, const Color(0xFF7A5C00)),
+              const SizedBox(height: 10),
+              _buildChoiceButton(currentQ.id, 3, 'Palagi', AppColors.coralPeach, const Color(0xFF8A2B12)),
+              const SizedBox(height: 10),
+            ],
           ),
-          const SizedBox(height: 24),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChoiceButton(String qId, int val, String label, Color color, Color textColor) {
+    final bool isSelected = _answers[qId] == val;
+    return SizedBox(
+      height: 52,
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+            side: BorderSide(color: isSelected ? textColor : Colors.transparent, width: 3),
+          ),
+        ),
+        onPressed: () => _answerQuestion(val),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isSelected) ...[
+              Icon(Icons.check_circle_rounded, size: 18, color: textColor),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              label,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
+            ),
+          ],
+        ),
       ),
     );
   }
