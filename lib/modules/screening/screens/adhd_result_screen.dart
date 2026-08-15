@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/adhd_question.dart';
 import '../../../data/models/screening_result.dart';
@@ -45,7 +46,7 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
     final int hyperactivity = _symptomCount('Hyperactivity');
 
     final result = ScreeningResult(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: const Uuid().v4(),
       date: DateTime.now(),
       score: inattention + hyperactivity,
       riskLevel: _isHighRisk(inattention, hyperactivity) ? 'HIGH RISK' : 'LOW RISK',

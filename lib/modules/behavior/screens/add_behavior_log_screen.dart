@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/constants/behavior_constants.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
 
@@ -85,7 +86,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Matagumpay na naitala ang Behavior Log!'),
-            backgroundColor: Colors.teal,
+            backgroundColor: AppColors.logoGreen,
           ),
         );
         Navigator.pop(context);
@@ -95,14 +96,15 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.redAccent),
+      SnackBar(content: Text(message), backgroundColor: const Color(0xFFD9383A)),
     );
   }
 
+  // Kapareho ng risk colours na ginagamit sa screening result at history.
   Color _getSeverityColor(double val) {
-    if (val <= 2) return Colors.green;
-    if (val <= 3) return Colors.orange;
-    return Colors.red;
+    if (val <= 2) return const Color(0xFF2D7A4D);
+    if (val <= 3) return const Color(0xFFD9A000);
+    return const Color(0xFFD9383A);
   }
 
   String _getSeverityLabel(double val) {
@@ -121,9 +123,10 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
       appBar: AppBar(
         title: const Text('Mag-tala ng Kilos / Insidente'),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+        foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
+      backgroundColor: AppColors.background,
       body: Form(
         key: _formKey,
         child: ListView(
@@ -201,8 +204,8 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                 return FilterChip(
                   label: Text(sensory, style: const TextStyle(fontSize: 12)),
                   selected: isSelected,
-                  selectedColor: Colors.teal.shade100,
-                  checkmarkColor: Colors.teal.shade800,
+                  selectedColor: AppColors.mintGreen,
+                  checkmarkColor: const Color(0xFF1E5631),
                   onSelected: (bool selected) {
                     setState(() {
                       if (selected) {
@@ -283,7 +286,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
             ElevatedButton(
               onPressed: _saveLog,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor: AppColors.logoGreen,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
@@ -300,7 +303,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87),
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textDark),
       ),
     );
   }
@@ -317,9 +320,9 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
       children: [...options, _customOption].map((opt) {
         final isSelected = selectedOption == opt;
         return ChoiceChip(
-          label: Text(opt, style: TextStyle(fontSize: 12, color: isSelected ? Colors.white : Colors.black87)),
+          label: Text(opt, style: TextStyle(fontSize: 12, color: isSelected ? Colors.white : AppColors.textDark)),
           selected: isSelected,
-          selectedColor: Colors.teal,
+          selectedColor: AppColors.logoGreen,
           onSelected: (_) => onSelected(opt),
         );
       }).toList(),

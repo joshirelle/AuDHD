@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/mchat_question.dart';
 import '../../../data/models/screening_result.dart';
@@ -42,7 +43,7 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
     if (score >= 8) risk = "HIGH RISK";
 
     final result = ScreeningResult(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: const Uuid().v4(),
       date: DateTime.now(),
       score: score,
       riskLevel: risk,

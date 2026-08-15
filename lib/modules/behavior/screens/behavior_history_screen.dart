@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
 import 'add_behavior_log_screen.dart';
@@ -14,8 +15,9 @@ class BehaviorHistoryScreen extends StatelessWidget {
         title: const Text('Talaan ng Kilos at Triggers'),
         elevation: 0,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+        foregroundColor: AppColors.textDark,
       ),
+      backgroundColor: AppColors.background,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
@@ -23,7 +25,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const AddBehaviorLogScreen()),
           );
         },
-        backgroundColor: Colors.teal,
+        backgroundColor: AppColors.logoGreen,
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: const Text(
           'Mag-tala ng Log',
@@ -101,7 +103,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Top Sensory Triggers',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.logoGreen),
                 ),
                 Text(
                   'Kabuuan: ${logs.length} insidente',
@@ -145,8 +147,8 @@ class BehaviorHistoryScreen extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: percentage,
                           minHeight: 8,
-                          backgroundColor: Colors.teal.shade50,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.teal.shade400),
+                          backgroundColor: Colors.grey.shade200,
+                          valueColor: const AlwaysStoppedAnimation<Color>(AppColors.logoGreen),
                         ),
                       ),
                     ],
@@ -217,12 +219,12 @@ class BehaviorHistoryScreen extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey.shade50,
+                      color: AppColors.skyBlueLight,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       '# $tag',
-                      style: TextStyle(fontSize: 10, color: Colors.blueGrey.shade800),
+                      style: const TextStyle(fontSize: 10, color: Color(0xFF16537E)),
                     ),
                   );
                 }).toList(),
@@ -237,7 +239,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
   Widget _buildAbcRow(String label, String value) {
     return RichText(
       text: TextSpan(
-        style: const TextStyle(fontSize: 12, color: Colors.black87),
+        style: const TextStyle(fontSize: 12, color: AppColors.textDark),
         children: [
           TextSpan(text: '$label ', style: const TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: value),
@@ -246,10 +248,11 @@ class BehaviorHistoryScreen extends StatelessWidget {
     );
   }
 
+  // Kapareho ng risk colours na ginagamit sa screening result at history.
   Color _getSeverityColor(int intensity) {
-    if (intensity <= 2) return Colors.green.shade700;
-    if (intensity <= 3) return Colors.orange.shade800;
-    return Colors.red.shade700;
+    if (intensity <= 2) return const Color(0xFF2D7A4D);
+    if (intensity <= 3) return const Color(0xFFD9A000);
+    return const Color(0xFFD9383A);
   }
 
   String _formatTime(DateTime date) {

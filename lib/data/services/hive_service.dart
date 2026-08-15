@@ -2,23 +2,39 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../models/child_profile.dart';
 import '../models/screening_result.dart';
 import '../models/behavior_log.dart';
+import '../models/sensory_profile_result.dart';
 
 class HiveService {
   static const String _screeningBoxName = 'screening_results';
   static const String _profileBoxName = 'child_profile';
   static const String _profileKey = 'child';
   static const String _behaviorBoxName = 'behavior_logs';
+  static const String _sensoryBoxName = 'sensory_profiles';
 
   /// I-initialize ang Hive sa app startup
   static Future<void> init() async {
     await Hive.initFlutter();
     // Register Adapters
     Hive.registerAdapter(BehaviorLogAdapter());
+    Hive.registerAdapter(SensoryProfileResultAdapter());
 
     await Hive.openBox(_screeningBoxName);
     await Hive.openBox(_profileBoxName);
     // Open Boxes
     await Hive.openBox<BehaviorLog>(_behaviorBoxName);
+    await Hive.openBox<SensoryProfileResult>(_sensoryBoxName);
+  }
+
+  static Box<SensoryProfileResult> getSensoryBox() =>
+      Hive.box<SensoryProfileResult>(_sensoryBoxName);
+
+  static Future<void> addSensoryResult(SensoryProfileResult result) async {
+    await getSensoryBox().put(result.id, result);
+  }
+
+  static List<SensoryProfileResult> getAllSensoryResults() {
+    return getSensoryBox().values.toList()
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 
   static Box<BehaviorLog> getBehaviorBox() =>
