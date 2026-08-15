@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
+import 'add_behavior_log_screen.dart';
 
 class BehaviorHistoryScreen extends StatelessWidget {
   const BehaviorHistoryScreen({super.key});
@@ -14,6 +15,20 @@ class BehaviorHistoryScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddBehaviorLogScreen()),
+          );
+        },
+        backgroundColor: Colors.teal,
+        icon: const Icon(Icons.add_rounded, color: Colors.white),
+        label: const Text(
+          'Mag-tala ng Log',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
       body: ValueListenableBuilder<Box<BehaviorLog>>(
         valueListenable: HiveService.getBehaviorBox().listenable(),

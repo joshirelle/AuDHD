@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../widgets/kiko_card.dart';
-import '../behavior/behavior_log_list_screen.dart';
+import '../behavior/screens/behavior_history_screen.dart';
 import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
 
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const BehaviorLogListScreen()),
+          MaterialPageRoute(builder: (context) => const BehaviorHistoryScreen()),
         );
       },
       child: KikoCard(
