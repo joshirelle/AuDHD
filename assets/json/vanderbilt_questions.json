@@ -4,6 +4,7 @@
     "number": 1,
     "textTagalog": "Hindi nagbibigay ng masusing atensyon sa mga detalye o gumagawa ng mga simpleng pagkakamali sa gawaing pampaaralan o iba pang gawain.",
     "textEnglish": "Fails to give close attention to details or makes careless mistakes in schoolwork or other activities.",
+    "exampleTagalog": "Halimbawa: Hindi napapansin ang kulang na titik sa pagsusulat, o mali ang sagot sa math dahil hindi nabasa nang buo ang panuto.",
     "category": "Inattention"
   },
   {
@@ -11,6 +12,7 @@
     "number": 2,
     "textTagalog": "Nahihirapang panatilihin ang atensyon sa mga gawain o paglalaro.",
     "textEnglish": "Has difficulty sustaining attention in tasks or play activities.",
+    "exampleTagalog": "Halimbawa: Mabilis sumuko o umalis kapag nagbubuo ng puzzle, nagbabasa ng libro, o naglalaro ng board games.",
     "category": "Inattention"
   },
   {
@@ -18,6 +20,7 @@
     "number": 3,
     "textTagalog": "Tila hindi nakikinig kapag direktang kinakausap.",
     "textEnglish": "Does not seem to listen when spoken to directly.",
+    "exampleTagalog": "Halimbawa: Tila lutang o nakatutok sa hangin kapag tinatawag ang pangalan at kinakausap nang harapan.",
     "category": "Inattention"
   },
   {
@@ -25,6 +28,7 @@
     "number": 4,
     "textTagalog": "Hindi sinusunod ang mga tagubilin at hindi natatapos ang mga gawaing-bahay o pampaaralan.",
     "textEnglish": "Does not follow through on instructions and fails to finish schoolwork or chores.",
+    "exampleTagalog": "Halimbawa: Magsisimula sa pagliligpit ng laruan ngunit maiiwan itong kalahati dahil nakakita ng ibang makakalaro.",
     "category": "Inattention"
   },
   {
@@ -32,6 +36,7 @@
     "number": 5,
     "textTagalog": "Nahihirapang mag-organisa ng mga gawain at aktibidad.",
     "textEnglish": "Has difficulty organizing tasks and activities.",
+    "exampleTagalog": "Halimbawa: Magulo ang bag at kwarto, hindi maiayos ang mga gagamiting notebook, o nahihirapang sundin ang sunod-sunod na hakbang.",
     "category": "Inattention"
   },
   {
@@ -39,6 +44,7 @@
     "number": 6,
     "textTagalog": "Iniiwasan, ayaw, o atubiling gumawa ng mga gawaing nangangailangan ng matagal na pag-iisip.",
     "textEnglish": "Avoids, dislikes, or is reluctant to engage in tasks requiring sustained mental effort.",
+    "exampleTagalog": "Halimbawa: Umiiyak, nagtatantrums, o gumagawa ng maraming dahilan kapag oras na ng paggawa ng assignment o pag-aaral.",
     "category": "Inattention"
   },
   {
@@ -46,6 +52,7 @@
     "number": 7,
     "textTagalog": "Madalas na nawawalan ng mga gamit na kailangan para sa mga gawain (hal. laruan, notebook, lapis).",
     "textEnglish": "Loses things necessary for tasks or activities.",
+    "exampleTagalog": "Halimbawa: Palaging nawawalan ng lapis, baunan, payong, o jacket pag-uwi galing sa paaralan.",
     "category": "Inattention"
   },
   {
@@ -53,6 +60,7 @@
     "number": 8,
     "textTagalog": "Madaling madistract o mawala sa pokus dahil sa mga ingay o nangyayari sa paligid.",
     "textEnglish": "Is easily distracted by extraneous stimuli.",
+    "exampleTagalog": "Halimbawa: Agad tumitingin sa malayo kapag may dumadaang sasakyan, may tumahol na aso, o may nagsasalita sa kabilang kwarto.",
     "category": "Inattention"
   },
   {
@@ -60,6 +68,7 @@
     "number": 9,
     "textTagalog": "Makakalimutin sa mga pang-araw-araw na gawain.",
     "textEnglish": "Is forgetful in daily activities.",
+    "exampleTagalog": "Halimbawa: Nakakalimutan ang simpleng utos tulad ng 'mag-tsinelas ka' o nakakalimutang dalhin ang kaniyang assignment bag.",
     "category": "Inattention"
   },
   {
@@ -67,6 +76,7 @@
     "number": 10,
     "textTagalog": "Madalas na malikot ang mga kamay o paa, o nagmamadaling gumalaw habang nakaupo.",
     "textEnglish": "Fidgets with hands or feet or squirms in seat.",
+    "exampleTagalog": "Halimbawa: Hindi mapakali ang paa, namimilipit habang nakaupo, o laging may pinaiikot na lapis o papel sa kamay.",
     "category": "Hyperactivity"
   },
   {
@@ -74,6 +84,7 @@
     "number": 11,
     "textTagalog": "Umalis sa upuan sa mga sitwasyong inaasahang manatiling nakaupo.",
     "textEnglish": "Leaves seat in situations when remaining seated is expected.",
+    "exampleTagalog": "Halimbawa: Biglang tumatayo at naglalakad sa gitna ng klase, habang kumakain sa hapag-kainan, o sa loob ng simbahan.",
     "category": "Hyperactivity"
   },
   {
@@ -81,6 +92,7 @@
     "number": 12,
     "textTagalog": "Sobra-sobrang tumatakbo o umaakyat sa mga sitwasyong hindi angkop.",
     "textEnglish": "Runs about or climbs excessively in situations in which it is inappropriate.",
+    "exampleTagalog": "Halimbawa: Umaakyat sa mesa, sofa, o bakod sa mga oras o lugar na hindi naman dapat naglalaro nang ganoon.",
     "category": "Hyperactivity"
   },
   {
@@ -88,6 +100,7 @@
     "number": 13,
     "textTagalog": "Nahihirapang maglaro o gumawa ng mga libangan nang tahimik.",
     "textEnglish": "Has difficulty playing or engaging in leisure activities quietly.",
+    "exampleTagalog": "Halimbawa: Maingay maglaro, lagging sumisigaw, o kumakaluskos kahit sa mga lugar na kailangang tahimik.",
     "category": "Hyperactivity"
   },
   {
@@ -95,6 +108,7 @@
     "number": 14,
     "textTagalog": "Palaging gumagalaw o kumikilos na tila itinutulak ng isang motor.",
     "textEnglish": "Is 'on the go' or acts as if 'driven by a motor'.",
+    "exampleTagalog": "Halimbawa: Parang hindi napapagod, laging mabilis kumilos o tumakbo na tila may baterya na hindi nauubos.",
     "category": "Hyperactivity"
   },
   {
@@ -102,6 +116,7 @@
     "number": 15,
     "textTagalog": "Sobra-sobrang magsalita.",
     "textEnglish": "Talks excessively.",
+    "exampleTagalog": "Halimbawa: Walang tigil sa pagdaldal at salita nang salita kahit hindi pa binibigyan ng pagkakataon ang iba.",
     "category": "Hyperactivity"
   },
   {
@@ -109,6 +124,7 @@
     "number": 16,
     "textTagalog": "Pabigla-biglang nagsasalita o sumasagot bago pa matapos ang tanong.",
     "textEnglish": "Blurts out answers before questions have been completed.",
+    "exampleTagalog": "Halimbawa: Sumasagot agad habang hindi pa natatapos ng guro o ng magulang ang itinatanong.",
     "category": "Hyperactivity"
   },
   {
@@ -116,6 +132,7 @@
     "number": 17,
     "textTagalog": "Nahihirapang maghintay sa kaniyang pagkakataon o pila.",
     "textEnglish": "Has difficulty waiting turn.",
+    "exampleTagalog": "Halimbawa: Nagwawala, naiinip nang husto, o sumisingit kapag nakapila sa kantina, sa slide, o sa tindahan.",
     "category": "Hyperactivity"
   },
   {
@@ -123,6 +140,7 @@
     "number": 18,
     "textTagalog": "Nang-aabala o sumisingit sa usapan o laro ng iba.",
     "textEnglish": "Interrupts or intrudes on others.",
+    "exampleTagalog": "Halimbawa: Sumasawsaw agad sa usapan ng matatanda o nang-aagaw ng laruan sa gitna ng laro ng ibang bata.",
     "category": "Hyperactivity"
   }
 ]

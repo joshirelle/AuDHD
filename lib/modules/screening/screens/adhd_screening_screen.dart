@@ -149,7 +149,7 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 150,
+                              height: 110,
                               child: Image.asset(
                                 'assets/images/kiko_pointing.png',
                                 fit: BoxFit.contain,

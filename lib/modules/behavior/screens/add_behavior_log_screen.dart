@@ -130,7 +130,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
           children: [
             // --- 1. ANTECEDENT (A) ---
             _buildSectionHeader('1. Antecedent (A) - Ano ang nangyari bago ang insidente?'),
@@ -140,18 +140,17 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
               onSelected: (val) => setState(() => _selectedAntecedent = val),
             ),
             if (_selectedAntecedent == _customOption) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _customAntecedentController,
                 decoration: const InputDecoration(
                   labelText: 'Tukuyin ang sanhi...',
                   border: OutlineInputBorder(),
-                  isDense: true,
                 ),
                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang sanhi' : null,
               ),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // --- 2. BEHAVIOR (B) ---
             _buildSectionHeader('2. Behavior (B) - Anong kilos o reaksyon ang ipinakita?'),
@@ -161,18 +160,17 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
               onSelected: (val) => setState(() => _selectedBehavior = val),
             ),
             if (_selectedBehavior == _customOption) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _customBehaviorController,
                 decoration: const InputDecoration(
                   labelText: 'Tukuyin ang kilos...',
                   border: OutlineInputBorder(),
-                  isDense: true,
                 ),
                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang kilos' : null,
               ),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // --- 3. CONSEQUENCE (C) ---
             _buildSectionHeader('3. Consequence (C) - Ano ang naging tugon o resulta?'),
@@ -182,30 +180,32 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
               onSelected: (val) => setState(() => _selectedConsequence = val),
             ),
             if (_selectedConsequence == _customOption) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _customConsequenceController,
                 decoration: const InputDecoration(
                   labelText: 'Tukuyin ang tugon...',
                   border: OutlineInputBorder(),
-                  isDense: true,
                 ),
                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Mangyaring ilagay ang tugon' : null,
               ),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // --- 4. SENSORY TRIGGERS (MULTI-SELECT) ---
             _buildSectionHeader('4. Sensory Domain Tags (Pumili ng 1 o higit pa)'),
             Wrap(
               spacing: 8.0,
+              runSpacing: 8.0,
               children: BehaviorConstants.sensoryCategories.map((sensory) {
                 final isSelected = _selectedSensoryTriggers.contains(sensory);
                 return FilterChip(
-                  label: Text(sensory, style: const TextStyle(fontSize: 12)),
+                  label: Text(sensory, style: const TextStyle(fontSize: 13)),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                   selected: isSelected,
                   selectedColor: AppColors.mintGreen,
                   checkmarkColor: const Color(0xFF1E5631),
+                  shape: const StadiumBorder(side: BorderSide(color: AppColors.mintGreen)),
                   onSelected: (bool selected) {
                     setState(() {
                       if (selected) {
@@ -218,22 +218,22 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // --- 5. INTENSITY SLIDER ---
             _buildSectionHeader('5. Severity / Intensity Level'),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: severityColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: severityColor),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: severityColor, width: 2),
               ),
               child: Column(
                 children: [
                   Text(
                     _getSeverityLabel(_intensity),
-                    style: TextStyle(fontWeight: FontWeight.bold, color: severityColor, fontSize: 13),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: severityColor, fontSize: 15),
                   ),
                   Slider(
                     value: _intensity,
@@ -246,49 +246,38 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // --- 6. DURATION & NOTES ---
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSectionHeader('Tagal (Minutes)'),
-                      DropdownButtonFormField<int>(
-                        initialValue: _durationMinutes,
-                        decoration: const InputDecoration(border: OutlineInputBorder(), isDense: true),
-                        items: [5, 10, 15, 20, 30, 45, 60, 90, 120]
-                            .map((m) => DropdownMenuItem(value: m, child: Text('$m mins')))
-                            .toList(),
-                        onChanged: (v) => setState(() => _durationMinutes = v ?? 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            _buildSectionHeader('Tagal (Minutes)'),
+            DropdownButtonFormField<int>(
+              initialValue: _durationMinutes,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+              items: [5, 10, 15, 20, 30, 45, 60, 90, 120]
+                  .map((m) => DropdownMenuItem(value: m, child: Text('$m mins')))
+                  .toList(),
+              onChanged: (v) => setState(() => _durationMinutes = v ?? 10),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             _buildSectionHeader('Karagdagang Tala (Optional Notes)'),
             TextFormField(
               controller: _notesController,
-              maxLines: 3,
+              maxLines: 4,
               decoration: const InputDecoration(
                 hintText: 'Halimbawa: Pagod mula sa biyahe, hindi gaanong nakakain ng tanghalian...',
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 32),
 
             // SAVE BUTTON
             ElevatedButton(
               onPressed: _saveLog,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.logoGreen,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                minimumSize: const Size.fromHeight(54),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
               child: const Text('I-SAVE ANG BEHAVIOR LOG', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white)),
             ),
@@ -300,10 +289,10 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textDark),
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textDark),
       ),
     );
   }
@@ -314,15 +303,17 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     required Function(String) onSelected,
   }) {
     return Wrap(
-      spacing: 6.0,
-      runSpacing: 4.0,
+      spacing: 8.0,
+      runSpacing: 8.0,
       // Idinudugtong ang custom option dito para hindi na ulitin sa bawat tawag.
       children: [...options, _customOption].map((opt) {
         final isSelected = selectedOption == opt;
         return ChoiceChip(
-          label: Text(opt, style: TextStyle(fontSize: 12, color: isSelected ? Colors.white : AppColors.textDark)),
+          label: Text(opt, style: TextStyle(fontSize: 13, color: isSelected ? Colors.white : AppColors.textDark)),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           selected: isSelected,
           selectedColor: AppColors.logoGreen,
+          shape: const StadiumBorder(side: BorderSide(color: AppColors.mintGreen)),
           onSelected: (_) => onSelected(opt),
         );
       }).toList(),
