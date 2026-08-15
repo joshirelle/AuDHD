@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
-import '../../sensory/models/sensory_activity.dart';
-import '../../sensory/services/sensory_recommendation_service.dart';
+import '../models/sensory_activity.dart';
+import '../services/sensory_recommendation_service.dart';
 
-class DailySensoryGamesCard extends StatefulWidget {
-  const DailySensoryGamesCard({super.key});
+class HomeActivitiesScreen extends StatefulWidget {
+  const HomeActivitiesScreen({super.key});
 
   @override
-  State<DailySensoryGamesCard> createState() => _DailySensoryGamesCardState();
+  State<HomeActivitiesScreen> createState() => _HomeActivitiesScreenState();
 }
 
-class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
+class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
   static const Map<String, Color> _domainColors = {
     'proprioceptive': AppColors.mintGreen,
     'vestibular': AppColors.skyBlue,
@@ -21,7 +21,17 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
     'auditory': AppColors.coralPeach,
   };
 
-  List<SensoryActivity> _activities = [];
+  static const Map<String, String> _profileLabels = {
+    SensoryRecommendationService.profileSeeking:
+        'Para sa Mahilig sa Galaw at Input',
+    SensoryRecommendationService.profileAvoiding:
+        'Para sa Sensitibo sa Ingay at Hawak',
+    SensoryRecommendationService.profileRegulation:
+        'Pampakalma at Pag-regulate',
+  };
+
+  List<SensoryActivity> _daily = [];
+  List<SensoryActivity> _all = [];
   bool _isLoading = true;
   bool _hasError = false;
 
@@ -39,17 +49,19 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
         : results.first.primaryProfile;
 
     try {
-      final picks = await SensoryRecommendationService.getDailyRecommendations(
+      final daily = await SensoryRecommendationService.getDailyRecommendations(
         userProfileResult: profile,
       );
+      final all = await SensoryRecommendationService.loadAll();
       if (!mounted) return;
       setState(() {
-        _activities = picks;
+        _daily = daily;
+        _all = all;
         _isLoading = false;
       });
     } catch (error) {
-      // Kung tatahimik lang ito, mawawala ang card nang walang paliwanag.
-      debugPrint('DailySensoryGamesCard: $error');
+      // Kung tatahimik lang ito, blangko ang screen nang walang paliwanag.
+      debugPrint('HomeActivitiesScreen: $error');
       if (!mounted) return;
       setState(() {
         _isLoading = false;
@@ -69,78 +81,136 @@ class _DailySensoryGamesCardState extends State<DailySensoryGamesCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) return const SizedBox.shrink();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Activities'),
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.textDark,
+        elevation: 0,
+      ),
+      backgroundColor: AppColors.background,
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     if (_hasError) {
-      return KikoCard(
-        backgroundColor: AppColors.butterYellow,
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            const Icon(Icons.warning_amber_rounded, color: Color(0xFF7A5C00)),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                'Hindi mabuksan ang mga larong sensory ngayon.',
-                style: TextStyle(fontSize: 13, color: AppColors.textDark, fontFamily: 'Nunito'),
-              ),
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: KikoCard(
+            backgroundColor: AppColors.butterYellow,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFF7A5C00),
+                  size: 36,
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Hindi mabuksan ang listahan ng mga gawain.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _isLoading = true;
+                      _hasError = false;
+                    });
+                    _load();
+                  },
+                  child: const Text(
+                    'Subukan ulit',
+                    style: TextStyle(
+                      color: Color(0xFF7A5C00),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _isLoading = true;
-                  _hasError = false;
-                });
-                _load();
-              },
-              child: const Text(
-                'Subukan ulit',
-                style: TextStyle(color: Color(0xFF7A5C00), fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+          ),
         ),
       );
     }
 
-    if (_activities.isEmpty) return const SizedBox.shrink();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
       children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.mintGreen,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.sports_esports_rounded,
-                color: Color(0xFF1E5631),
-                size: 22,
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Expanded(
-              child: Text(
-                'Mga Larong Sensory Ngayong Araw',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                  fontFamily: 'Nunito',
-                ),
-              ),
-            ),
-          ],
+        _buildSectionHeader(
+          icon: Icons.sports_esports_rounded,
+          title: 'Mga Larong Sensory Ngayong Araw',
         ),
         const SizedBox(height: 12),
-        for (final activity in _activities) ...[
+        for (final activity in _daily) ...[
           _buildActivityTile(activity),
           const SizedBox(height: 10),
         ],
+        const SizedBox(height: 14),
+
+        _buildSectionHeader(
+          icon: Icons.grid_view_rounded,
+          title: 'Lahat ng Gawain',
+        ),
+        for (final entry in _profileLabels.entries) ...[
+          const SizedBox(height: 18),
+          Text(
+            entry.value,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+              color: AppColors.textDark,
+              letterSpacing: 0.3,
+              fontFamily: 'Nunito',
+            ),
+          ),
+          const SizedBox(height: 10),
+          for (final activity
+              in _all.where((a) => a.targetProfile == entry.key)) ...[
+            _buildActivityTile(activity),
+            const SizedBox(height: 10),
+          ],
+        ],
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader({required IconData icon, required String title}) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.mintGreen,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: const Color(0xFF1E5631), size: 22),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -249,7 +319,11 @@ class _ActivitySheet extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 activity.descriptionTagalog,
-                style: const TextStyle(fontSize: 14, color: AppColors.textDark, height: 1.4),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textDark,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -267,11 +341,21 @@ class _ActivitySheet extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('•  ', style: TextStyle(fontSize: 14, color: AppColors.textDark)),
+                            const Text(
+                              '•  ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.textDark,
+                              ),
+                            ),
                             Expanded(
                               child: Text(
                                 material,
-                                style: const TextStyle(fontSize: 13, color: AppColors.textDark, height: 1.35),
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: AppColors.textDark,
+                                  height: 1.35,
+                                ),
                               ),
                             ),
                           ],
@@ -311,7 +395,11 @@ class _ActivitySheet extends StatelessWidget {
                       Expanded(
                         child: Text(
                           activity.stepByStepTagalog[i],
-                          style: const TextStyle(fontSize: 14, color: AppColors.textDark, height: 1.4),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.textDark,
+                            height: 1.4,
+                          ),
                         ),
                       ),
                     ],
@@ -327,7 +415,11 @@ class _ActivitySheet extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.warning_amber_rounded, color: Color(0xFF8A2B12), size: 22),
+                    const Icon(
+                      Icons.warning_amber_rounded,
+                      color: Color(0xFF8A2B12),
+                      size: 22,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
