@@ -5,14 +5,28 @@ import '../../data/models/screening_answer_row.dart';
 import '../../data/models/screening_result.dart';
 
 class PdfExportService {
+  static const String _unknown = 'Hindi nakatala';
+
   static Future<Uint8List> generateScreeningReport(
     ScreeningResult result,
-    List<ScreeningAnswerRow> rows,
-  ) async {
+    List<ScreeningAnswerRow> rows, {
+    String? childName,
+    DateTime? birthDate,
+  }) async {
     final pdf = pw.Document();
     final formattedDate = '${result.date.day}/${result.date.month}/${result.date.year}';
     final isAdhd = result.type == ScreeningResult.typeADHD;
     final screeningLabel = isAdhd ? 'Vanderbilt ADHD' : 'M-CHAT-R Autism';
+
+    final nameText = (childName != null && childName.trim().isNotEmpty)
+        ? childName.trim()
+        : _unknown;
+    final birthDateText = birthDate == null
+        ? _unknown
+        : '${birthDate.day}/${birthDate.month}/${birthDate.year}';
+    final ageText = birthDate == null
+        ? _unknown
+        : _formatAge(birthDate, result.date);
 
     // Standard styling setup
     final headerColor = PdfColors.teal800;
@@ -46,6 +60,35 @@ class PdfExportService {
             ),
             pw.SizedBox(height: 16),
             pw.Divider(color: PdfColors.grey400),
+            pw.SizedBox(height: 16),
+
+            // Patient / Profile Details
+            pw.Container(
+              width: double.infinity,
+              padding: const pw.EdgeInsets.all(14),
+              decoration: pw.BoxDecoration(
+                color: PdfColors.grey50,
+                borderRadius: pw.BorderRadius.circular(8),
+                border: pw.Border.all(color: PdfColors.grey300),
+              ),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(
+                    'DETALYE NG BATA',
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.grey700,
+                    ),
+                  ),
+                  pw.SizedBox(height: 8),
+                  _profileRow('Pangalan', nameText),
+                  _profileRow('Kaarawan', birthDateText),
+                  _profileRow('Edad sa araw ng screening', ageText),
+                ],
+              ),
+            ),
             pw.SizedBox(height: 16),
 
             // Result Summary Box
@@ -148,5 +191,45 @@ class PdfExportService {
     );
 
     return pdf.save();
+  }
+
+  static pw.Widget _profileRow(String label, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 4),
+      child: pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.SizedBox(
+            width: 150,
+            child: pw.Text(
+              '$label:',
+              style: const pw.TextStyle(fontSize: 11, color: PdfColors.grey800),
+            ),
+          ),
+          pw.Expanded(
+            child: pw.Text(
+              value,
+              style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Katulad ng lohika sa MChatAgeCheckScreen para hindi magkaiba ang edad na ipinapakita.
+  static String _formatAge(DateTime birthDate, DateTime asOf) {
+    int months =
+        (asOf.year - birthDate.year) * 12 + asOf.month - birthDate.month;
+    if (asOf.day < birthDate.day) months--;
+    if (months < 0) return 'Hindi wasto ang kaarawan';
+
+    final years = months ~/ 12;
+    final remainder = months % 12;
+    final parts = <String>[];
+    if (years > 0) parts.add('$years taon');
+    if (remainder > 0) parts.add('$remainder buwan');
+    if (parts.isEmpty) return 'Wala pang isang buwan (0 buwan)';
+    return '${parts.join(', ')} ($months buwan)';
   }
 }

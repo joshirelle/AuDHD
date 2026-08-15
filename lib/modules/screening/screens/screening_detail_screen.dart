@@ -4,6 +4,7 @@ import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/screening_answer_row.dart';
 import '../../../data/models/screening_result.dart';
+import '../../../data/services/hive_service.dart';
 
 class ScreeningDetailScreen extends StatefulWidget {
   final ScreeningResult result;
@@ -64,14 +65,22 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
             ),
             tooltip: 'Export as PDF',
             onPressed: () async {
+              final child = HiveService.getChildProfile(result.childId);
               final pdfData = await PdfExportService.generateScreeningReport(
                 result,
                 _rows,
+                childName: child?.name,
+                birthDate: child?.birthDate,
+              );
+              // Malayang teksto ang pangalan, kaya sinasala ang mga bawal sa filename.
+              final safeName = (child?.name ?? 'Bata').replaceAll(
+                RegExp(r'[^A-Za-z0-9]+'),
+                '_',
               );
               await Printing.layoutPdf(
                 onLayout: (format) => pdfData,
                 name:
-                    'Screening_Report_${_isADHD ? 'Vanderbilt' : 'MCHAT'}_$fileDate.pdf',
+                    'Screening_Report_${safeName}_${_isADHD ? 'Vanderbilt' : 'MCHAT'}_$fileDate.pdf',
               );
             },
           ),

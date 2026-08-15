@@ -7,6 +7,7 @@ class ScreeningResult {
   final int score;
   final String riskLevel;
   final String type;
+  final String? childId;
   final Map<String, dynamic> answers; // bool para sa M-CHAT, int 0-3 para sa ADHD
 
   ScreeningResult({
@@ -16,6 +17,7 @@ class ScreeningResult {
     required this.riskLevel,
     required this.type,
     required this.answers,
+    this.childId,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class ScreeningResult {
       'score': score,
       'riskLevel': riskLevel,
       'type': type,
+      'childId': childId,
       'answers': answers,
     };
   }
@@ -37,6 +40,8 @@ class ScreeningResult {
       riskLevel: map['riskLevel'] as String,
       // Walang 'type' ang mga record na na-save bago idagdag ang ADHD; M-CHAT ang lahat ng iyon.
       type: map['type'] as String? ?? typeMChat,
+      // Null para sa mga record bago pa magkaroon ng child profiles.
+      childId: map['childId'] as String?,
       answers: Map<String, dynamic>.from(map['answers'] as Map),
     );
   }

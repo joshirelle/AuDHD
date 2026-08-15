@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../widgets/kiko_card.dart';
+import '../profile/profile_screen.dart';
 import '../screening/screens/screening_home_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -372,6 +373,12 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _selectedNavIndex = index;
         });
+        if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          );
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

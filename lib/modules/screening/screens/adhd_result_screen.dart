@@ -50,6 +50,7 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
       score: inattention + hyperactivity,
       riskLevel: _isHighRisk(inattention, hyperactivity) ? 'HIGH RISK' : 'LOW RISK',
       type: ScreeningResult.typeADHD,
+      childId: HiveService.getActiveChildId(),
       answers: widget.userAnswers,
     );
 
