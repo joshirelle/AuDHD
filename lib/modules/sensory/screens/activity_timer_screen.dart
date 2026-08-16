@@ -10,7 +10,15 @@ import '../models/sensory_activity.dart';
 class ActivityTimerScreen extends StatefulWidget {
   final SensoryActivity activity;
 
-  const ActivityTimerScreen({super.key, required this.activity});
+  /// Ang araw na tinitingnan ng magulang, hindi ang araw ngayon — puwede
+  /// silang bumalik sa nakaraang petsa sa weekly strip.
+  final DateTime date;
+
+  const ActivityTimerScreen({
+    super.key,
+    required this.activity,
+    required this.date,
+  });
 
   @override
   State<ActivityTimerScreen> createState() => _ActivityTimerScreenState();
@@ -79,7 +87,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
     unawaited(SystemSound.play(SystemSoundType.alert));
 
     await HiveService.setActivityCompleted(
-      DateTime.now(),
+      widget.date,
       widget.activity.id,
       true,
     );

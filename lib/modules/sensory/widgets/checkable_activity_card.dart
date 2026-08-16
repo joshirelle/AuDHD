@@ -58,7 +58,7 @@ class CheckableActivityCard extends StatelessWidget {
       backgroundColor: isCompleted ? _completedTint : Colors.white,
       borderColor: isCompleted ? _completedGreen : Colors.grey.shade200,
       padding: const EdgeInsets.all(14),
-      onTap: () => ActivityDetailSheet.show(context, activity),
+      onTap: () => ActivityDetailSheet.show(context, activity, date),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

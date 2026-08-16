@@ -6,15 +6,25 @@ import '../screens/activity_timer_screen.dart';
 
 class ActivityDetailSheet extends StatelessWidget {
   final SensoryActivity activity;
+  final DateTime date;
 
-  const ActivityDetailSheet({super.key, required this.activity});
+  const ActivityDetailSheet({
+    super.key,
+    required this.activity,
+    required this.date,
+  });
 
-  static Future<void> show(BuildContext context, SensoryActivity activity) {
+  static Future<void> show(
+    BuildContext context,
+    SensoryActivity activity,
+    DateTime date,
+  ) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => ActivityDetailSheet(activity: activity),
+      builder: (context) =>
+          ActivityDetailSheet(activity: activity, date: date),
     );
   }
 
@@ -232,7 +242,8 @@ class ActivityDetailSheet extends StatelessWidget {
     navigator.pop();
     navigator.push(
       MaterialPageRoute(
-        builder: (context) => ActivityTimerScreen(activity: activity),
+        builder: (context) =>
+            ActivityTimerScreen(activity: activity, date: date),
       ),
     );
   }
