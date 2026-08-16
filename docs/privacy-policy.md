@@ -1,3 +1,8 @@
+---
+layout: default
+title: Patakaran sa Privacy
+---
+
 # Patakaran sa Privacy — AuDHD
 
 **Huling na-update:** Agosto 16, 2026
