@@ -16,6 +16,7 @@ class ChildEditorDialog extends StatefulWidget {
 class _ChildEditorDialogState extends State<ChildEditorDialog> {
   late final TextEditingController _nameController;
   DateTime? _birthDate;
+  Gender? _gender;
   String? _error;
 
   @override
@@ -23,6 +24,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
     super.initState();
     _nameController = TextEditingController(text: widget.existing?.name ?? '');
     _birthDate = widget.existing?.birthDate;
+    _gender = widget.existing?.gender;
   }
 
   @override
@@ -61,7 +63,11 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       return;
     }
 
-    final profile = ChildProfile(name: name, birthDate: _birthDate!);
+    final profile = ChildProfile(
+      name: name,
+      birthDate: _birthDate!,
+      gender: _gender,
+    );
     await HiveService.saveChildProfile(profile);
 
     if (mounted) Navigator.pop(context, true);
@@ -102,6 +108,27 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
               style: const TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold),
             ),
           ),
+          const SizedBox(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildGenderOption(
+                  Gender.male,
+                  Icons.male_rounded,
+                  AppColors.genderBlue,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildGenderOption(
+                  Gender.female,
+                  Icons.female_rounded,
+                  AppColors.genderPink,
+                ),
+              ),
+            ],
+          ),
           if (_error != null) ...[
             const SizedBox(height: 10),
             Text(
@@ -125,6 +152,33 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildGenderOption(Gender gender, IconData icon, Color color) {
+    final isSelected = _gender == gender;
+
+    return InkWell(
+      // Muling pagpindot ay nagbubura, dahil opsyonal ang kasarian.
+      onTap: () => setState(() => _gender = isSelected ? null : gender),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: isSelected ? color.withValues(alpha: 0.12) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? color : Colors.grey.shade300,
+            width: 2,
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: 32,
+          color: isSelected ? color : Colors.grey.shade400,
+        ),
+      ),
     );
   }
 }

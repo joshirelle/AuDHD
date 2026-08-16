@@ -11,6 +11,17 @@ class AppColors {
   static const Color mintGreen = Color(0xFFB7E4C7);
   static const Color butterYellow = Color(0xFFFFF3B0);
   static const Color coralPeach = Color(0xFFF8AD9D);
+
+  // Kasarian
+  static const Color genderBlue = Color(0xFF2A80B9);
+  static const Color genderPink = Color(0xFFD9508A);
+
+  // Bituin / gantimpala
+  static const Color starGold = Color(0xFFFFA000);
+
+  // Uri ng gawain
+  static const Color autismPurple = Color(0xFF8E63C4);
+  static const Color adhdBlue = Color(0xFF2A80B9);
 }
 
 class AppRadius {

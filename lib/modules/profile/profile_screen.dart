@@ -148,6 +148,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child.name,
                 style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
               ),
+              if (child.gender != null) ...[
+                const SizedBox(height: 8),
+                _buildGenderBadge(child.gender!),
+              ],
               const SizedBox(height: 16),
               _infoRow(
                 'Kaarawan',
@@ -241,6 +245,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGenderBadge(Gender gender) {
+    final isMale = gender == Gender.male;
+    final color = isMale ? AppColors.genderBlue : AppColors.genderPink;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(AppRadius.button),
+        border: Border.all(color: color),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isMale ? Icons.male_rounded : Icons.female_rounded,
+            size: 18,
+            color: color,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            gender.label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: color,
+              fontFamily: 'Nunito',
+            ),
+          ),
         ],
       ),
     );
