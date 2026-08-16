@@ -13,6 +13,10 @@ class HiveService {
   static const String _completionBoxName = 'sensory_completion_box';
   static const String _moodBoxName = 'daily_mood';
   static const String _milestoneBoxName = 'milestone_progress';
+  static const String _settingsBoxName = 'app_settings';
+
+  static const String hasSeenOnboardingKey = 'has_seen_onboarding';
+  static const String hasSeenHomeTourKey = 'has_seen_home_tour';
 
   /// I-initialize ang Hive sa app startup
   static Future<void> init() async {
@@ -29,6 +33,15 @@ class HiveService {
     await Hive.openBox<bool>(_completionBoxName);
     await Hive.openBox<String>(_moodBoxName);
     await Hive.openBox<int>(_milestoneBoxName);
+    await Hive.openBox<bool>(_settingsBoxName);
+  }
+
+  static Box<bool> getSettingsBox() => Hive.box<bool>(_settingsBoxName);
+
+  static bool hasSeen(String key) => getSettingsBox().get(key) ?? false;
+
+  static Future<void> markSeen(String key) async {
+    await getSettingsBox().put(key, true);
   }
 
   /// Iniimbak ang petsa ng pag-abot; ang pagkakaroon ng key ang ibig sabihin ng naabot.

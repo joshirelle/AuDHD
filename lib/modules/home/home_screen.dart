@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/services/hive_service.dart';
-import '../../widgets/child_avatar.dart';
+import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
 import '../profile/profile_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
 import 'widgets/doctor_report_card.dart';
+import 'widgets/home_tour_guide.dart';
 import 'widgets/milestones_card.dart';
 import 'widgets/screening_card.dart';
 import 'widgets/sensory_profile_card.dart';
+import 'widgets/star_badge_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +22,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey _starKey = GlobalKey();
+  final GlobalKey _screeningKey = GlobalKey();
+  final GlobalKey _navKey = GlobalKey();
+
   int _selectedNavIndex = 0;
   // `null` ang ibig sabihin ay wala pang sagot ngayong araw.
   String? _selectedMood;
@@ -28,6 +34,34 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedMood = HiveService.getMood(DateTime.now());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startTour());
+  }
+
+  void _startTour() {
+    if (!mounted) return;
+    HomeTourGuide.showIfNeeded(context, [
+      TourStep(
+        targetKey: _starKey,
+        title: 'Ang bituin ni Kiko',
+        body:
+            'Tumataas ito sa bawat larong natapos at milestone na naabot. '
+            'Pindutin para makita ang mga mungkahing pabuya sa bata.',
+      ),
+      TourStep(
+        targetKey: _screeningKey,
+        title: 'Simulan sa pagsusuri',
+        body:
+            'Dito matatagpuan ang M-CHAT-R at Vanderbilt. Isang tanong bawat '
+            'pahina, may larawan at halimbawa kung paano ito sa bahay.',
+      ),
+      TourStep(
+        targetKey: _navKey,
+        title: 'Tatlong pangunahing bahagi',
+        body:
+            'Bahay para sa buod, Activity para sa mga larong sensory, at '
+            'Profile para sa detalye ng bata at sa PIN lock.',
+      ),
+    ]);
   }
 
   Future<void> _selectMood(String mood) async {
@@ -68,11 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 14),
 
               // 4. Two-Column Grid Cards (Screening & Milestones)
-              const Row(
+              Row(
                 children: [
-                  Expanded(child: ScreeningCard()),
-                  SizedBox(width: 14),
-                  Expanded(child: MilestonesCard()),
+                  Expanded(child: ScreeningCard(key: _screeningKey)),
+                  const SizedBox(width: 14),
+                  const Expanded(child: MilestonesCard()),
                 ],
               ),
               const SizedBox(height: 16),
@@ -103,51 +137,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'AuDHD',
-          style: TextStyle(
-            color: AppColors.logoGreen,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Fredoka',
-          ),
-        ),
-        GestureDetector(
-          onTap: () => _onNavTap(2),
-          behavior: HitTestBehavior.opaque,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const ChildAvatar(size: 42),
-              const SizedBox(height: 2),
-              ConstrainedBox(
-                // Malayang teksto ang pangalan, kaya hinahangganan ang lapad.
-                constraints: const BoxConstraints(maxWidth: 76),
-                child: ValueListenableBuilder<Box>(
-                  valueListenable: HiveService.getProfileBox().listenable(),
-                  builder: (context, box, child) {
-                    final name = HiveService.getChildProfile()?.name.trim();
-                    final label = (name == null || name.isEmpty)
-                        ? 'Profile'
-                        : name;
-                    return Text(
-                      label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
-                        fontFamily: 'Nunito',
-                      ),
-                    );
-                  },
+        // Umuurong sa halip na mag-overflow sa makikitid na screen.
+        const Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: [
+                Text(
+                  'AuDHD',
+                  style: TextStyle(
+                    color: AppColors.logoGreen,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Fredoka',
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(width: 8),
+                AppPhoneticBadge(),
+              ],
+            ),
           ),
         ),
+        const SizedBox(width: 10),
+        StarBadgeWidget(key: _starKey),
       ],
     );
   }
@@ -259,6 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBottomNavigationBar() {
     return Container(
+      key: _navKey,
       height: 70,
       decoration: BoxDecoration(
         color: Colors.white,

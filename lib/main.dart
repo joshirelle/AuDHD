@@ -4,6 +4,7 @@ import 'core/theme/app_theme.dart';
 import 'data/services/hive_service.dart';
 import 'modules/auth/widgets/auth_gate.dart';
 import 'modules/home/home_screen.dart';
+import 'modules/onboarding/widgets/onboarding_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +37,9 @@ class AuDHDApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const AuthGate(child: HomeScreen()),
+      home: const AuthGate(
+        child: OnboardingGate(child: HomeScreen()),
+      ),
     );
   }
 }
