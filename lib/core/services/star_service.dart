@@ -10,10 +10,11 @@ class StarService {
 
   static Listenable? _listenable;
 
-  /// Nagbabago kapag may natapos na laro o milestone.
+  /// Nagbabago kapag may natapos na laro, milestone, o gawain sa iskedyul.
   static Listenable get listenable => _listenable ??= Listenable.merge([
     HiveService.getCompletionBox().listenable(),
     HiveService.getMilestoneBox().listenable(),
+    HiveService.getScheduleDoneBox().listenable(),
   ]);
 
   static int sensoryStars() =>
@@ -22,5 +23,9 @@ class StarService {
   static int milestoneStars() =>
       HiveService.getMilestoneBox().length * starsPerMilestone;
 
-  static int totalStars() => sensoryStars() + milestoneStars();
+  /// Suma ng naitalang gantimpala, hindi bilang × 1: nababago ang `starReward`.
+  static int scheduleStars() => HiveService.getScheduleDoneBox().values
+      .fold(0, (sum, stars) => sum + stars);
+
+  static int totalStars() => sensoryStars() + milestoneStars() + scheduleStars();
 }

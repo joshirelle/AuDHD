@@ -139,7 +139,7 @@ class ActivityDetailSheet extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1E5631),
+                            color: AppColors.mintInk,
                             fontFamily: 'Nunito',
                           ),
                         ),
@@ -171,7 +171,7 @@ class ActivityDetailSheet extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.warning_amber_rounded,
-                      color: Color(0xFF8A2B12),
+                      color: AppColors.coralInk,
                       size: 22,
                     ),
                     const SizedBox(width: 10),
@@ -180,7 +180,7 @@ class ActivityDetailSheet extends StatelessWidget {
                         activity.safetyNoteTagalog,
                         style: const TextStyle(
                           fontSize: 13,
-                          color: Color(0xFF8A2B12),
+                          color: AppColors.coralInk,
                           fontWeight: FontWeight.w600,
                           height: 1.35,
                           fontFamily: 'Nunito',

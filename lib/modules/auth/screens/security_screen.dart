@@ -96,8 +96,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
                       ? Icons.lock_rounded
                       : Icons.lock_open_rounded,
                   color: isPinSet
-                      ? const Color(0xFF1E5631)
-                      : const Color(0xFF7A5C00),
+                      ? AppColors.mintInk
+                      : AppColors.butterInk,
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -193,12 +193,12 @@ class _SecurityScreenState extends State<SecurityScreen> {
               onPressed: _removePin,
               icon: const Icon(
                 Icons.lock_open_rounded,
-                color: Color(0xFFD9383A),
+                color: AppColors.danger,
               ),
               label: const Text(
                 'Alisin ang PIN',
                 style: TextStyle(
-                  color: Color(0xFFD9383A),
+                  color: AppColors.danger,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
                 ),

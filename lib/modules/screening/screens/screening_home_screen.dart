@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../profile/child_editor_dialog.dart';
+import '../../../widgets/screening_attribution.dart';
+import '../../../widgets/screening_disclaimer.dart';
 import 'mchat_age_check_screen.dart';
 import 'screening_history_screen.dart';
 import 'adhd_screening_screen.dart';
@@ -30,11 +32,13 @@ class ScreeningHomeScreen extends StatelessWidget {
         elevation: 0,
       ),
       backgroundColor: AppColors.background,
-      body: Padding(
+      // ListView, hindi Column: hindi kasya ang disclaimer at atribusyon
+      // kasama ang tatlong card sa maiikling screen.
+      body: ListView(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        children: [
+          const ScreeningDisclaimer(),
+          const SizedBox(height: 20),
             // 1. M-CHAT-R Screening Card (dadaan muna sa Age Check)
             _buildOptionCard(
               context,
@@ -61,7 +65,7 @@ class ScreeningHomeScreen extends StatelessWidget {
               title: 'Vanderbilt ADHD Screening',
               subtitle: 'Para sa mga batang 4 na taon pataas',
               icon: Icons.psychology_rounded,
-              color: const Color(0xFF3B82F6),
+              color: AppColors.vanderbiltBlue,
               onTap: () async {
                 if (!await _ensureChildProfile(context)) return;
                 if (!context.mounted) return;
@@ -81,7 +85,7 @@ class ScreeningHomeScreen extends StatelessWidget {
               title: 'Tala ng mga Nakaraang Test',
               subtitle: 'Tingnan ang nakalipas na M-CHAT scores sa Hive',
               icon: Icons.history_rounded,
-              color: const Color(0xFF8B5CF6),
+              color: AppColors.historyPurple,
               onTap: () {
                 Navigator.push(
                   context,
@@ -91,8 +95,9 @@ class ScreeningHomeScreen extends StatelessWidget {
                 );
               },
             ),
-          ],
-        ),
+          const SizedBox(height: 24),
+          const ScreeningCopyright(),
+        ],
       ),
     );
   }

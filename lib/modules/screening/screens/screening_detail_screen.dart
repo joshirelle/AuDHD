@@ -37,9 +37,9 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
   }
 
   Color _getRiskColor(String riskLevel) {
-    if (riskLevel.contains('HIGH')) return const Color(0xFFD9383A);
-    if (riskLevel.contains('MEDIUM')) return const Color(0xFFD9A000);
-    return const Color(0xFF2D7A4D);
+    if (riskLevel.contains('HIGH')) return AppColors.danger;
+    if (riskLevel.contains('MEDIUM')) return AppColors.warning;
+    return AppColors.success;
   }
 
   @override
@@ -180,12 +180,12 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                   final row = _rows[index];
                   final isAtRisk = row.isAtRisk;
                   final markColor = isAtRisk
-                      ? const Color(0xFFD9383A)
+                      ? AppColors.danger
                       : AppColors.logoGreen;
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
-                    color: isAtRisk ? const Color(0xFFFFF5F4) : Colors.white,
+                    color: isAtRisk ? AppColors.tintDanger : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                       side: BorderSide(
@@ -229,7 +229,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                                       const Icon(
                                         Icons.flag_rounded,
                                         size: 13,
-                                        color: Color(0xFFD9383A),
+                                        color: AppColors.danger,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
@@ -239,7 +239,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                                         style: const TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(0xFFD9383A),
+                                          color: AppColors.danger,
                                         ),
                                       ),
                                     ],

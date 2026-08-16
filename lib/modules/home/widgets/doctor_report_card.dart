@@ -27,8 +27,8 @@ class DoctorReportCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.bar_chart_rounded,
-              color: Color(0xFF2A80B9),
+              Icons.medical_information_rounded,
+              color: AppColors.accentBlue,
               size: 32,
             ),
           ),

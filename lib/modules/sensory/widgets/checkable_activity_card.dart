@@ -22,8 +22,8 @@ class CheckableActivityCard extends StatelessWidget {
     required this.onToggled,
   });
 
-  static const Color _completedTint = Color(0xFFE7F6EC);
-  static const Color _completedGreen = Color(0xFF1E7145);
+  static const Color _completedTint = AppColors.tintSuccess;
+  static const Color _completedGreen = AppColors.logoGreen;
 
   static const Map<String, IconData> _domainIcons = {
     'proprioceptive': Icons.fitness_center_rounded,

@@ -28,7 +28,7 @@ class ScreeningCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.fact_check_rounded,
+              Icons.quiz_rounded,
               color: AppColors.logoGreen,
               size: 28,
             ),

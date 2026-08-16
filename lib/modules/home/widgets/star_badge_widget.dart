@@ -9,7 +9,7 @@ class StarBadgeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      // Nakikinig sa completion at milestone box nang sabay.
+      // Nakikinig sa completion, milestone, at schedule box nang sabay.
       listenable: StarService.listenable,
       builder: (context, _) {
         return GestureDetector(

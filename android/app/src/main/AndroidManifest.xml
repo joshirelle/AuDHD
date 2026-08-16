@@ -42,5 +42,11 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Kailangan ng url_launcher sa Android 11 pataas: kung wala ito,
+             nagbabalik ng false ang canLaunchUrl kahit may browser. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
     </queries>
 </manifest>

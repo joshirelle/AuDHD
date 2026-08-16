@@ -55,6 +55,26 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     'KARAGDAGANG TALA',
   ];
 
+  static const List<IconData> _stepIcons = [
+    Icons.history_rounded,
+    Icons.directions_run_rounded,
+    Icons.reply_rounded,
+    Icons.sensors_rounded,
+    Icons.speed_rounded,
+    Icons.timer_rounded,
+    Icons.edit_note_rounded,
+  ];
+
+  static const List<Color> _stepColors = [
+    AppColors.skyBlue,
+    AppColors.coralPeach,
+    AppColors.mintGreen,
+    AppColors.butterYellow,
+    AppColors.coralPeach,
+    AppColors.skyBlueLight,
+    AppColors.mintGreen,
+  ];
+
   static const List<String> _stepQuestions = [
     'Ano ang nangyari bago ang insidente?',
     'Anong kilos o reaksyon ang ipinakita?',
@@ -141,9 +161,9 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
   // Kapareho ng risk colours na ginagamit sa screening result at history.
   Color _getSeverityColor(double val) {
-    if (val <= 2) return const Color(0xFF2D7A4D);
-    if (val <= 3) return const Color(0xFFD9A000);
-    return const Color(0xFFD9383A);
+    if (val <= 2) return AppColors.success;
+    if (val <= 3) return AppColors.warning;
+    return AppColors.danger;
   }
 
   String _getSeverityLabel(double val) {
@@ -175,7 +195,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
               Center(
                 child: Text(
-                  'HAKBANG ${_currentStep + 1}  \u2022  ${_stepTags[_currentStep]}',
+                  'HAKBANG ${_currentStep + 1}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13,
@@ -188,7 +208,11 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
               ),
               const SizedBox(height: 16),
 
-              Expanded(child: _buildStepCard()),
+              // Ang buong card ang gumagalaw, kaya hindi naghihiwa ang gilid
+              // nito sa huling chip.
+              Flexible(
+                child: SingleChildScrollView(child: _buildStepCard()),
+              ),
               const SizedBox(height: 20),
 
               SizedBox(
@@ -238,33 +262,54 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 96,
-              child: Image.asset(
-                'assets/images/kiko_pointing.png',
-                fit: BoxFit.contain,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: _buildStepChip(),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            _stepQuestions[_currentStep],
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+              height: 1.35,
+              fontFamily: 'Nunito',
             ),
-            const SizedBox(height: 16),
-            Text(
-              _stepQuestions[_currentStep],
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                height: 1.3,
-                fontFamily: 'Nunito',
-              ),
+          ),
+          const SizedBox(height: 20),
+          _buildStepInput(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStepChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: _stepColors[_currentStep],
+        borderRadius: BorderRadius.circular(AppRadius.button),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(_stepIcons[_currentStep], size: 18, color: AppColors.textDark),
+          const SizedBox(width: 6),
+          Text(
+            _stepTags[_currentStep],
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+              fontFamily: 'Nunito',
             ),
-            const SizedBox(height: 20),
-            _buildStepInput(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -371,7 +416,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
           labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           selected: isSelected,
           selectedColor: AppColors.mintGreen,
-          checkmarkColor: const Color(0xFF1E5631),
+          checkmarkColor: AppColors.mintInk,
           shape: const StadiumBorder(
             side: BorderSide(color: AppColors.mintGreen),
           ),

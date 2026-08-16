@@ -207,7 +207,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
         _buildPrimaryButton(
           label: _isRunning ? 'I-pause' : 'Ipagpatuloy',
           color: _isRunning ? AppColors.skyBlue : AppColors.logoGreen,
-          textColor: _isRunning ? const Color(0xFF16537E) : Colors.white,
+          textColor: _isRunning ? AppColors.skyInk : Colors.white,
           onPressed: _isRunning ? _pause : _resume,
         ),
         const SizedBox(height: 10),

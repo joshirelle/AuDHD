@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../core/services/child_photo_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/age_formatter.dart';
+import '../../core/utils/date_formatter.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/child_avatar.dart';
 import '../../widgets/kiko_card.dart';
 import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
+import 'widgets/developer_feedback_card.dart';
+
+enum _PhotoAction { camera, gallery, remove }
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -49,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
               'Burahin',
-              style: TextStyle(color: Color(0xFFD9383A), fontWeight: FontWeight.bold),
+              style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -57,9 +63,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (ok == true) {
+      // Kung hindi ito buburahin, mananatili sa device ang litrato ng bata.
+      await ChildPhotoService.delete(child.photoFileName);
       await HiveService.deleteChildProfile();
       _load();
     }
+  }
+
+  Future<void> _changePhoto(ChildProfile child) async {
+    final action = await _askPhotoAction(child.photoFileName != null);
+    if (action == null) return;
+
+    String? fileName;
+    if (action != _PhotoAction.remove) {
+      try {
+        fileName = await ChildPhotoService.pick(
+          action == _PhotoAction.camera
+              ? ImageSource.camera
+              : ImageSource.gallery,
+        );
+      } catch (error) {
+        debugPrint('ChildPhotoService: $error');
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Hindi mabuksan ang litrato. Tingnan ang pahintulot ng app.',
+            ),
+            backgroundColor: AppColors.danger,
+          ),
+        );
+        return;
+      }
+      if (fileName == null) return;
+    }
+
+    await ChildPhotoService.delete(child.photoFileName);
+    await HiveService.saveChildProfile(
+      ChildProfile(
+        name: child.name,
+        birthDate: child.birthDate,
+        gender: child.gender,
+        nickname: child.nickname,
+        photoFileName: fileName,
+      ),
+    );
+    if (mounted) _load();
+  }
+
+  Future<_PhotoAction?> _askPhotoAction(bool hasPhoto) {
+    return showModalBottomSheet<_PhotoAction>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.card),
+        ),
+      ),
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 8),
+            ListTile(
+              leading: const Icon(
+                Icons.photo_camera_rounded,
+                color: AppColors.logoGreen,
+              ),
+              title: const Text('Kumuha ng litrato'),
+              onTap: () => Navigator.pop(context, _PhotoAction.camera),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.photo_library_rounded,
+                color: AppColors.logoGreen,
+              ),
+              title: const Text('Pumili sa gallery'),
+              onTap: () => Navigator.pop(context, _PhotoAction.gallery),
+            ),
+            if (hasPhoto)
+              ListTile(
+                leading: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: AppColors.danger,
+                ),
+                title: const Text('Alisin ang litrato'),
+                onTap: () => Navigator.pop(context, _PhotoAction.remove),
+              ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _openEditor({ChildProfile? existing}) async {
@@ -88,6 +183,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (child == null) _buildEmptyState() else _buildProfileSection(child),
           const SizedBox(height: 28),
           _buildSecurityCard(),
+          const SizedBox(height: 20),
+          const DeveloperFeedbackCard(),
+          // Malayo sa "Baguhin ang Detalye" para hindi mapindot nang pagkakamali.
+          if (child != null) ...[
+            const SizedBox(height: 36),
+            _buildDeleteLink(child),
+          ],
         ],
       ),
     );
@@ -133,19 +235,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
+        KikoCard(
+          backgroundColor: Colors.white,
+          borderColor: AppColors.logoGreen,
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.logoGreen, width: 2),
-          ),
           child: Column(
             children: [
-              const ChildAvatar(size: 68),
+              _buildEditableAvatar(child),
               const SizedBox(height: 14),
               Text(
-                child.name,
+                child.displayName,
                 style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
               ),
               if (child.gender != null) ...[
@@ -153,13 +252,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildGenderBadge(child.gender!),
               ],
               const SizedBox(height: 16),
-              _infoRow(
-                'Kaarawan',
-                '${child.birthDate.day}/${child.birthDate.month}/${child.birthDate.year}',
-              ),
+              _infoRow('Pangalan', child.name),
+              const SizedBox(height: 8),
+              _infoRow('Palayaw', child.nickname ?? '—'),
+              const SizedBox(height: 8),
+              _infoRow('Kaarawan', DateFormatter.longDate(child.birthDate)),
               const SizedBox(height: 8),
               _infoRow(
-                'Edad ngayon',
+                'Edad',
                 AgeFormatter.formatMonths(child.ageInMonthsOn(DateTime.now())),
               ),
             ],
@@ -179,23 +279,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: TextStyle(color: AppColors.logoGreen, fontWeight: FontWeight.bold),
           ),
         ),
-        const SizedBox(height: 10),
-        TextButton.icon(
-          onPressed: () => _confirmDelete(child),
-          icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFD9383A)),
-          label: const Text(
-            'Burahin ang Profile',
-            style: TextStyle(color: Color(0xFFD9383A), fontWeight: FontWeight.bold),
+      ],
+    );
+  }
+
+  Widget _buildEditableAvatar(ChildProfile child) {
+    return Semantics(
+      button: true,
+      label: 'Palitan ang litrato ni ${child.name}',
+      child: GestureDetector(
+        onTap: () => _changePhoto(child),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            const ChildAvatar(size: 68),
+            Positioned(
+              right: -2,
+              bottom: -2,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: AppColors.logoGreen,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                child: const Icon(
+                  Icons.photo_camera_rounded,
+                  size: 13,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteLink(ChildProfile child) {
+    return Center(
+      child: TextButton(
+        onPressed: () => _confirmDelete(child),
+        style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+        child: const Text(
+          'Burahin ang profile ng bata',
+          style: TextStyle(
+            fontSize: 13,
+            fontFamily: 'Nunito',
+            decoration: TextDecoration.underline,
           ),
         ),
-      ],
+      ),
     );
   }
 
   Widget _buildSecurityCard() {
     return KikoCard(
       backgroundColor: AppColors.skyBlueLight,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       onTap: () {
         Navigator.push(
           context,
@@ -213,7 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: const Icon(
               Icons.security_rounded,
-              color: Color(0xFF2A80B9),
+              color: AppColors.accentBlue,
               size: 28,
             ),
           ),

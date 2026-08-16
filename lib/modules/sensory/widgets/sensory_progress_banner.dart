@@ -12,8 +12,8 @@ class SensoryProgressBanner extends StatelessWidget {
     required this.totalCount,
   });
 
-  static const Color _bannerBackground = Color(0xFFE8F3FF);
-  static const Color _warmYellow = Color(0xFFFFC93C);
+  static const Color _bannerBackground = AppColors.tintBlue;
+  static const Color _warmYellow = AppColors.starGoldLight;
 
   @override
   Widget build(BuildContext context) {

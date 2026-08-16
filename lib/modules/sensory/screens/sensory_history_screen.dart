@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/date_formatter.dart';
 import '../../../data/models/sensory_profile_result.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
@@ -74,7 +75,7 @@ class SensoryHistoryScreen extends StatelessWidget {
     int number,
   ) {
     return KikoCard(
-      backgroundColor: const Color(0xFFF0F7F7),
+      backgroundColor: AppColors.tintTeal,
       borderColor: AppColors.logoGreen.withValues(alpha: 0.3),
       padding: const EdgeInsets.all(16),
       onTap: () {
@@ -131,7 +132,7 @@ class SensoryHistoryScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _formatDate(result.timestamp),
+                      DateFormatter.longDate(result.timestamp),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade600,
@@ -155,7 +156,7 @@ class SensoryHistoryScreen extends StatelessWidget {
                   'Seeking',
                   result.totalSeekingScore,
                   AppColors.butterYellow,
-                  const Color(0xFF7A5C00),
+                  AppColors.butterInk,
                 ),
               ),
               const SizedBox(width: 10),
@@ -164,7 +165,7 @@ class SensoryHistoryScreen extends StatelessWidget {
                   'Avoiding',
                   result.totalAvoidingScore,
                   AppColors.skyBlueLight,
-                  const Color(0xFF16537E),
+                  AppColors.skyInk,
                 ),
               ),
             ],
@@ -197,23 +198,5 @@ class SensoryHistoryScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String _formatDate(DateTime date) {
-    const months = [
-      'Enero',
-      'Pebrero',
-      'Marso',
-      'Abril',
-      'Mayo',
-      'Hunyo',
-      'Hulyo',
-      'Agosto',
-      'Setyembre',
-      'Oktubre',
-      'Nobyembre',
-      'Disyembre',
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }

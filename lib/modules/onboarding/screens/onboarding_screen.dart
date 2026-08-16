@@ -10,12 +10,16 @@ class OnboardingSlide {
   final String title;
   final String body;
 
+  /// Kongkretong magagawa — dito nakikita agad ng magulang ang laman ng app.
+  final List<String> highlights;
+
   const OnboardingSlide({
     required this.icon,
     required this.background,
     required this.iconColor,
     required this.title,
     required this.body,
+    required this.highlights,
   });
 }
 
@@ -31,40 +35,74 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   static const List<OnboardingSlide> _slides = [
     OnboardingSlide(
-      icon: Icons.flag_rounded,
-      background: AppColors.butterYellow,
-      iconColor: Color(0xFFD9A000),
-      title: 'Developmental\nMilestones',
-      body:
-          'Subaybayan ang paglaki ng bata sa 4 na domains (Motor, Speech, Social) '
-          'mula sa bahay.',
-    ),
-    OnboardingSlide(
       icon: Icons.fact_check_rounded,
       background: AppColors.mintGreen,
       iconColor: AppColors.logoGreen,
-      title: 'Clinical\nScreening',
+      title: 'Klinikal na\nPagsusuri',
       body:
-          'M-CHAT-R para sa Autism at Vanderbilt para sa ADHD — handa para sa '
-          'doktor.',
+          'Dalawang pamantayang ginagamit ng mga doktor, kayang sagutan mo mismo '
+          'sa bahay.',
+      highlights: [
+        'M-CHAT-R para sa autism (16\u201330 buwan)',
+        'Vanderbilt para sa ADHD (4 taon pataas)',
+        'Agad na resulta at antas ng panganib',
+      ],
+    ),
+    OnboardingSlide(
+      icon: Icons.checklist_rounded,
+      background: AppColors.butterYellow,
+      iconColor: AppColors.butterInk,
+      title: 'Iskedyul at\nDamdamin',
+      body:
+          'Ipaalam sa bata kung ano ang susunod, at itala kung ano ang '
+          'nararamdaman niya ngayong araw.',
+      highlights: [
+        'Visual schedule ng pang-araw-araw na gawain',
+        'Magdagdag ka ng sarili mong routine',
+        '16 na damdamin, isang tapik lang',
+      ],
     ),
     OnboardingSlide(
       icon: Icons.psychology_rounded,
       background: AppColors.skyBlue,
-      iconColor: Color(0xFF16537E),
-      title: 'Behavior at\nSensory Engine',
+      iconColor: AppColors.skyInk,
+      title: 'Sensory at\nUgali',
       body:
-          'Pang-araw-araw na tala ng mood, sensory games, at triggers gamit ang '
-          'ABC model.',
+          'Alamin kung ano ang nag-uudyok ng meltdown, at kung anong laro ang '
+          'nakakatulong sa bata.',
+      highlights: [
+        'Sensory profile sa 5 domain',
+        'Mga larong pambahay na may timer',
+        'Tala ng insidente gamit ang ABC model',
+      ],
     ),
     OnboardingSlide(
-      icon: Icons.picture_as_pdf_rounded,
+      icon: Icons.emoji_events_rounded,
       background: AppColors.coralPeach,
-      iconColor: Color(0xFF8A2B12),
-      title: '360° Doctor PDF\nat Star Points',
+      iconColor: AppColors.coralInk,
+      title: 'Milestones\nat Bituin',
       body:
-          'I-export ang kumpletong ulat para sa DevPed at magbigay ng Star Points '
-          'bilang pabuya.',
+          'Subaybayan ang paglaki, at gawing pabuya sa totoong buhay ang bawat '
+          'tagumpay.',
+      highlights: [
+        'Milestones sa 4 na domain ng paglaki',
+        'Bituin kada natapos na gawain',
+        'Ikaw ang magtatakda ng mga pabuya',
+      ],
+    ),
+    OnboardingSlide(
+      icon: Icons.verified_user_rounded,
+      background: AppColors.lavender,
+      iconColor: AppColors.autismPurple,
+      title: 'Ulat at\nPrivacy',
+      body:
+          'Isang PDF na dala mo sa konsulta — at datos na hindi umaalis sa '
+          'telepono mo.',
+      highlights: [
+        'Kumpletong ulat para sa Developmental Pediatrician',
+        'Walang account at walang internet na kailangan',
+        'Protektado ng PIN o fingerprint',
+      ],
     ),
   ];
 
@@ -112,14 +150,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: isLast ? null : _finish,
-                child: Text(
-                  isLast ? '' : 'Laktawan',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Nunito',
+              // Nananatili ang puwang para hindi tumalon ang layout sa dulo.
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isLast ? 0 : 1,
+                child: TextButton(
+                  onPressed: isLast ? null : _finish,
+                  child: Text(
+                    'Laktawan',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Nunito',
+                    ),
                   ),
                 ),
               ),
@@ -169,24 +212,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildSlide(OnboardingSlide slide) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+    // Mas mahaba na ang laman kaysa dati, kaya kailangang kayang mag-scroll
+    // sa maiikling screen.
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(32, 8, 32, 8),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: Container(
-              width: 148,
-              height: 148,
+              width: 116,
+              height: 116,
               decoration: BoxDecoration(
                 color: slide.background,
                 shape: BoxShape.circle,
               ),
-              child: Icon(slide.icon, size: 64, color: slide.iconColor),
+              child: Icon(slide.icon, size: 52, color: slide.iconColor),
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 28),
           Text(
             slide.title,
             style: const TextStyle(
@@ -197,7 +241,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               fontFamily: 'Nunito',
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Text(
             slide.body,
             style: TextStyle(
@@ -207,8 +251,47 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               fontFamily: 'Nunito',
             ),
           ),
+          const SizedBox(height: 20),
+          for (final highlight in slide.highlights) ...[
+            _buildHighlight(slide, highlight),
+            const SizedBox(height: 10),
+          ],
         ],
       ),
+    );
+  }
+
+  Widget _buildHighlight(OnboardingSlide slide, String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 1),
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: slide.background,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.check_rounded,
+            size: 13,
+            color: slide.iconColor,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 13,
+              color: AppColors.textDark,
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
+      ],
     );
   }
 

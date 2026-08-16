@@ -18,7 +18,7 @@ class AppPhoneticBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Icon sa halip na emoji dahil walang emoji glyph ang Nunito.
-          Icon(Icons.volume_up_rounded, size: 14, color: Color(0xFF2A80B9)),
+          Icon(Icons.volume_up_rounded, size: 14, color: AppColors.accentBlue),
           SizedBox(width: 4),
           Text(
             '/Aw-D-H-D/',
@@ -26,7 +26,7 @@ class AppPhoneticBadge extends StatelessWidget {
               fontSize: 12,
               fontStyle: FontStyle.italic,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF2A80B9),
+              color: AppColors.accentBlue,
               fontFamily: 'Nunito',
             ),
           ),

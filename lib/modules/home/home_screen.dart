@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../core/models/mood_type.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
+import '../mood/screens/mood_log_screen.dart';
 import '../profile/profile_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
@@ -13,6 +15,7 @@ import 'widgets/milestones_card.dart';
 import 'widgets/screening_card.dart';
 import 'widgets/sensory_profile_card.dart';
 import 'widgets/star_badge_widget.dart';
+import 'widgets/visual_schedule_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,12 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ]);
   }
 
-  Future<void> _selectMood(String mood) async {
-    await HiveService.saveMood(DateTime.now(), mood);
-    if (!mounted) return;
-    setState(() => _selectedMood = mood);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,15 +108,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // 5. Behavior Log Full-Width Card
+              // 5. Visual Schedule Full-Width Card
+              const VisualScheduleCard(),
+              const SizedBox(height: 16),
+
+              // 6. Behavior Log Full-Width Card
               const BehaviorLogCard(),
               const SizedBox(height: 16),
 
-              // 6. Sensory Profile Checklist Card
+              // 7. Sensory Profile Checklist Card
               const SensoryProfileCard(),
               const SizedBox(height: 16),
 
-              // 7. Progress Report Full-Width Card
+              // 8. Progress Report Full-Width Card
               const DoctorReportCard(),
               const SizedBox(height: 20),
             ],
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ValueListenableBuilder<Box>(
                 valueListenable: HiveService.getProfileBox().listenable(),
                 builder: (context, box, child) {
-                  final name = HiveService.getChildProfile()?.name.trim();
+                  final name = HiveService.getChildProfile()?.displayName.trim();
                   final hasName = name != null && name.isNotEmpty;
 
                   return Column(
@@ -209,16 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              // Mood Chips Row
-              Row(
-                children: [
-                  _buildMoodChip('🟢 Kalmado'),
-                  const SizedBox(width: 6),
-                  _buildMoodChip('🟡 Masigla'),
-                  const SizedBox(width: 6),
-                  _buildMoodChip('🔵 Pagod'),
-                ],
-              ),
+              _buildMoodRow(),
             ],
           ),
           // Positioned Kiko Image on the top right
@@ -239,32 +231,56 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMoodChip(String label) {
-    final mood = label.split(' ').last;
-    final bool isSelected = _selectedMood == mood;
+  Future<void> _openMoodLog() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MoodLogScreen()),
+    );
+    if (!mounted) return;
+    setState(() => _selectedMood = HiveService.getMood(DateTime.now()));
+  }
+
+  Widget _buildMoodRow() {
+    final stored = _selectedMood;
+    final mood = MoodType.fromName(stored);
+
     return GestureDetector(
-      onTap: () => _selectMood(mood),
+      onTap: _openMoodLog,
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.textDark : Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.button),
+        ),
+        child: Row(
+          children: [
+            Text(
+              mood?.emoji ?? '\u{1F4DD}',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                stored == null
+                    ? 'Itala ang mood ngayong araw'
+                    : MoodType.labelFor(stored),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                  fontFamily: 'Nunito',
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: AppColors.textDark,
             ),
           ],
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : AppColors.textDark,
-            fontFamily: 'Nunito',
-          ),
         ),
       ),
     );
@@ -292,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildNavItem(0, Icons.home_rounded, 'Bahay'),
-          _buildNavItem(1, Icons.star_rounded, 'Activity'),
+          _buildNavItem(1, Icons.sports_esports_rounded, 'Laro'),
           _buildNavItem(2, Icons.person_rounded, 'Profile'),
         ],
       ),
@@ -318,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final bool isActive = _selectedNavIndex == index;
-    final Color activeColor = const Color(0xFF2A80B9);
+    const Color activeColor = AppColors.accentBlue;
 
     return GestureDetector(
       onTap: () => _onNavTap(index),

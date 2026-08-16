@@ -11,7 +11,7 @@ class SensoryProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KikoCard(
-      backgroundColor: const Color(0xFFF0F7F7), // Soft pastel teal/cyan
+      backgroundColor: AppColors.tintTeal,
       borderColor: AppColors.logoGreen.withValues(alpha: 0.3),
       padding: const EdgeInsets.all(16),
       onTap: () {
@@ -31,7 +31,7 @@ class SensoryProfileCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
-              Icons.psychology_rounded,
+              Icons.touch_app_rounded,
               color: AppColors.logoGreen,
               size: 28,
             ),

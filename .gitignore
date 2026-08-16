@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Upload signing key — kapag ito ay na-commit, kahit sino ay makakapag-publish
+# ng update sa ilalim ng pangalan mo. Hindi rin ito mapapalitan sa Play.
+/android/key.properties
+*.jks
+*.keystore

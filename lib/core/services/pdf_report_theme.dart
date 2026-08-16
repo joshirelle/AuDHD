@@ -116,9 +116,19 @@ class PdfReportTheme {
         color: PdfColors.grey100,
         borderRadius: pw.BorderRadius.circular(6),
       ),
-      child: pw.Text(
-        'PAALALA: Ang ulat na ito ay pampasimulang screening lamang batay sa obserbasyon ng magulang at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
-        style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            'PAALALA: Ang ulat na ito ay pampasimulang screening lamang batay sa obserbasyon ng magulang at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
+            style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
+          ),
+          pw.SizedBox(height: 6),
+          pw.Text(
+            'M-CHAT-R\u2122 \u00a9 2009 Robins, Fein, & Barton. NICHQ Vanderbilt Assessment Scale \u00a9 NICHQ & AAP.',
+            style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
+          ),
+        ],
       ),
     );
   }

@@ -117,7 +117,7 @@ class WeeklyDateStripWidget extends StatelessWidget {
                   ? const Icon(
                       Icons.star_rounded,
                       size: 14,
-                      color: Color(0xFFF2B705),
+                      color: AppColors.starGoldDeep,
                     )
                   : null,
             ),

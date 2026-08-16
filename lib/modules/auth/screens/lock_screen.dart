@@ -229,7 +229,7 @@ class _LockScreenState extends State<LockScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFFD9383A),
+              color: AppColors.danger,
               fontWeight: FontWeight.bold,
               fontFamily: 'Nunito',
             ),
@@ -241,7 +241,7 @@ class _LockScreenState extends State<LockScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFFD9383A),
+              color: AppColors.danger,
               fontWeight: FontWeight.bold,
               fontFamily: 'Nunito',
             ),

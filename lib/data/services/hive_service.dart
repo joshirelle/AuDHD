@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../core/models/schedule_task.dart';
 import '../models/child_profile.dart';
 import '../models/screening_result.dart';
 import '../models/behavior_log.dart';
@@ -14,6 +15,9 @@ class HiveService {
   static const String _moodBoxName = 'daily_mood';
   static const String _milestoneBoxName = 'milestone_progress';
   static const String _settingsBoxName = 'app_settings';
+  static const String _scheduleBoxName = 'schedule_box';
+  static const String _scheduleDoneBoxName = 'schedule_completion';
+  static const String _rewardBoxName = 'custom_rewards';
 
   static const String hasSeenOnboardingKey = 'has_seen_onboarding';
   static const String hasSeenHomeTourKey = 'has_seen_home_tour';
@@ -24,6 +28,8 @@ class HiveService {
     // Register Adapters
     Hive.registerAdapter(BehaviorLogAdapter());
     Hive.registerAdapter(SensoryProfileResultAdapter());
+    Hive.registerAdapter(ScheduleTaskAdapter());
+    Hive.registerAdapter(ScheduleTimeOfDayAdapter());
 
     await Hive.openBox(_screeningBoxName);
     await Hive.openBox(_profileBoxName);
@@ -34,7 +40,70 @@ class HiveService {
     await Hive.openBox<String>(_moodBoxName);
     await Hive.openBox<int>(_milestoneBoxName);
     await Hive.openBox<bool>(_settingsBoxName);
+    await Hive.openBox<ScheduleTask>(_scheduleBoxName);
+    await Hive.openBox<int>(_scheduleDoneBoxName);
+    await Hive.openBox<int>(_rewardBoxName);
   }
+
+  /// Susi = pangalan ng pabuya, halaga = bilang ng bituing kailangan.
+  /// Mga dagdag ng magulang lang ang laman; nasa code ang mga default.
+  static Box<int> getRewardBox() => Hive.box<int>(_rewardBoxName);
+
+  static Future<void> addCustomReward(String reward, int stars) async {
+    await getRewardBox().put(reward.trim(), stars);
+  }
+
+  static Future<void> deleteCustomReward(String reward) async {
+    await getRewardBox().delete(reward);
+  }
+
+  /// Mga custom na routine lang ang laman; nasa code ang mga default.
+  static Box<ScheduleTask> getScheduleBox() =>
+      Hive.box<ScheduleTask>(_scheduleBoxName);
+
+  static List<ScheduleTask> getScheduleTasks() => [
+    ...ScheduleTask.defaults,
+    ...getScheduleBox().values,
+  ];
+
+  static Future<void> addScheduleTask(ScheduleTask task) async {
+    await getScheduleBox().put(task.id, task);
+  }
+
+  static Future<void> deleteScheduleTask(String taskId) async {
+    await getScheduleBox().delete(taskId);
+  }
+
+  static bool isCustomScheduleTask(String taskId) =>
+      getScheduleBox().containsKey(taskId);
+
+  /// Hiwalay sa `_completionBoxName` dahil binibilang ng `StarService` ang haba
+  /// ng bawat box — magkakamali ang sensory stars kung pagsasabayin dito.
+  /// Ang halaga ay bilang ng bituing naipagkaloob, hindi `true`.
+  static Box<int> getScheduleDoneBox() => Hive.box<int>(_scheduleDoneBoxName);
+
+  static String scheduleKey(DateTime date, String taskId) =>
+      '${dateKey(date)}_$taskId';
+
+  static bool isScheduleTaskDone(DateTime date, String taskId) =>
+      getScheduleDoneBox().containsKey(scheduleKey(date, taskId));
+
+  static Future<void> setScheduleTaskDone(
+    DateTime date,
+    ScheduleTask task,
+    bool isDone,
+  ) async {
+    final box = getScheduleDoneBox();
+    final key = scheduleKey(date, task.id);
+    if (isDone) {
+      await box.put(key, task.starReward);
+    } else {
+      await box.delete(key);
+    }
+  }
+
+  static int countScheduleDoneOn(DateTime date, List<String> taskIds) =>
+      taskIds.where((id) => isScheduleTaskDone(date, id)).length;
 
   static Box<bool> getSettingsBox() => Hive.box<bool>(_settingsBoxName);
 
@@ -78,6 +147,20 @@ class HiveService {
 
   static Future<void> saveMood(DateTime date, String mood) async {
     await getMoodBox().put(moodKey(date), mood);
+  }
+
+  static String noteKey(DateTime date) => 'note_${dateKey(date)}';
+
+  static String? getMoodNote(DateTime date) => getMoodBox().get(noteKey(date));
+
+  static Future<void> saveMoodNote(DateTime date, String note) async {
+    final box = getMoodBox();
+    final trimmed = note.trim();
+    if (trimmed.isEmpty) {
+      await box.delete(noteKey(date));
+    } else {
+      await box.put(noteKey(date), trimmed);
+    }
   }
 
   /// Naka-index sa `dateKey`; nilalaktawan ang mga araw na walang naitala.

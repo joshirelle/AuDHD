@@ -14,7 +14,22 @@ class ChildProfile {
   final DateTime birthDate;
   final Gender? gender;
 
-  ChildProfile({required this.name, required this.birthDate, this.gender});
+  /// Opsyonal; `name` ang ipinapakita kapag wala nito.
+  final String? nickname;
+
+  /// Pangalan lang ng file; nasa `ChildPhotoService` ang folder.
+  final String? photoFileName;
+
+  ChildProfile({
+    required this.name,
+    required this.birthDate,
+    this.gender,
+    this.nickname,
+    this.photoFileName,
+  });
+
+  String get displayName =>
+      (nickname != null && nickname!.trim().isNotEmpty) ? nickname! : name;
 
   /// Edad sa buwan sa isang partikular na petsa — hindi sa ngayon, para tama ang lumang record.
   int ageInMonthsOn(DateTime date) =>
@@ -25,6 +40,8 @@ class ChildProfile {
       'name': name,
       'birthDate': birthDate.toIso8601String(),
       'gender': gender?.name,
+      'nickname': nickname,
+      'photoFileName': photoFileName,
     };
   }
 
@@ -34,6 +51,8 @@ class ChildProfile {
       birthDate: DateTime.parse(map['birthDate'] as String),
       // Walang 'gender' ang mga profile na na-save bago ito idagdag.
       gender: _genderFrom(map['gender'] as String?),
+      nickname: map['nickname'] as String?,
+      photoFileName: map['photoFileName'] as String?,
     );
   }
 

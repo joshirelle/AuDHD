@@ -3,9 +3,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/constants/milestone_constants.dart';
 import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/date_formatter.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../../widgets/star_burst_overlay.dart';
+import '../../home/widgets/star_badge_widget.dart';
 import '../models/milestone.dart';
 
 class MilestonesScreen extends StatefulWidget {
@@ -23,8 +25,8 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
     MilestoneDomain.socialEmotional: AppColors.coralPeach,
   };
 
-  static const Color _achievedTint = Color(0xFFE7F6EC);
-  static const Color _achievedGreen = Color(0xFF1E7145);
+  static const Color _achievedTint = AppColors.tintSuccess;
+  static const Color _achievedGreen = AppColors.logoGreen;
 
   /// `null` ang ibig sabihin ay "Lahat".
   MilestoneDomain? _filter;
@@ -37,6 +39,12 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Center(child: StarBadgeWidget()),
+          ),
+        ],
       ),
       backgroundColor: AppColors.background,
       body: ValueListenableBuilder<Box<int>>(
@@ -214,7 +222,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
                 if (achievedDate != null) ...[
                   const SizedBox(height: 8),
                   Text(
-                    'Naabot noong ${_formatDate(achievedDate)}',
+                    'Naabot noong ${DateFormatter.longDate(achievedDate)}',
                     style: const TextStyle(
                       fontSize: 11,
                       color: _achievedGreen,
@@ -289,23 +297,5 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
       // Pabuya lang sa pag-abot; walang animation kapag inaalis ang tsek.
       StarBurstOverlay.show(tapContext, StarService.starsPerMilestone);
     }
-  }
-
-  static String _formatDate(DateTime date) {
-    const months = [
-      'Enero',
-      'Pebrero',
-      'Marso',
-      'Abril',
-      'Mayo',
-      'Hunyo',
-      'Hulyo',
-      'Agosto',
-      'Setyembre',
-      'Oktubre',
-      'Nobyembre',
-      'Disyembre',
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }

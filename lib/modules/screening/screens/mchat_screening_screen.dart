@@ -90,14 +90,14 @@ class _MChatScreeningScreenState extends State<MChatScreeningScreen> {
         ScreeningChoice(
           label: 'OO',
           color: AppColors.mintGreen,
-          textColor: const Color(0xFF1E5631),
+          textColor: AppColors.mintInk,
           isSelected: selected == true,
           onPressed: () => _answerQuestion(true),
         ),
         ScreeningChoice(
           label: 'HINDI',
           color: AppColors.coralPeach,
-          textColor: const Color(0xFF8A2B12),
+          textColor: AppColors.coralInk,
           isSelected: selected == false,
           onPressed: () => _answerQuestion(false),
         ),

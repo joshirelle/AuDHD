@@ -9,7 +9,7 @@ class BehaviorLogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KikoCard(
-      backgroundColor: const Color(0xFFFFF7ED), // Soft pastel orange/amber
+      backgroundColor: AppColors.tintWarm,
       borderColor: Colors.orange.shade200,
       padding: const EdgeInsets.all(16),
       onTap: () {
@@ -29,7 +29,7 @@ class BehaviorLogCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
-              Icons.assignment_outlined,
+              Icons.edit_note_rounded,
               color: Colors.orange.shade800,
               size: 28,
             ),

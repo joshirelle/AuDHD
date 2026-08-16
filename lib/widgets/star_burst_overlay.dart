@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import '../core/theme/app_theme.dart';
+import 'confetti_burst.dart';
 
 /// Panandaliang "+N" at confetti sa ibabaw ng natapos na item.
 /// Nasa Overlay ito para hindi magbago ang taas ng listahan habang tumatakbo.
@@ -57,12 +57,12 @@ class _StarBurstState extends State<_StarBurst>
   static const double _boxSize = 220;
 
   late final AnimationController _controller;
-  late final List<_Particle> _particles;
+  late final List<ConfettiParticle> _particles;
 
   @override
   void initState() {
     super.initState();
-    _particles = _Particle.burst(count: 8 + widget.stars * 6);
+    _particles = ConfettiParticle.burst(count: 8 + widget.stars * 6);
     _controller = AnimationController(
       vsync: this,
       duration: StarBurstOverlay.duration,
@@ -93,7 +93,7 @@ class _StarBurstState extends State<_StarBurst>
                 children: [
                   CustomPaint(
                     size: const Size.square(_boxSize),
-                    painter: _ConfettiPainter(
+                    painter: ConfettiPainter(
                       particles: _particles,
                       progress: t,
                     ),
@@ -163,86 +163,4 @@ class _StarBurstState extends State<_StarBurst>
       ),
     );
   }
-}
-
-class _Particle {
-  final double angle;
-  final double speed;
-  final double size;
-  final double spin;
-  final Color color;
-
-  const _Particle({
-    required this.angle,
-    required this.speed,
-    required this.size,
-    required this.spin,
-    required this.color,
-  });
-
-  static const List<Color> _palette = [
-    AppColors.starGold,
-    AppColors.mintGreen,
-    AppColors.skyBlue,
-    AppColors.coralPeach,
-    AppColors.logoGreen,
-  ];
-
-  static List<_Particle> burst({required int count}) {
-    final random = Random();
-    return List<_Particle>.generate(count, (index) {
-      return _Particle(
-        angle: random.nextDouble() * 2 * pi,
-        speed: 60 + random.nextDouble() * 70,
-        size: 5 + random.nextDouble() * 5,
-        spin: (random.nextDouble() - 0.5) * 8,
-        color: _palette[random.nextInt(_palette.length)],
-      );
-    });
-  }
-}
-
-class _ConfettiPainter extends CustomPainter {
-  final List<_Particle> particles;
-  final double progress;
-
-  const _ConfettiPainter({required this.particles, required this.progress});
-
-  static const double _gravity = 150;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (progress >= 1) return;
-
-    final center = size.center(Offset.zero);
-    // Mabilis sa umpisa, bumabagal habang bumabagsak.
-    final travel = Curves.easeOutCubic.transform(progress);
-    final opacity = (1 - progress).clamp(0.0, 1.0);
-    final paint = Paint();
-
-    for (final particle in particles) {
-      final dx = cos(particle.angle) * particle.speed * travel;
-      final dy = sin(particle.angle) * particle.speed * travel +
-          _gravity * progress * progress;
-
-      paint.color = particle.color.withValues(alpha: opacity);
-
-      canvas.save();
-      canvas.translate(center.dx + dx, center.dy + dy);
-      canvas.rotate(particle.spin * progress);
-      canvas.drawRect(
-        Rect.fromCenter(
-          center: Offset.zero,
-          width: particle.size,
-          height: particle.size * 0.6,
-        ),
-        paint,
-      );
-      canvas.restore();
-    }
-  }
-
-  @override
-  bool shouldRepaint(_ConfettiPainter oldDelegate) =>
-      oldDelegate.progress != progress;
 }

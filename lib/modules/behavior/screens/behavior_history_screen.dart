@@ -88,7 +88,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Wala pang maitatalang insidente sa ulat.'),
-          backgroundColor: Color(0xFFD9A000),
+          backgroundColor: AppColors.warning,
         ),
       );
       return;
@@ -270,7 +270,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
                     ),
                     child: Text(
                       '# $tag',
-                      style: const TextStyle(fontSize: 10, color: Color(0xFF16537E)),
+                      style: const TextStyle(fontSize: 10, color: AppColors.skyInk),
                     ),
                   );
                 }).toList(),
@@ -296,9 +296,9 @@ class BehaviorHistoryScreen extends StatelessWidget {
 
   // Kapareho ng risk colours na ginagamit sa screening result at history.
   Color _getSeverityColor(int intensity) {
-    if (intensity <= 2) return const Color(0xFF2D7A4D);
-    if (intensity <= 3) return const Color(0xFFD9A000);
-    return const Color(0xFFD9383A);
+    if (intensity <= 2) return AppColors.success;
+    if (intensity <= 3) return AppColors.warning;
+    return AppColors.danger;
   }
 
   String _formatTime(DateTime date) {

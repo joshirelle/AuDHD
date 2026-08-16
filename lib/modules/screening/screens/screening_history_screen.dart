@@ -28,9 +28,9 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
   }
 
   Color _getRiskColor(String riskLevel) {
-    if (riskLevel.contains('HIGH')) return const Color(0xFFD9383A);
-    if (riskLevel.contains('MEDIUM')) return const Color(0xFFD9A000);
-    return const Color(0xFF2D7A4D);
+    if (riskLevel.contains('HIGH')) return AppColors.danger;
+    if (riskLevel.contains('MEDIUM')) return AppColors.warning;
+    return AppColors.success;
   }
 
   @override
@@ -62,7 +62,7 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
                 final color = _getRiskColor(item.riskLevel);
                 final formattedDate = '${item.date.day}/${item.date.month}/${item.date.year}';
                 final isADHD = item.type == ScreeningResult.typeADHD;
-                final testColor = isADHD ? const Color(0xFF3B82F6) : AppColors.logoGreen;
+                final testColor = isADHD ? AppColors.vanderbiltBlue : AppColors.logoGreen;
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),

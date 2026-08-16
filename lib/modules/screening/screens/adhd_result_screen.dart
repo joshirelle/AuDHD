@@ -5,6 +5,8 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/models/adhd_question.dart';
 import '../../../data/models/screening_result.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/screening_attribution.dart';
+import '../../../widgets/screening_disclaimer.dart';
 
 class ADHDResultScreen extends StatefulWidget {
   final List<ADHDQuestion> questions;
@@ -64,7 +66,7 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
     final bool highRisk = _isHighRisk(inattention, hyperactivity);
 
     final String riskTitle = highRisk ? 'HIGH RISK' : 'LOW RISK';
-    final Color riskColor = highRisk ? const Color(0xFFD9383A) : const Color(0xFF2D7A4D);
+    final Color riskColor = highRisk ? AppColors.danger : AppColors.success;
     final String message = highRisk
         ? 'Mataas ang posibilidad ng ADHD symptoms. Inirerekomenda ang pagpapasuri sa isang Specialist.'
         : 'Mababa ang posibilidad ng ADHD base sa pamantayan ng Vanderbilt. Ipagpatuloy ang pag-subaybay kay Kiko.';
@@ -118,7 +120,9 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
+              const ScreeningDisclaimer(),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.logoGreen,
@@ -128,6 +132,8 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
                 onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
                 child: const Text('Bumalik sa Home', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
+              const SizedBox(height: 20),
+              const ScreeningCopyright(text: ScreeningAttribution.vanderbilt),
             ],
           ),
         ),
@@ -146,7 +152,7 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: met ? const Color(0xFFD9383A) : AppColors.textDark,
+            color: met ? AppColors.danger : AppColors.textDark,
           ),
         ),
       ],

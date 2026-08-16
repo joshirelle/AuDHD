@@ -40,7 +40,7 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Hindi naibahagi ang ulat. Subukan ulit.'),
-          backgroundColor: Color(0xFFD9383A),
+          backgroundColor: AppColors.danger,
         ),
       );
     } finally {
@@ -77,7 +77,7 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
             children: [
               const Icon(
                 Icons.info_outline_rounded,
-                color: Color(0xFF7A5C00),
+                color: AppColors.butterInk,
                 size: 32,
               ),
               const SizedBox(height: 12),
@@ -196,7 +196,7 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
-              color: isSelected ? const Color(0xFF1E5631) : AppColors.textDark,
+              color: isSelected ? AppColors.mintInk : AppColors.textDark,
               fontFamily: 'Nunito',
             ),
           ),

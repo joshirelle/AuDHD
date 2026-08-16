@@ -5,6 +5,8 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/models/mchat_question.dart';
 import '../../../data/models/screening_result.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/screening_attribution.dart';
+import '../../../widgets/screening_disclaimer.dart';
 
 class MChatResultScreen extends StatefulWidget {
   final List<MChatQuestion> questions;
@@ -51,16 +53,16 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
     final int totalScore = _calculateScore();
     
     String riskTitle = "LOW RISK";
-    Color riskColor = const Color(0xFF2D7A4D);
+    Color riskColor = AppColors.success;
     String message = "Mababa ang panganib ng Autism base sa pamantayan ng M-CHAT-R. Ipagpatuloy ang pag-subaybay sa milestones ni Kiko.";
 
     if (totalScore >= 3 && totalScore <= 7) {
       riskTitle = "MEDIUM RISK";
-      riskColor = const Color(0xFFD9A000);
+      riskColor = AppColors.warning;
       message = "Katamtaman ang panganib. Inirerekomenda ang pagkonsulta sa isang Developmental Pediatrician.";
     } else if (totalScore >= 8) {
       riskTitle = "HIGH RISK";
-      riskColor = const Color(0xFFD9383A);
+      riskColor = AppColors.danger;
       message = "Mataas ang panganib. Maiging magpa-appointment agad sa Developmental Pediatrician.";
     }
 
@@ -114,7 +116,9 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
+              const ScreeningDisclaimer(),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.logoGreen,
@@ -124,6 +128,8 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                 onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
                 child: const Text('Bumalik sa Home', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
+              const SizedBox(height: 20),
+              const ScreeningCopyright(text: ScreeningAttribution.mchat),
             ],
           ),
         ),

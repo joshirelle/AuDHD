@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/date_formatter.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 
@@ -15,6 +16,7 @@ class ChildEditorDialog extends StatefulWidget {
 
 class _ChildEditorDialogState extends State<ChildEditorDialog> {
   late final TextEditingController _nameController;
+  late final TextEditingController _nicknameController;
   DateTime? _birthDate;
   Gender? _gender;
   String? _error;
@@ -23,6 +25,9 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.existing?.name ?? '');
+    _nicknameController = TextEditingController(
+      text: widget.existing?.nickname ?? '',
+    );
     _birthDate = widget.existing?.birthDate;
     _gender = widget.existing?.gender;
   }
@@ -30,6 +35,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   @override
   void dispose() {
     _nameController.dispose();
+    _nicknameController.dispose();
     super.dispose();
   }
 
@@ -40,14 +46,6 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       initialDate: _birthDate ?? DateTime(now.year - 2, now.month, now.day),
       firstDate: DateTime(now.year - 18),
       lastDate: now,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(primary: AppColors.logoGreen),
-          ),
-          child: child!,
-        );
-      },
     );
     if (picked != null) setState(() => _birthDate = picked);
   }
@@ -63,10 +61,15 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       return;
     }
 
+    final nickname = _nicknameController.text.trim();
     final profile = ChildProfile(
       name: name,
       birthDate: _birthDate!,
       gender: _gender,
+      nickname: nickname.isEmpty ? null : nickname,
+      // Wala nito sa form; kung hindi dadalhin, mabubura ang litrato tuwing
+      // babaguhin ang pangalan.
+      photoFileName: widget.existing?.photoFileName,
     );
     await HiveService.saveChildProfile(profile);
 
@@ -77,7 +80,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   Widget build(BuildContext context) {
     final birthText = _birthDate == null
         ? 'Pumili ng kaarawan'
-        : '${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}';
+        : DateFormatter.longDate(_birthDate!);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -91,6 +94,15 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
             textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
               labelText: 'Pangalan ng bata',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _nicknameController,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(
+              labelText: 'Palayaw (opsyonal)',
               border: OutlineInputBorder(),
             ),
           ),
@@ -133,7 +145,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
             const SizedBox(height: 10),
             Text(
               _error!,
-              style: const TextStyle(color: Color(0xFFD9383A), fontSize: 12),
+              style: const TextStyle(color: AppColors.danger, fontSize: 12),
             ),
           ],
         ],

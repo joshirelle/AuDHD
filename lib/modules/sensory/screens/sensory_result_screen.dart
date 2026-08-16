@@ -48,7 +48,7 @@ class SensoryResultScreen extends StatelessWidget {
                   Text(
                     result.primaryProfile,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1E5631)),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.mintInk),
                   ),
                   if (moodOnDay != null) ...[
                     const SizedBox(height: 10),
@@ -63,7 +63,7 @@ class SensoryResultScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1E5631),
+                          color: AppColors.mintInk,
                         ),
                       ),
                     ),

@@ -28,8 +28,8 @@ class MilestonesCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.flag_rounded,
-              color: Color(0xFFD9A000),
+              Icons.stairs_rounded,
+              color: AppColors.warning,
               size: 28,
             ),
           ),

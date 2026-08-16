@@ -41,6 +41,20 @@ dependencies:
   uuid: ^4.6.0
   local_auth: ^2.1.8
   crypto: ^3.0.3
+  image_picker: ^1.2.3
+  path_provider: ^2.1.6
+  url_launcher: ^6.3.2
+  package_info_plus: ^10.2.1
+
+# Patakbuhin ang `dart run flutter_launcher_icons` matapos baguhin ang source.
+# Hindi nakadeklara sa `assets:` sa ibaba \u2014 build-time lang ang gamit nito.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#F4F1EA"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+  remove_alpha_ios: true
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +68,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   hive_generator: ^2.0.1
   build_runner: ^2.4.13
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

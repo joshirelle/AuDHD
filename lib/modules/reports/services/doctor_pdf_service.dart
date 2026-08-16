@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../../../core/models/mood_type.dart';
 import '../../../core/services/pdf_report_theme.dart';
 import '../../../core/services/vanderbilt_scoring.dart';
 import '../../../data/models/adhd_question.dart';
@@ -276,12 +277,20 @@ class DoctorPdfService {
     ];
   }
 
-  /// Ang mood chips lang ang pinagmumulan; tatlo lamang ang posibleng halaga.
-  static const Map<String, PdfColor> _moodColors = {
-    'Kalmado': PdfColors.green100,
-    'Masigla': PdfColors.amber100,
-    'Pagod': PdfColors.blue100,
-  };
+  /// Kinukulayan ayon sa tono, hindi kada mood, para hindi ito mapag-iwanan
+  /// tuwing may naidadagdag na bagong damdamin.
+  static PdfColor _moodColorForLabel(String label) {
+    switch (MoodType.fromLabel(label)?.tone) {
+      case MoodTone.positive:
+        return PdfColors.green100;
+      case MoodTone.neutral:
+        return PdfColors.blue100;
+      case MoodTone.negative:
+        return PdfColors.orange100;
+      case null:
+        return PdfColors.grey100;
+    }
+  }
 
   static pw.Widget _moodSummary(Map<String, String> moods) {
     if (moods.isEmpty) {
@@ -292,7 +301,8 @@ class DoctorPdfService {
 
     final counts = <String, int>{};
     for (final mood in moods.values) {
-      counts[mood] = (counts[mood] ?? 0) + 1;
+      final label = MoodType.labelFor(mood);
+      counts[label] = (counts[label] ?? 0) + 1;
     }
     final ranked = counts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
@@ -335,7 +345,7 @@ class DoctorPdfService {
                       vertical: 6,
                     ),
                     decoration: pw.BoxDecoration(
-                      color: _moodColors[entry.key] ?? PdfColors.grey100,
+                      color: _moodColorForLabel(entry.key),
                       borderRadius: pw.BorderRadius.circular(4),
                     ),
                     child: pw.Text(
@@ -445,7 +455,7 @@ class DoctorPdfService {
         cellStyle: const pw.TextStyle(fontSize: 9),
         cellDecoration: (column, data, row) => pw.BoxDecoration(
           color: column == 2
-              ? (_moodColors[data.toString()] ?? PdfColors.white)
+              ? _moodColorForLabel(data.toString())
               : PdfColors.white,
         ),
         cellAlignments: {
@@ -474,7 +484,9 @@ class DoctorPdfService {
             '${PdfReportTheme.formatDate(log.timestamp)}\n'
                 '${PdfReportTheme.formatTime(log.timestamp)}',
             abc.toString(),
-            moods[HiveService.dateKey(log.timestamp)] ?? '-',
+            moods[HiveService.dateKey(log.timestamp)] == null
+                ? '-'
+                : MoodType.labelFor(moods[HiveService.dateKey(log.timestamp)]!),
             '${log.intensity}/5',
             '${log.durationMinutes}',
           ];

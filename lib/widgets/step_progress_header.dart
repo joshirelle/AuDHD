@@ -14,8 +14,6 @@ class StepProgressHeader extends StatelessWidget {
     required this.onBack,
   });
 
-  static const Color _accentBlue = Color(0xFF2A80B9);
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,13 +26,13 @@ class StepProgressHeader extends StatelessWidget {
               Icon(
                 Icons.arrow_back_ios_new_rounded,
                 size: 16,
-                color: _accentBlue,
+                color: AppColors.accentBlue,
               ),
               SizedBox(width: 4),
               Text(
                 'Bumalik',
                 style: TextStyle(
-                  color: _accentBlue,
+                  color: AppColors.accentBlue,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
                 ),
@@ -51,7 +49,8 @@ class StepProgressHeader extends StatelessWidget {
                 value: (currentIndex + 1) / totalCount,
                 minHeight: 12,
                 backgroundColor: Colors.grey.shade200,
-                color: AppColors.mintGreen,
+                // Halos hindi makita ang pastel na palaman sa kulay-abong track.
+                color: AppColors.logoGreen,
               ),
             ),
           ),

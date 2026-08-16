@@ -44,8 +44,7 @@ class ScreeningQuestionView extends StatelessWidget {
     required this.onBack,
   });
 
-  static const Color _accentBlue = Color(0xFF2A80B9);
-
+  static const Color _accentBlue = AppColors.accentBlue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +77,12 @@ class ScreeningQuestionView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              Expanded(child: _buildQuestionCard(context)),
+              // Umaakma sa haba ng tanong; kapag mahaba, saka lang mag-i-scroll.
+              Flexible(
+                child: SingleChildScrollView(
+                  child: _buildQuestionCard(context),
+                ),
+              ),
               const SizedBox(height: 20),
 
               for (final choice in choices) ...[
@@ -108,42 +112,41 @@ class ScreeningQuestionView extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCategoryChip(),
-            const SizedBox(height: 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildCategoryChip(),
+          const SizedBox(height: 18),
 
+          Text(
+            questionText,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+              height: 1.35,
+              fontFamily: 'Nunito',
+            ),
+          ),
+          if (questionEnglish.isNotEmpty) ...[
+            const SizedBox(height: 10),
             Text(
-              questionText,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
+              questionEnglish,
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey.shade600,
                 height: 1.35,
+                fontStyle: FontStyle.italic,
                 fontFamily: 'Nunito',
               ),
             ),
-            if (questionEnglish.isNotEmpty) ...[
-              const SizedBox(height: 10),
-              Text(
-                questionEnglish,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade600,
-                  height: 1.35,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Nunito',
-                ),
-              ),
-            ],
-            if (example.isNotEmpty) ...[
-              const SizedBox(height: 20),
-              _buildExampleBox(),
-            ],
           ],
-        ),
+          if (example.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            _buildExampleBox(),
+          ],
+        ],
       ),
     );
   }

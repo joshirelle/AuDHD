@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
+import '../../home/widgets/star_badge_widget.dart';
 import '../models/sensory_activity.dart';
 import '../services/sensory_recommendation_service.dart';
 import '../widgets/activity_target_style.dart';
@@ -82,6 +83,12 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Center(child: StarBadgeWidget()),
+          ),
+        ],
       ),
       backgroundColor: AppColors.background,
       body: _hasError
@@ -239,7 +246,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
             children: [
               const Icon(
                 Icons.warning_amber_rounded,
-                color: Color(0xFF7A5C00),
+                color: AppColors.butterInk,
                 size: 36,
               ),
               const SizedBox(height: 12),
@@ -264,7 +271,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
                 child: const Text(
                   'Subukan ulit',
                   style: TextStyle(
-                    color: Color(0xFF7A5C00),
+                    color: AppColors.butterInk,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Nunito',
                   ),
@@ -287,7 +294,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
             color: AppColors.mintGreen,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, color: const Color(0xFF1E5631), size: 22),
+          child: Icon(icon, color: AppColors.mintInk, size: 22),
         ),
         const SizedBox(width: 10),
         Expanded(

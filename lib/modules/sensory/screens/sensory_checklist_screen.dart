@@ -25,7 +25,7 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Mangyaring sagutan ang lahat ng tanong bago magpatuloy.'),
-          backgroundColor: Color(0xFFD9A000),
+          backgroundColor: AppColors.warning,
         ),
       );
       return;
@@ -92,28 +92,28 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
         ScreeningChoice(
           label: 'Hindi Kailanman',
           color: AppColors.mintGreen,
-          textColor: const Color(0xFF1E5631),
+          textColor: AppColors.mintInk,
           isSelected: selected == 0,
           onPressed: () => _answerQuestion(0),
         ),
         ScreeningChoice(
           label: 'Minsan',
           color: AppColors.skyBlue,
-          textColor: const Color(0xFF16537E),
+          textColor: AppColors.skyInk,
           isSelected: selected == 1,
           onPressed: () => _answerQuestion(1),
         ),
         ScreeningChoice(
           label: 'Madalas',
           color: AppColors.butterYellow,
-          textColor: const Color(0xFF7A5C00),
+          textColor: AppColors.butterInk,
           isSelected: selected == 2,
           onPressed: () => _answerQuestion(2),
         ),
         ScreeningChoice(
           label: 'Palagi',
           color: AppColors.coralPeach,
-          textColor: const Color(0xFF8A2B12),
+          textColor: AppColors.coralInk,
           isSelected: selected == 3,
           onPressed: () => _answerQuestion(3),
         ),
