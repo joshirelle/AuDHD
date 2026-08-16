@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
@@ -43,6 +44,8 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
   @override
   void dispose() {
     _ticker?.cancel();
+    // Mananatiling gising ang screen kahit umalis na kung hindi ito babawiin.
+    unawaited(WakelockPlus.disable());
     super.dispose();
   }
 
@@ -53,12 +56,14 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
     _endsAt = DateTime.now().add(_remaining);
     _ticker?.cancel();
     _ticker = Timer.periodic(const Duration(milliseconds: 200), (_) => _tick());
+    unawaited(WakelockPlus.enable());
   }
 
   void _resume() => setState(_beginCountdown);
 
   void _pause() {
     _ticker?.cancel();
+    unawaited(WakelockPlus.disable());
     setState(() => _endsAt = null);
   }
 
@@ -76,6 +81,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
 
   Future<void> _finish() async {
     _ticker?.cancel();
+    unawaited(WakelockPlus.disable());
     setState(() {
       _remaining = Duration.zero;
       _endsAt = null;

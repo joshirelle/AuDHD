@@ -45,6 +45,7 @@ dependencies:
   path_provider: ^2.1.6
   url_launcher: ^6.3.2
   package_info_plus: ^10.2.1
+  wakelock_plus: ^1.7.0
 
 # Patakbuhin ang `dart run flutter_launcher_icons` matapos baguhin ang source.
 # Hindi nakadeklara sa `assets:` sa ibaba \u2014 build-time lang ang gamit nito.
