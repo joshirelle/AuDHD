@@ -9,7 +9,7 @@ import 'screening_result.dart';
 /// Pinagsanib na anyo ng isang sagot para iisa lang ang pinagmumulan ng screen at ng PDF.
 class ScreeningAnswerRow {
   static const List<String> _adhdLabels = [
-    'Kailanman',
+    'Hindi Kailanman',
     'Minsan',
     'Madalas',
     'Palagi',

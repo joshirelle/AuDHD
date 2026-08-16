@@ -5,7 +5,8 @@ import '../../../core/services/sensory_calculator_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/sensory_profile_result.dart';
 import '../../../data/services/hive_service.dart';
-import '../../../widgets/step_progress_header.dart';
+import '../../screening/widgets/screening_category.dart';
+import '../../screening/widgets/screening_question_view.dart';
 import 'sensory_result_screen.dart';
 
 class SensoryChecklistScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
   final Map<String, int> _answers = {};
   int _currentIndex = 0;
 
-  void _submitChecklist() async {
+  Future<void> _submitChecklist() async {
     if (_answers.length < SensoryConstants.questions.length) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -42,18 +43,15 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
       domainBreakdown: Map<String, String>.from(calculated['domainBreakdown']),
     );
 
-    // Save sa Hive (Siguraduhing naka-open ang box)
-    final box = HiveService.getSensoryBox();
-    await box.put(result.id, result);
+    await HiveService.addSensoryResult(result);
 
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SensoryResultScreen(result: result),
-        ),
-      );
-    }
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SensoryResultScreen(result: result),
+      ),
+    );
   }
 
   void _answerQuestion(int score) {
@@ -67,138 +65,59 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
     }
   }
 
+  void _goBack() {
+    if (_currentIndex > 0) {
+      setState(() => _currentIndex--);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final questions = SensoryConstants.questions;
     final currentQ = questions[_currentIndex];
+    final selected = _answers[currentQ.id];
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              StepProgressHeader(
-                currentIndex: _currentIndex,
-                totalCount: questions.length,
-                onBack: () {
-                  if (_currentIndex > 0) {
-                    setState(() => _currentIndex--);
-                  } else {
-                    Navigator.pop(context);
-                  }
-                },
-              ),
-              const SizedBox(height: 24),
-
-              Center(
-                child: Text(
-                  '${currentQ.domain.toUpperCase()}  •  ${currentQ.type == SensoryType.seeking ? 'SEEKING' : 'AVOIDING'}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.grey.shade600,
-                    letterSpacing: 1.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Main Question Card
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: AppColors.skyBlueLight, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.02),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 110,
-                        child: Image.asset(
-                          'assets/images/kiko_pointing.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Umaanguplo sa loob ng card kapag mahaba ang tanong.
-                      Flexible(
-                        child: SingleChildScrollView(
-                          child: Text(
-                            currentQ.textTagalog,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textDark,
-                              height: 1.3,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              _buildChoiceButton(currentQ.id, 0, 'Kailanman', AppColors.mintGreen, const Color(0xFF1E5631)),
-              const SizedBox(height: 10),
-              _buildChoiceButton(currentQ.id, 1, 'Minsan', AppColors.skyBlue, const Color(0xFF16537E)),
-              const SizedBox(height: 10),
-              _buildChoiceButton(currentQ.id, 2, 'Madalas', AppColors.butterYellow, const Color(0xFF7A5C00)),
-              const SizedBox(height: 10),
-              _buildChoiceButton(currentQ.id, 3, 'Palagi', AppColors.coralPeach, const Color(0xFF8A2B12)),
-              const SizedBox(height: 10),
-            ],
-          ),
+    return ScreeningQuestionView(
+      currentIndex: _currentIndex,
+      totalCount: questions.length,
+      tagLabel: 'TANONG #${_currentIndex + 1}',
+      category: ScreeningCategory.forSensory(currentQ.domain),
+      questionText: currentQ.textTagalog,
+      questionEnglish: '',
+      example: '',
+      onBack: _goBack,
+      choices: [
+        ScreeningChoice(
+          label: 'Hindi Kailanman',
+          color: AppColors.mintGreen,
+          textColor: const Color(0xFF1E5631),
+          isSelected: selected == 0,
+          onPressed: () => _answerQuestion(0),
         ),
-      ),
-    );
-  }
-
-  Widget _buildChoiceButton(String qId, int val, String label, Color color, Color textColor) {
-    final bool isSelected = _answers[qId] == val;
-    return SizedBox(
-      height: 52,
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-            side: BorderSide(color: isSelected ? textColor : Colors.transparent, width: 3),
-          ),
+        ScreeningChoice(
+          label: 'Minsan',
+          color: AppColors.skyBlue,
+          textColor: const Color(0xFF16537E),
+          isSelected: selected == 1,
+          onPressed: () => _answerQuestion(1),
         ),
-        onPressed: () => _answerQuestion(val),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (isSelected) ...[
-              Icon(Icons.check_circle_rounded, size: 18, color: textColor),
-              const SizedBox(width: 8),
-            ],
-            Text(
-              label,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
-            ),
-          ],
+        ScreeningChoice(
+          label: 'Madalas',
+          color: AppColors.butterYellow,
+          textColor: const Color(0xFF7A5C00),
+          isSelected: selected == 2,
+          onPressed: () => _answerQuestion(2),
         ),
-      ),
+        ScreeningChoice(
+          label: 'Palagi',
+          color: AppColors.coralPeach,
+          textColor: const Color(0xFF8A2B12),
+          isSelected: selected == 3,
+          onPressed: () => _answerQuestion(3),
+        ),
+      ],
     );
   }
 }

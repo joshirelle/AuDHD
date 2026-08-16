@@ -370,7 +370,7 @@ class PdfExportService {
             ),
             pw.SizedBox(height: 4),
             pw.Text(
-              '0 = Hindi kailanman, 1 = Minsan, 2 = Madalas, 3 = Palagi.',
+              '0 = Hindi Kailanman, 1 = Minsan, 2 = Madalas, 3 = Palagi.',
               style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
             ),
             pw.SizedBox(height: 10),

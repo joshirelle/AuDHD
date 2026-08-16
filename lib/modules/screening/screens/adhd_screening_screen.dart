@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/adhd_question.dart';
+import '../widgets/screening_category.dart';
 import '../widgets/screening_question_view.dart';
 import 'adhd_result_screen.dart';
 
@@ -80,13 +81,14 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
       totalCount: _questions.length,
       tagLabel:
           'TANONG #${currentQ.number}  \u2022  ${currentQ.category.toUpperCase()}',
-      imageAsset: 'assets/images/${currentQ.id}.png',
+      category: ScreeningCategory.forVanderbilt(currentQ.category),
       questionText: currentQ.textTagalog,
+      questionEnglish: currentQ.textEnglish,
       example: currentQ.exampleTagalog,
       onBack: _goBack,
       choices: [
         ScreeningChoice(
-          label: 'Kailanman',
+          label: 'Hindi Kailanman',
           color: AppColors.mintGreen,
           textColor: const Color(0xFF1E5631),
           isSelected: selected == 0,

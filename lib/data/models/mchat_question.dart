@@ -4,6 +4,7 @@ class MChatQuestion {
   final String textTagalog;
   final String textEnglish;
   final String example;
+  final String category;
   final bool atRiskAnswer;
 
   MChatQuestion({
@@ -12,6 +13,7 @@ class MChatQuestion {
     required this.textTagalog,
     required this.textEnglish,
     required this.example,
+    this.category = '',
     required this.atRiskAnswer,
   });
 
@@ -22,6 +24,7 @@ class MChatQuestion {
       textTagalog: json['textTagalog'] as String,
       textEnglish: json['textEnglish'] as String,
       example: json['example'] as String,
+      category: json['category'] as String? ?? '',
       atRiskAnswer: json['atRiskAnswer'] as bool,
     );
   }

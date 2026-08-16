@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/mchat_question.dart';
+import '../widgets/screening_category.dart';
 import '../widgets/screening_question_view.dart';
 import 'mchat_result_screen.dart';
 
@@ -79,20 +80,22 @@ class _MChatScreeningScreenState extends State<MChatScreeningScreen> {
       currentIndex: _currentIndex,
       totalCount: _questions.length,
       tagLabel: 'TANONG #${currentQ.questionNumber}',
-      imageAsset: 'assets/images/${currentQ.id}.png',
+      category: ScreeningCategory.forMChat(currentQ.category),
       questionText: currentQ.textTagalog,
+      questionEnglish: currentQ.textEnglish,
       example: currentQ.example,
       onBack: _goBack,
       choices: [
+        // Yes/No ang M-CHAT-R; hindi lahat ng tanong ay tungkol sa ginagawa ng bata.
         ScreeningChoice(
-          label: 'OO, ginagawa niya ito',
+          label: 'OO',
           color: AppColors.mintGreen,
           textColor: const Color(0xFF1E5631),
           isSelected: selected == true,
           onPressed: () => _answerQuestion(true),
         ),
         ScreeningChoice(
-          label: 'HINDI pa niya ginagawa',
+          label: 'HINDI',
           color: AppColors.coralPeach,
           textColor: const Color(0xFF8A2B12),
           isSelected: selected == false,
