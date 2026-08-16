@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/constants/milestone_constants.dart';
+import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
+import '../../../widgets/star_burst_overlay.dart';
 import '../models/milestone.dart';
 
 class MilestonesScreen extends StatefulWidget {
@@ -176,7 +178,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
       backgroundColor: isAchieved ? _achievedTint : Colors.white,
       borderColor: isAchieved ? _achievedGreen : Colors.grey.shade200,
       padding: const EdgeInsets.all(14),
-      onTap: () => _toggle(milestone, isAchieved),
+      onTap: () => _toggle(context, milestone, isAchieved),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -233,23 +235,26 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
     return Semantics(
       checked: isAchieved,
       label: milestone.titleTagalog,
-      child: InkWell(
-        onTap: () => _toggle(milestone, isAchieved),
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          width: 32,
-          height: 32,
-          decoration: BoxDecoration(
-            color: isAchieved ? _achievedGreen : Colors.white,
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: isAchieved ? _achievedGreen : Colors.grey.shade400,
-              width: 2,
+      // Sariling context para tumapat ang burst sa mismong checkbox.
+      child: Builder(
+        builder: (context) => InkWell(
+          onTap: () => _toggle(context, milestone, isAchieved),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: isAchieved ? _achievedGreen : Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isAchieved ? _achievedGreen : Colors.grey.shade400,
+                width: 2,
+              ),
             ),
+            child: isAchieved
+                ? const Icon(Icons.check_rounded, size: 20, color: Colors.white)
+                : null,
           ),
-          child: isAchieved
-              ? const Icon(Icons.check_rounded, size: 20, color: Colors.white)
-              : null,
         ),
       ),
     );
@@ -274,8 +279,16 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
     );
   }
 
-  Future<void> _toggle(Milestone milestone, bool isAchieved) {
-    return HiveService.setMilestoneAchieved(milestone.id, !isAchieved);
+  Future<void> _toggle(
+    BuildContext tapContext,
+    Milestone milestone,
+    bool isAchieved,
+  ) async {
+    await HiveService.setMilestoneAchieved(milestone.id, !isAchieved);
+    if (!isAchieved && tapContext.mounted) {
+      // Pabuya lang sa pag-abot; walang animation kapag inaalis ang tsek.
+      StarBurstOverlay.show(tapContext, StarService.starsPerMilestone);
+    }
   }
 
   static String _formatDate(DateTime date) {

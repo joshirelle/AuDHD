@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 import '../models/sensory_activity.dart';
+import '../screens/activity_timer_screen.dart';
 
 class ActivityDetailSheet extends StatelessWidget {
   final SensoryActivity activity;
@@ -189,10 +190,50 @@ class ActivityDetailSheet extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 24),
+
+              SizedBox(
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: () => _startTimer(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.logoGreen,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.button),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 26,
+                  ),
+                  label: Text(
+                    'Simulan (${activity.estimatedMinutes} min)',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'Nunito',
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
       },
+    );
+  }
+
+  void _startTimer(BuildContext context) {
+    // Kinukuha bago mag-pop dahil hindi na magagamit ang context pagkatapos.
+    final navigator = Navigator.of(context);
+    navigator.pop();
+    navigator.push(
+      MaterialPageRoute(
+        builder: (context) => ActivityTimerScreen(activity: activity),
+      ),
     );
   }
 

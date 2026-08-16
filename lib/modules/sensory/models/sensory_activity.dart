@@ -1,3 +1,13 @@
+enum ActivityTarget {
+  autismSensory('Sensory & Autism'),
+  adhdFocus('Pokus & ADHD'),
+  audhdCombined('AuDHD');
+
+  const ActivityTarget(this.label);
+
+  final String label;
+}
+
 class SensoryActivity {
   final String id;
   final String titleTagalog;
@@ -34,6 +44,38 @@ class SensoryActivity {
   bool get isSeeking => targetProfile == 'seeking';
   bool get isAvoiding => targetProfile == 'avoiding';
   bool get isRegulation => targetProfile == 'regulation';
+
+  static const Map<String, String> _domainSkill = {
+    'proprioceptive': 'Sensory Integration',
+    'vestibular': 'Balanse at Galaw',
+    'tactile': 'Tactile Tolerance',
+    'visual': 'Visual Tracking',
+    'auditory': 'Auditory Tolerance',
+  };
+
+  static const Map<String, String> _profileSkill = {
+    'seeking': 'Impulse Control',
+    'avoiding': 'Sensory Tolerance',
+    'regulation': 'Self-Regulation',
+  };
+
+  /// Hinuhugot sa `targetProfile` sa halip na iimbak nang hiwalay, para walang
+  /// pangalawang pinagmumulan na maaaring hindi magkatugma.
+  ActivityTarget get target {
+    switch (targetProfile) {
+      case 'avoiding':
+        return ActivityTarget.autismSensory;
+      case 'seeking':
+        return ActivityTarget.adhdFocus;
+      default:
+        return ActivityTarget.audhdCombined;
+    }
+  }
+
+  List<String> get skillTags => [
+    if (_domainSkill[domain] != null) _domainSkill[domain]!,
+    if (_profileSkill[targetProfile] != null) _profileSkill[targetProfile]!,
+  ];
 
   factory SensoryActivity.fromJson(Map<String, dynamic> json) {
     return SensoryActivity(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
 import '../models/sensory_activity.dart';
 import '../services/sensory_recommendation_service.dart';
-import '../widgets/activity_detail_sheet.dart';
+import '../widgets/activity_target_style.dart';
 import '../widgets/checkable_activity_card.dart';
 import '../widgets/sensory_progress_banner.dart';
 import '../widgets/weekly_date_strip_widget.dart';
@@ -17,22 +18,8 @@ class HomeActivitiesScreen extends StatefulWidget {
 }
 
 class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
-  static const Map<String, Color> _domainColors = {
-    'proprioceptive': AppColors.mintGreen,
-    'vestibular': AppColors.skyBlue,
-    'tactile': AppColors.butterYellow,
-    'visual': AppColors.skyBlueLight,
-    'auditory': AppColors.coralPeach,
-  };
-
-  static const Map<String, String> _profileLabels = {
-    SensoryRecommendationService.profileSeeking:
-        'Para sa Mahilig sa Galaw at Input',
-    SensoryRecommendationService.profileAvoiding:
-        'Para sa Sensitibo sa Ingay at Hawak',
-    SensoryRecommendationService.profileRegulation:
-        'Pampakalma at Pag-regulate',
-  };
+  /// `null` ang ibig sabihin ay "Lahat".
+  ActivityTarget? _targetFilter;
 
   late DateTime _selectedDate;
   List<SensoryActivity> _daily = [];
@@ -97,7 +84,13 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
         elevation: 0,
       ),
       backgroundColor: AppColors.background,
-      body: _hasError ? _buildErrorState() : _buildContent(),
+      body: _hasError
+          ? _buildErrorState()
+          : ValueListenableBuilder<Box<bool>>(
+              // Kung hindi ito nakikinig, luma ang tsek pagbalik mula sa timer.
+              valueListenable: HiveService.getCompletionBox().listenable(),
+              builder: (context, box, _) => _buildContent(),
+            ),
     );
   }
 
@@ -134,13 +127,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
           ),
           const SizedBox(height: 12),
           for (final activity in _daily) ...[
-            CheckableActivityCard(
-              activity: activity,
-              date: _selectedDate,
-              isCompleted:
-                  HiveService.isActivityCompleted(_selectedDate, activity.id),
-              onToggled: () => setState(() {}),
-            ),
+            _buildActivityCard(activity),
             const SizedBox(height: 10),
           ],
           const SizedBox(height: 14),
@@ -149,27 +136,93 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
             icon: Icons.grid_view_rounded,
             title: 'Lahat ng Gawain',
           ),
-          for (final entry in _profileLabels.entries) ...[
-            const SizedBox(height: 18),
-            Text(
-              entry.value,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textDark,
-                letterSpacing: 0.3,
-                fontFamily: 'Nunito',
-              ),
-            ),
+          const SizedBox(height: 12),
+          _buildTargetFilters(),
+          const SizedBox(height: 14),
+          for (final activity in _filteredActivities()) ...[
+            _buildActivityCard(activity),
             const SizedBox(height: 10),
-            for (final activity
-                in _all.where((a) => a.targetProfile == entry.key)) ...[
-              _buildCatalogueTile(activity),
-              const SizedBox(height: 10),
-            ],
           ],
         ],
       ],
+    );
+  }
+
+  List<SensoryActivity> _filteredActivities() => _targetFilter == null
+      ? _all
+      : _all.where((a) => a.target == _targetFilter).toList();
+
+  Widget _buildActivityCard(SensoryActivity activity) {
+    return CheckableActivityCard(
+      activity: activity,
+      date: _selectedDate,
+      isCompleted: HiveService.isActivityCompleted(_selectedDate, activity.id),
+      onToggled: () => setState(() {}),
+    );
+  }
+
+  Widget _buildTargetFilters() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildFilterChip('Lahat', null, Icons.apps_rounded, AppColors.logoGreen),
+          for (final target in ActivityTarget.values) ...[
+            const SizedBox(width: 8),
+            _buildFilterChip(
+              target.label,
+              target,
+              ActivityTargetStyle.of(target).icon,
+              ActivityTargetStyle.of(target).color,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(
+    String label,
+    ActivityTarget? target,
+    IconData icon,
+    Color color,
+  ) {
+    final isSelected = _targetFilter == target;
+
+    return GestureDetector(
+      onTap: () => setState(() => _targetFilter = target),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+        decoration: BoxDecoration(
+          color: isSelected ? color : Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.button),
+          border: Border.all(
+            color: isSelected ? color : Colors.grey.shade300,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? Colors.white : color,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? Colors.white : AppColors.textDark,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -249,60 +302,6 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildCatalogueTile(SensoryActivity activity) {
-    final color = _domainColors[activity.domain] ?? AppColors.skyBlueLight;
-
-    return KikoCard(
-      backgroundColor: color,
-      padding: const EdgeInsets.all(14),
-      onTap: () => ActivityDetailSheet.show(context, activity),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.auto_awesome_rounded,
-              color: AppColors.logoGreen,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  activity.titleTagalog,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                    fontFamily: 'Nunito',
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${activity.estimatedMinutes} mins - ${activity.domainLabel}',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: AppColors.textDark,
-                    fontFamily: 'Nunito',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
-        ],
-      ),
     );
   }
 }
