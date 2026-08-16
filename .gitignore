@@ -49,3 +49,8 @@ app.*.map.json
 /android/key.properties
 *.jks
 *.keystore
+
+# Screenshot ng aktwal na app — naglalaman ng tunay na pangalan at kaarawan ng
+# bata. Public ang repo na ito.
+/store/screenshots/
+/store/screenshots-play/
