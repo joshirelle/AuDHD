@@ -5,7 +5,7 @@ title: AuDHD
 
 # AuDHD
 
-Offline na gabay sa therapy sa bahay para sa mga magulang ng batang may autism
+Offline na gabay sa bahay para sa mga magulang ng batang may autism
 o ADHD.
 
 Walang account, walang server, at walang internet na kailangan. Lahat ng datos

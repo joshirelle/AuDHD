@@ -63,7 +63,7 @@ class AppBrandingHeader extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Home therapy para sa bawat batang AuDHD.',
+          'Araw-araw na gabay para sa bawat batang AuDHD.',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 13,
