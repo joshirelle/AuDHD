@@ -208,9 +208,9 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Ang buong card ang gumagalaw, kaya hindi naghihiwa ang gilid
-              // nito sa huling chip.
-              Flexible(
+              // Ang scroll view ang umaabot sa ibaba, hindi ang card, kaya
+              // hindi naghihiwa ang gilid nito sa huling chip.
+              Expanded(
                 child: SingleChildScrollView(child: _buildStepCard()),
               ),
               const SizedBox(height: 20),

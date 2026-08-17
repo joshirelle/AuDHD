@@ -4,9 +4,10 @@ import '../../../data/services/hive_service.dart';
 import '../../profile/child_editor_dialog.dart';
 import '../../../widgets/screening_attribution.dart';
 import '../../../widgets/screening_disclaimer.dart';
-import 'mchat_age_check_screen.dart';
+import 'screening_age_gate.dart';
 import 'screening_history_screen.dart';
 import 'adhd_screening_screen.dart';
+import 'mchat_screening_screen.dart';
 
 class ScreeningHomeScreen extends StatelessWidget {
   const ScreeningHomeScreen({super.key});
@@ -52,7 +53,23 @@ class ScreeningHomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MChatAgeCheckScreen(),
+                    builder: (context) => ScreeningAgeGate(
+                      instrumentName: 'M-CHAT-R',
+                      rangeDescription:
+                          'Ang M-CHAT-R/F ay idinisenyo para sa mga batang 16 '
+                          'hanggang 30 buwang gulang (1.3 hanggang 2.5 taon).',
+                      minMonths: 16,
+                      maxMonths: 30,
+                      belowRangeAdvice:
+                          'Masyado pang bata para sa M-CHAT. Inirerekomendang '
+                          'sumubok ulit kapag 16 buwan na.',
+                      aboveRangeAdvice:
+                          'Lagpas na sa 30 buwan. Maaari pa rin itong gamitin, '
+                          'pero mas mabuti ang direktang konsulta sa '
+                          'Developmental Pediatrician.',
+                      screeningBuilder: (context) =>
+                          const MChatScreeningScreen(),
+                    ),
                   ),
                 );
               },
@@ -72,7 +89,21 @@ class ScreeningHomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ADHDScreeningScreen(),
+                    builder: (context) => ScreeningAgeGate(
+                      instrumentName: 'Vanderbilt',
+                      rangeDescription:
+                          'Ang NICHQ Vanderbilt ay idinisenyo para sa mga '
+                          'batang 4 na taon pataas (48 buwan pataas).',
+                      minMonths: 48,
+                      maxMonths: null,
+                      belowRangeAdvice:
+                          'Masyado pang bata para sa Vanderbilt. Mahirap '
+                          'tiyakin ang mga sintomas ng ADHD bago mag-4 na '
+                          'taon, kaya maaaring hindi maaasahan ang resulta.',
+                      aboveRangeAdvice: '',
+                      screeningBuilder: (context) =>
+                          const ADHDScreeningScreen(),
+                    ),
                   ),
                 );
               },

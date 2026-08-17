@@ -77,8 +77,9 @@ class ScreeningQuestionView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Umaakma sa haba ng tanong; kapag mahaba, saka lang mag-i-scroll.
-              Flexible(
+              // Ang scroll view ang umaabot sa ibaba, hindi ang card — kaya
+              // maikli pa rin ito at nasa dulo ng screen ang mga button.
+              Expanded(
                 child: SingleChildScrollView(
                   child: _buildQuestionCard(context),
                 ),
