@@ -54,7 +54,7 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Progress Report'),
+        title: const Text('Ulat para sa Doktor'),
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,

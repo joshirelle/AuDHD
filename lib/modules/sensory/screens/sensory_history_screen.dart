@@ -5,17 +5,33 @@ import '../../../core/utils/date_formatter.dart';
 import '../../../data/models/sensory_profile_result.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
+import '../../../core/constants/sensory_labels.dart';
+import '../../../widgets/how_to_card.dart';
 import 'sensory_checklist_screen.dart';
 import 'sensory_result_screen.dart';
 
 class SensoryHistoryScreen extends StatelessWidget {
   const SensoryHistoryScreen({super.key});
 
+  static const _howTo = HowToCard(
+    steps: [
+      'Pindutin ang "Bagong Checklist" para simulan ang mga tanong.',
+      'Sagutin ang bawat tanong batay sa tunay mong nakikita sa bahay, hindi '
+          'sa inaasahan mo.',
+      'Basahin ang resulta para malaman kung anong pandama ang hinahanap o '
+          'iniiwasan ng bata.',
+      'Pindutin nang matagal ang isang checklist kung gusto mong burahin.',
+    ],
+    footnote:
+        'Ulitin ito tuwing ilang buwan. Ang pagbabago ng resulta ang '
+        'magsasabi kung ano ang umeepekto sa kanya.',
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kasaysayan ng Sensory Profile'),
+        title: const Text('Kasaysayan ng Pandama'),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
@@ -26,7 +42,7 @@ class SensoryHistoryScreen extends StatelessWidget {
         backgroundColor: AppColors.logoGreen,
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: const Text(
-          'Bagong Assessment',
+          'Bagong Checklist',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
@@ -37,25 +53,32 @@ class SensoryHistoryScreen extends StatelessWidget {
             ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
           if (results.isEmpty) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Text(
-                  'Wala pang naitalang sensory assessment.\n'
-                  'I-click ang "Bagong Assessment" para magsimula.',
+            return ListView(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+              children: const [
+                _howTo,
+                SizedBox(height: 24),
+                Text(
+                  'Wala pang naitalang checklist ng pandama.\n'
+                  'I-click ang "Bagong Checklist" para magsimula.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
-              ),
+              ],
             );
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-            itemCount: results.length,
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+            itemCount: results.length + 1,
             separatorBuilder: (context, index) => const SizedBox(height: 14),
-            itemBuilder: (context, index) =>
-                _buildResultCard(context, results[index], results.length - index),
+            itemBuilder: (context, index) => index == 0
+                ? _howTo
+                : _buildResultCard(
+                    context,
+                    results[index - 1],
+                    results.length - index + 1,
+                  ),
           );
         },
       ),
@@ -69,6 +92,48 @@ class SensoryHistoryScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _confirmDelete(
+    BuildContext context,
+    SensoryProfileResult result,
+  ) async {
+    final isConfirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.card),
+        ),
+        title: const Text(
+          'Burahin ang checklist?',
+          style: TextStyle(fontSize: 17, fontFamily: 'Nunito'),
+        ),
+        content: const Text(
+          'Hindi na ito mababawi, at mawawala rin ito sa ulat para sa doktor.',
+          style: TextStyle(fontSize: 14, fontFamily: 'Nunito'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              'Hindi',
+              style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Burahin',
+              style: TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (isConfirmed == true) {
+      await HiveService.deleteSensoryResult(result.id);
+    }
+  }
+
   Widget _buildResultCard(
     BuildContext context,
     SensoryProfileResult result,
@@ -78,6 +143,7 @@ class SensoryHistoryScreen extends StatelessWidget {
       backgroundColor: AppColors.tintTeal,
       borderColor: AppColors.logoGreen.withValues(alpha: 0.3),
       padding: const EdgeInsets.all(16),
+      onLongPress: () => _confirmDelete(context, result),
       onTap: () {
         Navigator.push(
           context,
@@ -110,7 +176,7 @@ class SensoryHistoryScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Assessment #$number',
+                      'Checklist #$number',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -121,7 +187,7 @@ class SensoryHistoryScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      result.primaryProfile,
+                      SensoryLabels.profile(result.primaryProfile),
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -153,7 +219,7 @@ class SensoryHistoryScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildScorePill(
-                  'Seeking',
+                  'Naghahanap',
                   result.totalSeekingScore,
                   AppColors.butterYellow,
                   AppColors.butterInk,
@@ -162,7 +228,7 @@ class SensoryHistoryScreen extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _buildScorePill(
-                  'Avoiding',
+                  'Umiiwas',
                   result.totalAvoidingScore,
                   AppColors.skyBlueLight,
                   AppColors.skyInk,

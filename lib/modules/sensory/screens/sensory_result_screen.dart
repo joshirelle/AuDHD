@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
+import '../../../core/constants/sensory_labels.dart';
 import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/sensory_profile_result.dart';
@@ -19,14 +20,14 @@ class SensoryResultScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sensory Profile Summary'),
+        title: const Text('Buod ng Pandama'),
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
-            tooltip: 'Export as PDF',
+            tooltip: 'I-export bilang PDF',
             onPressed: _exportPdf,
           ),
         ],
@@ -43,10 +44,10 @@ class SensoryResultScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  const Text('Pangunahing Profile:', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  const Text('Pangunahing katangian:', style: TextStyle(fontSize: 12, color: Colors.grey)),
                   const SizedBox(height: 4),
                   Text(
-                    result.primaryProfile,
+                    SensoryLabels.profile(result.primaryProfile),
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.mintInk),
                   ),
@@ -75,15 +76,15 @@ class SensoryResultScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Visual Score Comparison (Seeking vs Avoiding)
-          const Text('Kabuuan ng Scores (Max: 15)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          const Text('Kabuuang puntos (pinakamataas: 15)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 12),
 
-          _buildScoreBar('Sensory Seeking', result.totalSeekingScore, seekingPct, Colors.orange),
+          _buildScoreBar('Naghahanap ng pandama', result.totalSeekingScore, seekingPct, Colors.orange),
           const SizedBox(height: 10),
-          _buildScoreBar('Sensory Avoiding / Sensitive', result.totalAvoidingScore, avoidingPct, Colors.purple),
+          _buildScoreBar('Umiiwas sa pandama', result.totalAvoidingScore, avoidingPct, Colors.purple),
 
           const SizedBox(height: 24),
-          const Text('Per-Domain Breakdown', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          const Text('Bawat Uri ng Pandama', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 12),
 
           ...result.domainBreakdown.entries.map((e) {
@@ -91,7 +92,7 @@ class SensoryResultScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
                 dense: true,
-                title: Text(e.key, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(SensoryLabels.domain(e.key), style: const TextStyle(fontWeight: FontWeight.bold)),
                 trailing: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
@@ -100,7 +101,7 @@ class SensoryResultScreen extends StatelessWidget {
                     border: Border.all(color: _getDomainColor(e.value)),
                   ),
                   child: Text(
-                    e.value,
+                    SensoryLabels.status(e.value),
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,

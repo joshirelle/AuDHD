@@ -50,8 +50,8 @@ class StarRewardDialog extends StatelessWidget {
               ),
               child: const Text(
                 'Gagawaran ng bituin ang bawat natapos na laro, gawain sa '
-                'iskedyul, at milestone. Gamitin ito bilang pabuya '
-                '(Token System) sa totoong buhay!',
+                'iskedyul, at milestone. Ipunin ito, tapos ipagpalit sa isang '
+                'pabuya sa totoong buhay.',
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColors.textDark,

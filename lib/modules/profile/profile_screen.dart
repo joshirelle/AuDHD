@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const Text('Burahin ang profile?'),
         content: Text(
           'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
-          'Ang mga naitalang screening, behavior log, sensory history, '
+          'Ang mga naitalang behavior log, sensory history, '
           'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
           'pangalan at edad sa mga PDF report.',
         ),
@@ -364,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PIN at Biometric Lock',
+                  'PIN at Fingerprint',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -374,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Protektahan ang datos ng bata gamit ang 4-digit PIN o Face ID / Fingerprint.',
+                  'Protektahan ang datos ng bata gamit ang 4-digit PIN o fingerprint.',
                   style: TextStyle(
                     fontSize: 11,
                     color: AppColors.textDark,

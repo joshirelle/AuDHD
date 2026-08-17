@@ -5,7 +5,7 @@ title: Patakaran sa Privacy
 
 # Patakaran sa Privacy — AuDHD
 
-**Huling na-update:** Agosto 16, 2026
+**Huling na-update:** Agosto 17, 2026
 **Developer:** Josh-Irelle C. Budano
 
 ---
@@ -30,7 +30,6 @@ folder ng telepono:
 |---|---|
 | Profile ng bata | Pangalan, palayaw, kaarawan, kasarian |
 | Litrato ng bata | Kung pipiliin mong magdagdag ng larawan |
-| Resulta ng screening | Sagot at score ng M-CHAT-R at Vanderbilt |
 | Tala ng ugali | Insidente, tagal, tindi, at trigger |
 | Sensory profile | Sagot sa checklist at rekomendasyon |
 | Damdamin at gawain | Mood kada araw, iskedyul, milestones, bituin |
@@ -86,12 +85,10 @@ pagbura.
 
 ## Paalalang medikal
 
-Ang AuDHD ay **paunang screening tool lamang** at **hindi kapantay ng opisyal
-na medikal na diagnosis**. Mangyaring kumonsulta sa lisensyadong Developmental
-Pediatrician.
-
-M-CHAT-R™ © 2009 Robins, Fein, & Barton.
-NICHQ Vanderbilt Assessment Scale © NICHQ & AAP.
+Ang AuDHD ay **kasangkapan lamang sa pag-obserba sa bahay** at **hindi kapantay
+ng opisyal na medikal na diagnosis**. Hindi ito nagbibigay ng resulta ng anumang
+klinikal na pagsusuri, at hindi nito masasabi kung may autism o ADHD ang bata.
+Mangyaring kumonsulta sa lisensyadong Developmental Pediatrician.
 
 ---
 

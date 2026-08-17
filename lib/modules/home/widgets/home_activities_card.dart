@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
-import '../../milestones/screens/milestones_screen.dart';
+import '../../sensory/screens/home_activities_screen.dart';
 
-/// Idinisenyo para sa kalahating hanay ng grid sa home, katabi ng activities card.
-class MilestonesCard extends StatelessWidget {
-  const MilestonesCard({super.key});
+/// Idinisenyo para sa kalahating hanay ng grid sa home, katabi ng milestones card.
+class HomeActivitiesCard extends StatelessWidget {
+  const HomeActivitiesCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return KikoCard(
-      backgroundColor: AppColors.butterYellow,
+      backgroundColor: AppColors.mintGreen,
       padding: const EdgeInsets.all(16),
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MilestonesScreen()),
+          MaterialPageRoute(builder: (context) => const HomeActivitiesScreen()),
         );
       },
       child: Column(
@@ -28,14 +28,14 @@ class MilestonesCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.stairs_rounded,
-              color: AppColors.warning,
+              Icons.sports_esports_rounded,
+              color: AppColors.logoGreen,
               size: 28,
             ),
           ),
           const SizedBox(height: 16),
           const Text(
-            'MGA MILESTONE\nNG PAGLAKI',
+            'MGA GAWAIN\nSA BAHAY',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -46,7 +46,7 @@ class MilestonesCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Subaybayan ang paglaki at mga bagong kakayahan ng bata.',
+            'Mga larong pansensory na kayang gawin araw-araw sa bahay.',
             style: TextStyle(
               fontSize: 11,
               color: AppColors.textDark,

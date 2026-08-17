@@ -233,6 +233,10 @@ class HiveService {
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 
+  static Future<void> deleteSensoryResult(String id) async {
+    await getSensoryBox().delete(id);
+  }
+
   static Box<BehaviorLog> getBehaviorBox() =>
       Hive.box<BehaviorLog>(_behaviorBoxName);
 
@@ -244,6 +248,10 @@ class HiveService {
   static List<BehaviorLog> getAllLogs() {
     final box = getBehaviorBox();
     return box.values.toList()..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+  }
+
+  static Future<void> deleteLog(String id) async {
+    await getBehaviorBox().delete(id);
   }
 
   /// I-save ang bagong screening result

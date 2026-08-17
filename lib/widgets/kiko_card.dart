@@ -9,6 +9,7 @@ class KikoCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Color? borderColor;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   const KikoCard({
     super.key,
@@ -17,6 +18,7 @@ class KikoCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.borderColor,
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -40,10 +42,11 @@ class KikoCard extends StatelessWidget {
       child: child,
     );
 
-    if (onTap == null) return card;
+    if (onTap == null && onLongPress == null) return card;
 
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       borderRadius: BorderRadius.circular(AppRadius.card),
       child: card,
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/how_to_card.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../home/widgets/star_badge_widget.dart';
 import '../models/sensory_activity.dart';
@@ -79,7 +80,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Activities'),
+        title: const Text('Mga Gawain sa Bahay'),
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
@@ -110,6 +111,21 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       children: [
+        const HowToCard(
+          steps: [
+            'Pindutin ang gawain para mabasa ang paliwanag at ang paalala sa '
+                'kaligtasan bago kayo magsimula.',
+            'May timer ang bawat gawain, kaya hindi mo na kailangang bantayan '
+                'ang oras. Samahan mo lang ang bata.',
+            'Kapag tapos na, matsetsek ito at may bituing madadagdag sa bata.',
+          ],
+          footnote:
+              'Hindi kailangang matapos lahat sa isang araw. Mas malaki ang '
+              'naitutulong ng maikli pero tuloy-tuloy kaysa sa mahaba pero '
+              'paminsan-minsan.',
+        ),
+        const SizedBox(height: 16),
+
         WeeklyDateStripWidget(
           selectedDate: _selectedDate,
           onDateSelected: _onDateSelected,
@@ -130,7 +146,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
 
           _buildSectionHeader(
             icon: Icons.sports_esports_rounded,
-            title: 'Mga Larong Sensory Ngayong Araw',
+            title: 'Mga Gawain Ngayong Araw',
           ),
           const SizedBox(height: 12),
           for (final activity in _daily) ...[

@@ -35,17 +35,17 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   static const List<OnboardingSlide> _slides = [
     OnboardingSlide(
-      icon: Icons.fact_check_rounded,
+      icon: Icons.volunteer_activism_rounded,
       background: AppColors.mintGreen,
       iconColor: AppColors.logoGreen,
-      title: 'Klinikal na\nPagsusuri',
+      title: 'Gabay sa\nBahay',
       body:
-          'Dalawang pamantayang ginagamit ng mga doktor, kayang sagutan mo mismo '
-          'sa bahay.',
+          'Para sa magulang na gustong gabayan ang anak araw-araw, kahit malayo '
+          'o mahal ang therapy center.',
       highlights: [
-        'M-CHAT-R para sa autism (16\u201330 buwan)',
-        'Vanderbilt para sa ADHD (4 taon pataas)',
-        'Agad na resulta at antas ng panganib',
+        'Buo ang gamit kahit walang internet',
+        'May paliwanag sa bawat bahagi kung ano ang gagawin',
+        'Tulong sa pag-obserba, hindi paraan ng pag-diagnose',
       ],
     ),
     OnboardingSlide(
@@ -71,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           'Alamin kung ano ang nag-uudyok ng meltdown, at kung anong laro ang '
           'nakakatulong sa bata.',
       highlights: [
-        'Sensory profile sa 5 domain',
+        'Sensory profile sa 5 uri ng pandama',
         'Mga larong pambahay na may timer',
         'Tala ng insidente gamit ang ABC model',
       ],
@@ -85,7 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           'Subaybayan ang paglaki, at gawing pabuya sa totoong buhay ang bawat '
           'tagumpay.',
       highlights: [
-        'Milestones sa 4 na domain ng paglaki',
+        'Milestones sa 4 na bahagi ng paglaki',
         'Bituin kada natapos na gawain',
         'Ikaw ang magtatakda ng mga pabuya',
       ],
@@ -156,10 +156,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 opacity: isLast ? 0 : 1,
                 child: TextButton(
                   onPressed: isLast ? null : _finish,
-                  child: Text(
+                  child: const Text(
                     'Laktawan',
                     style: TextStyle(
-                      color: Colors.grey.shade600,
+                      color: AppColors.textMuted,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito',
                     ),
@@ -244,9 +244,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 12),
           Text(
             slide.body,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
-              color: Colors.grey.shade700,
+              color: AppColors.textMuted,
               height: 1.5,
               fontFamily: 'Nunito',
             ),
@@ -308,7 +308,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             decoration: BoxDecoration(
               color: i == _currentIndex
                   ? AppColors.logoGreen
-                  : Colors.grey.shade300,
+                  : AppColors.divider,
               borderRadius: BorderRadius.circular(4),
             ),
           ),

@@ -10,7 +10,6 @@ import 'pdf_report_theme.dart';
 
 class PdfExportService {
   static const String _unknown = PdfReportTheme.unknown;
-  static const PdfColor _headerColor = PdfReportTheme.headerColor;
 
   static Future<Uint8List> generateScreeningReport(
     ScreeningResult result,
@@ -34,7 +33,6 @@ class PdfExportService {
         : _formatAge(birthDate, result.date);
 
     // Standard styling setup
-    final headerColor = _headerColor;
     final isHighRisk = result.riskLevel.contains('HIGH');
 
     pdf.addPage(
@@ -107,10 +105,8 @@ class PdfExportService {
             pw.SizedBox(height: 10),
 
             // Answers Table
-            pw.TableHelper.fromTextArray(
+            PdfReportTheme.dataTable(
               headers: ['#', 'Tanong / Item', 'Sagot', 'Marka'],
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-              headerDecoration: pw.BoxDecoration(color: headerColor),
               cellHeight: 24,
               cellAlignments: {
                 0: pw.Alignment.center,
@@ -119,10 +115,11 @@ class PdfExportService {
                 3: pw.Alignment.center,
               },
               columnWidths: {
-                0: const pw.FixedColumnWidth(30),
+                0: PdfReportTheme.narrowColumn,
                 1: const pw.FlexColumnWidth(),
+                // Kasya ang pinakamahabang sagot na "Hindi Kailanman".
                 2: const pw.FixedColumnWidth(80),
-                3: const pw.FixedColumnWidth(40),
+                3: PdfReportTheme.narrowColumn,
               },
               data: rows
                   .map(
@@ -234,11 +231,8 @@ class PdfExportService {
             ),
             pw.SizedBox(height: 10),
 
-            pw.TableHelper.fromTextArray(
+            PdfReportTheme.dataTable(
               headers: ['Petsa / Oras', 'A - B - C', 'Tindi', 'Min'],
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-              headerDecoration: const pw.BoxDecoration(color: _headerColor),
-              cellStyle: const pw.TextStyle(fontSize: 9),
               cellAlignments: {
                 0: pw.Alignment.topLeft,
                 1: pw.Alignment.topLeft,
@@ -246,10 +240,10 @@ class PdfExportService {
                 3: pw.Alignment.center,
               },
               columnWidths: {
-                0: const pw.FixedColumnWidth(72),
+                0: PdfReportTheme.labelColumn,
                 1: const pw.FlexColumnWidth(),
-                2: const pw.FixedColumnWidth(36),
-                3: const pw.FixedColumnWidth(30),
+                2: PdfReportTheme.narrowColumn,
+                3: PdfReportTheme.narrowColumn,
               },
               data: sorted.map((log) {
                 final abc = StringBuffer()
@@ -345,10 +339,8 @@ class PdfExportService {
               style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold),
             ),
             pw.SizedBox(height: 10),
-            pw.TableHelper.fromTextArray(
+            PdfReportTheme.dataTable(
               headers: ['Sensory Domain', 'Resulta'],
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-              headerDecoration: const pw.BoxDecoration(color: _headerColor),
               cellHeight: 24,
               cellAlignments: {
                 0: pw.Alignment.centerLeft,
@@ -374,11 +366,8 @@ class PdfExportService {
               style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
             ),
             pw.SizedBox(height: 10),
-            pw.TableHelper.fromTextArray(
+            PdfReportTheme.dataTable(
               headers: ['Domain', 'Tanong', 'Uri', 'Sagot'],
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-              headerDecoration: const pw.BoxDecoration(color: _headerColor),
-              cellStyle: const pw.TextStyle(fontSize: 9),
               cellAlignments: {
                 0: pw.Alignment.topLeft,
                 1: pw.Alignment.topLeft,
@@ -386,10 +375,10 @@ class PdfExportService {
                 3: pw.Alignment.center,
               },
               columnWidths: {
-                0: const pw.FixedColumnWidth(66),
+                0: PdfReportTheme.labelColumn,
                 1: const pw.FlexColumnWidth(),
-                2: const pw.FixedColumnWidth(52),
-                3: const pw.FixedColumnWidth(34),
+                2: PdfReportTheme.mediumColumn,
+                3: PdfReportTheme.narrowColumn,
               },
               data: SensoryConstants.questions
                   .map(

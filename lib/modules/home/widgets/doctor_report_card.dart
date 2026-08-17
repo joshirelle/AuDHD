@@ -38,7 +38,7 @@ class DoctorReportCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PROGRESS REPORT FOR DOCTOR',
+                  'ULAT PARA SA DOKTOR',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -48,7 +48,7 @@ class DoctorReportCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Tingnan at i-export ang summary report para sa DevPed.',
+                  'Buuin ang PDF na dadalhin mo sa developmental pediatrician.',
                   style: TextStyle(
                     fontSize: 11,
                     color: AppColors.textDark,

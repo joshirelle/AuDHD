@@ -1,53 +1,44 @@
-name: kiko_app
-description: A pediatric screening and behavior tracking app for Pinoy families.
-publish_to: 'none'
-version: 1.0.0+1
+# AuDHD
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+Offline na gabay sa therapy sa bahay para sa mga magulang ng batang may autism
+o ADHD. Ginawa para sa mga pamilyang Pilipino na malayo o hindi kayang bayaran
+ang therapy center.
 
-dependencies:
-  flutter:
-    sdk: flutter
+Hindi ito nagsasabi kung may autism o ADHD ang bata. Tulong ito sa pag-obserba
+sa bahay at sa pagkukwento sa doktor.
 
-  # State Management & Storage
-  provider: ^6.1.2
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
+## Laman
 
-  # Security & Biometrics
-  local_auth: ^2.3.0
-  flutter_secure_storage: ^9.2.2
+- Mga gawaing pansensory na may timer, paliwanag, at paalala sa kaligtasan
+- Visual schedule na may larawan para sa mga gawain sa maghapon
+- Tala ng ugali: ang nangyari bago, ang ginawa ng bata, at ang nangyari pagkatapos
+- Checklist ng pandama at ang buod nito
+- Milestone checklist ayon sa edad
+- Mood kada araw at sistema ng bituing pabuya
+- PDF na ulat na dadalhin sa developmental pediatrician
 
-  # PDF Generation
-  pdf: ^3.11.1
-  printing: ^5.13.1
+## Privacy
 
-  # UI Helper
-  cupertino_icons: ^1.0.8
+Walang `INTERNET` permission ang app. Walang account, walang ads, walang
+analytics. Nananatili sa telepono ang lahat ng datos. Tingnan ang
+[Patakaran sa Privacy](docs/privacy-policy.md).
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^4.0.0
-  hive_generator: ^2.0.1
-  build_runner: ^2.4.10
+## Pagbuo
 
-flutter:
-  uses-material-design: true
+```bash
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run
+```
 
-  assets:
-    - assets/images/
-    - assets/json/
+Ang release build ay nangangailangan ng `android/key.properties`, na hindi
+kasama sa repo na ito.
 
-  fonts:
-    - family: Fredoka
-      fonts:
-        - asset: assets/fonts/Fredoka-Bold.ttf
-          weight: 700
-    - family: Nunito
-      fonts:
-        - asset: assets/fonts/Nunito-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Nunito-Regular.ttf
-          weight: 400
+## Screening
+
+Hindi kasama sa app ang screening. Tingnan ang [NOTICE.md](NOTICE.md).
+
+## Lisensya
+
+Tingnan ang [NOTICE.md](NOTICE.md) para sa mga materyal na hindi pag-aari ng
+proyektong ito.

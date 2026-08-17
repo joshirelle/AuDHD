@@ -1,8 +1,8 @@
 enum MilestoneDomain {
-  grossMotor('Gross Motor'),
-  fineMotor('Fine Motor'),
-  speechLanguage('Speech / Language'),
-  socialEmotional('Social-Emotional');
+  grossMotor('Malalaking Galaw'),
+  fineMotor('Maliliit na Galaw'),
+  speechLanguage('Pagsasalita'),
+  socialEmotional('Pakikisalamuha');
 
   const MilestoneDomain(this.label);
 

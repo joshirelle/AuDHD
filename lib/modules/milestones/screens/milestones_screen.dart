@@ -5,6 +5,7 @@ import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_formatter.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/how_to_card.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../../widgets/star_burst_overlay.dart';
 import '../../home/widgets/star_badge_widget.dart';
@@ -35,7 +36,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Developmental Milestones'),
+        title: const Text('Mga Milestone ng Paglaki'),
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
@@ -58,6 +59,20 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
             children: [
+              const HowToCard(
+                steps: [
+                  'Piliin sa itaas kung aling bahagi ng paglaki ang gusto mong '
+                      'tingnan.',
+                  'Tsekan lamang ang mga nagagawa na ng bata nang kusa, hindi '
+                      'ang mga natutulungan mo pa.',
+                  'Balikan ito paminsan-minsan. Nagbabago ang kakayahan ng bata '
+                      'sa paglipas ng panahon.',
+                ],
+                footnote:
+                    'Hindi ito paligsahan. Magkakaiba ang bilis ng bawat bata, '
+                    'at ang hindi pa natsetsekan ay hindi kabiguan.',
+              ),
+              const SizedBox(height: 18),
               _buildFilterChips(),
               const SizedBox(height: 18),
               _buildProgressCard(achieved, visible.length),
@@ -137,7 +152,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            _filter == null ? 'Lahat ng domain' : _filter!.label,
+            _filter == null ? 'Lahat ng bahagi' : _filter!.label,
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey.shade700,

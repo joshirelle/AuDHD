@@ -169,7 +169,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
               activeThumbColor: AppColors.logoGreen,
               contentPadding: EdgeInsets.zero,
               title: const Text(
-                'Gamitin ang fingerprint o Face ID',
+                'Gamitin ang fingerprint',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

@@ -84,7 +84,7 @@ class CheckableActivityCard extends StatelessWidget {
                 ActivityTargetStyle.badge(activity.target),
                 const SizedBox(height: 6),
                 Text(
-                  '${activity.estimatedMinutes} mins - ${activity.domainLabel}',
+                  '${activity.durationLabel} - ${activity.domainLabel}',
                   style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textDark,

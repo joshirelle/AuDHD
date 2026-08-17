@@ -10,9 +10,9 @@ import '../profile/profile_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
 import 'widgets/doctor_report_card.dart';
+import 'widgets/home_activities_card.dart';
 import 'widgets/home_tour_guide.dart';
 import 'widgets/milestones_card.dart';
-import 'widgets/screening_card.dart';
 import 'widgets/sensory_profile_card.dart';
 import 'widgets/star_badge_widget.dart';
 import 'widgets/visual_schedule_card.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey _starKey = GlobalKey();
-  final GlobalKey _screeningKey = GlobalKey();
+  final GlobalKey _activitiesKey = GlobalKey();
   final GlobalKey _navKey = GlobalKey();
 
   int _selectedNavIndex = 0;
@@ -51,18 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
             'Pindutin para makita ang mga mungkahing pabuya sa bata.',
       ),
       TourStep(
-        targetKey: _screeningKey,
-        title: 'Simulan sa pagsusuri',
+        targetKey: _activitiesKey,
+        title: 'Mga gawain sa bahay',
         body:
-            'Dito matatagpuan ang M-CHAT-R at Vanderbilt. Isang tanong bawat '
-            'pahina, may larawan at halimbawa kung paano ito sa bahay.',
+            'Dito ang mga larong pansensory na kayang gawin araw-araw. May '
+            'timer ang bawat isa at may paliwanag kung paano ito ginagawa.',
       ),
       TourStep(
         targetKey: _navKey,
         title: 'Tatlong pangunahing bahagi',
         body:
-            'Bahay para sa buod, Activity para sa mga larong sensory, at '
-            'Profile para sa detalye ng bata at sa PIN lock.',
+            'Bahay para sa buod, Laro para sa mga gawain sa bahay, at Profile '
+            'para sa detalye ng bata at sa PIN lock.',
       ),
     ]);
   }
@@ -98,13 +98,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 14),
 
-              // 4. Two-Column Grid Cards (Screening & Milestones)
-              Row(
-                children: [
-                  Expanded(child: ScreeningCard(key: _screeningKey)),
-                  const SizedBox(width: 14),
-                  const Expanded(child: MilestonesCard()),
-                ],
+              // 4. Two-Column Grid Cards (Home Activities & Milestones)
+              // Pinapantay ang taas ng dalawang card para walang puwang sa gilid.
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: HomeActivitiesCard(key: _activitiesKey)),
+                    const SizedBox(width: 14),
+                    const Expanded(child: MilestonesCard()),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
 

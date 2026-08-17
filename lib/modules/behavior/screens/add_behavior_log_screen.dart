@@ -46,11 +46,11 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
   }
 
   static const List<String> _stepTags = [
-    'ANTECEDENT (A)',
-    'BEHAVIOR (B)',
-    'CONSEQUENCE (C)',
-    'SENSORY DOMAIN TAGS',
-    'SEVERITY / INTENSITY',
+    'A - BAGO MANGYARI',
+    'B - ANG GINAWA NG BATA',
+    'C - PAGKATAPOS',
+    'URI NG PANDAMA',
+    'GAANO KATINDI',
     'TAGAL',
     'KARAGDAGANG TALA',
   ];
@@ -152,7 +152,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Matagumpay na naitala ang Behavior Log!'),
+        content: Text('Naitala na ang ugali.'),
         backgroundColor: AppColors.logoGreen,
       ),
     );
@@ -167,11 +167,11 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
   }
 
   String _getSeverityLabel(double val) {
-    if (val == 1) return '1 - Bahagya (Mild)';
-    if (val == 2) return '2 - Katamtaman (Mild-Moderate)';
-    if (val == 3) return '3 - Moderato (Moderate)';
-    if (val == 4) return '4 - Malubha (Severe)';
-    return '5 - Napakamalubha (Critical Meltdown)';
+    if (val == 1) return '1 - Bahagya lang';
+    if (val == 2) return '2 - Bahagya hanggang katamtaman';
+    if (val == 3) return '3 - Katamtaman';
+    if (val == 4) return '4 - Malubha';
+    return '5 - Napakalubha';
   }
 
   @override
@@ -231,7 +231,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                     ),
                   ),
                   child: Text(
-                    isLastStep ? 'I-SAVE ANG BEHAVIOR LOG' : 'SUSUNOD',
+                    isLastStep ? 'I-SAVE ANG TALA' : 'SUSUNOD',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

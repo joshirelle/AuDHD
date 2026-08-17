@@ -5,14 +5,13 @@ title: AuDHD
 
 # AuDHD
 
-Offline na screening at gabay para sa mga magulang ng batang may autism o ADHD.
+Offline na gabay sa therapy sa bahay para sa mga magulang ng batang may autism
+o ADHD.
 
 Walang account, walang server, at walang internet na kailangan. Lahat ng datos
 ay nananatili sa telepono mo.
 
+Hindi ito nagsasabi kung may autism o ADHD ang bata. Tulong ito sa pag-obserba
+at sa pagkukwento sa doktor.
+
 - [Patakaran sa Privacy](privacy-policy.html)
-
----
-
-M-CHAT-R™ © 2009 Robins, Fein, &amp; Barton.
-NICHQ Vanderbilt Assessment Scale © NICHQ &amp; AAP.

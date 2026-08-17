@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/models/schedule_task.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/how_to_card.dart';
 import '../../home/widgets/star_badge_widget.dart';
 import '../widgets/add_schedule_task_dialog.dart';
 import '../widgets/schedule_style.dart';
@@ -148,6 +149,22 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
+          child: HowToCard(
+            steps: [
+              'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at ang '
+                  'oras ng araw kung kailan ito ginagawa.',
+              'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
+                  'niya kung ano ang susunod na mangyayari.',
+              'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
+                  'hindi ikaw.',
+            ],
+            footnote:
+                'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
+                'nananatili ang listahan ng gawain.',
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           child: _buildFilters(),

@@ -34,7 +34,7 @@ class SensoryProgressBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$completedCount sa $totalCount Sensory Games ang Natapos Ngayon!',
+                  '$completedCount sa $totalCount na gawain ang natapos ngayon!',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

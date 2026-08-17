@@ -42,7 +42,7 @@ class SensoryProfileCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Sensory Profile Checklist',
+                  'Checklist ng Pandama',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class SensoryProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'Alamin kung Sensory Seeking o Avoiding ang bata sa 5 sensory domains.',
+                  'Alamin kung naghahanap o umiiwas ang bata sa bawat uri ng pandama.',
                   style: TextStyle(fontSize: 12, color: Colors.black54),
                 ),
               ],

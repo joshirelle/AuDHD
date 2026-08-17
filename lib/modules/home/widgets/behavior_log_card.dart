@@ -40,7 +40,7 @@ class BehaviorLogCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Tala ng Ugali (ABC Log)',
+                  'Tala ng Ugali',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -49,7 +49,7 @@ class BehaviorLogCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'Mag-tala ng Antecedent, Behavior, at Consequence para sa OT/ABA.',
+                  'Itala ang nangyari bago, ang ginawa ng bata, at ang nangyari pagkatapos.',
                   style: TextStyle(fontSize: 12, color: Colors.black54),
                 ),
               ],

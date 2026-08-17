@@ -6,6 +6,16 @@ import '../utils/age_formatter.dart';
 class PdfReportTheme {
   static const String unknown = 'Hindi nakatala';
   static const PdfColor headerColor = PdfColors.teal800;
+  static const double tableFontSize = 9;
+
+  /// Sapat para sa bilang at maikling sagot gaya ng "Tindi", "Min", o "Sagot".
+  static const pw.TableColumnWidth narrowColumn = pw.FixedColumnWidth(48);
+
+  /// Sapat para sa isang salita gaya ng label ng mood o uri.
+  static const pw.TableColumnWidth mediumColumn = pw.FixedColumnWidth(62);
+
+  /// Sapat para sa petsa at oras na magkasunod na linya.
+  static const pw.TableColumnWidth labelColumn = pw.FixedColumnWidth(76);
 
   static String nameOr(String? childName) =>
       (childName != null && childName.trim().isNotEmpty)
@@ -116,20 +126,37 @@ class PdfReportTheme {
         color: PdfColors.grey100,
         borderRadius: pw.BorderRadius.circular(6),
       ),
-      child: pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(
-            'PAALALA: Ang ulat na ito ay pampasimulang screening lamang batay sa obserbasyon ng magulang at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
-            style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
-          ),
-          pw.SizedBox(height: 6),
-          pw.Text(
-            'M-CHAT-R\u2122 \u00a9 2009 Robins, Fein, & Barton. NICHQ Vanderbilt Assessment Scale \u00a9 NICHQ & AAP.',
-            style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
-          ),
-        ],
+      child: pw.Text(
+        'PAALALA: Ang ulat na ito ay tala lamang ng obserbasyon ng magulang sa bahay at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
+        style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
       ),
+    );
+  }
+
+  /// Iisang ayos ng talahanayan sa lahat ng PDF. Pareho ang laki ng titik sa
+  /// header at sa laman, kaya hindi na napuputol ang maiikling pamagat.
+  static pw.Widget dataTable({
+    required List<String> headers,
+    required List<List<dynamic>> data,
+    Map<int, pw.Alignment>? cellAlignments,
+    Map<int, pw.TableColumnWidth>? columnWidths,
+    pw.OnCellDecoration? cellDecoration,
+    double cellHeight = 0,
+  }) {
+    return pw.TableHelper.fromTextArray(
+      headers: headers,
+      data: data,
+      headerStyle: pw.TextStyle(
+        fontSize: tableFontSize,
+        fontWeight: pw.FontWeight.bold,
+        color: PdfColors.white,
+      ),
+      headerDecoration: const pw.BoxDecoration(color: headerColor),
+      cellStyle: const pw.TextStyle(fontSize: tableFontSize),
+      cellHeight: cellHeight,
+      cellAlignments: cellAlignments,
+      columnWidths: columnWidths,
+      cellDecoration: cellDecoration,
     );
   }
 

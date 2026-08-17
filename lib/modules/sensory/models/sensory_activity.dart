@@ -1,7 +1,9 @@
+import '../../../core/constants/sensory_labels.dart';
+
 enum ActivityTarget {
-  autismSensory('Sensory & Autism'),
-  adhdFocus('Pokus & ADHD'),
-  audhdCombined('AuDHD');
+  autismSensory('Pandama at Autism'),
+  adhdFocus('Pokus at ADHD'),
+  audhdCombined('Pareho');
 
   const ActivityTarget(this.label);
 
@@ -33,13 +35,15 @@ class SensoryActivity {
     required this.safetyNoteTagalog,
   });
 
-  /// Halimbawa: '10 mins'
-  String get durationLabel => '$estimatedMinutes mins';
+  /// Halimbawa: '10 minuto'
+  String get durationLabel => '$estimatedMinutes minuto';
 
-  /// Halimbawa: 'Proprioceptive'
+  /// Halimbawa: 'Lakas at presyon'
   String get domainLabel => domain.isEmpty
       ? domain
-      : '${domain[0].toUpperCase()}${domain.substring(1)}';
+      : SensoryLabels.domain(
+          '${domain[0].toUpperCase()}${domain.substring(1)}',
+        );
 
   bool get isSeeking => targetProfile == 'seeking';
   bool get isAvoiding => targetProfile == 'avoiding';

@@ -1,8 +1,26 @@
 # NOTICE
 
-AuDHD includes two clinical screening instruments that are **not** the work of
-this project and are **not** covered by this repository's license. They remain
-the property of their respective copyright holders.
+AuDHD contains source code for two clinical screening instruments that are
+**not** the work of this project and are **not** covered by this repository's
+license. They remain the property of their respective copyright holders.
+
+**They are not included in the published application.**
+
+---
+
+## Current status
+
+The screening feature is **disabled and not distributed**. As of version
+1.0.0+2:
+
+- The screening screens are unreachable from the user interface.
+- The item text under `assets/json/` is **not bundled** into the released app
+  (it is excluded from the `assets:` list in `pubspec.yaml`).
+- No scoring, result, or report produced by these instruments is shown to users.
+
+The source remains in this repository under `lib/modules/screening/` so that the
+feature can be restored **if and when permission is granted**. Until then it
+stays disabled.
 
 ---
 
@@ -22,21 +40,21 @@ Official source: https://www.nichq.org
 
 ---
 
-## How they are used here
+## How they were used
 
 - AuDHD is a **free** application. There is no purchase, subscription,
   advertising, or data monetisation of any kind.
-- The instruments are presented to **parents and caregivers** as a preliminary
+- The instruments were presented to **parents and caregivers** as a preliminary
   screening aid, never as a diagnostic instrument. A non-diagnostic disclaimer
-  is shown before screening begins, on every result screen, and in every
+  was shown before screening began, on every result screen, and in every
   exported report.
-- Scoring follows the published thresholds. No item wording has been added or
+- Scoring followed the published thresholds. No item wording was added or
   removed.
-- Attribution is displayed inside the application and on every generated PDF.
+- Attribution was displayed inside the application and on every generated PDF.
 
 ## Translation
 
-The Filipino (Tagalog) wording used in this application is an **unofficial
+The Filipino (Tagalog) wording retained in this repository is an **unofficial
 translation** prepared for this project. It has **not** been validated,
 back-translated, or approved by the copyright holders, and it has not been
 psychometrically validated in a Filipino population. Published cut-off scores

@@ -5,23 +5,39 @@ import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
+import '../../../widgets/how_to_card.dart';
 import 'add_behavior_log_screen.dart';
 
 class BehaviorHistoryScreen extends StatelessWidget {
   const BehaviorHistoryScreen({super.key});
 
+  static const _howTo = HowToCard(
+    steps: [
+      'Kapag may nangyaring hindi inaasahan, itala agad habang sariwa pa sa '
+          'isip.',
+      'Sagutin ang tatlo: ang nangyari bago (A), ang mismong ginawa ng bata '
+          '(B), at ang nangyari pagkatapos (C).',
+      'Piliin mula sa listahan kung ano ang posibleng nag-udyok nito.',
+      'Pindutin nang matagal ang isang tala kung mali ito at gusto mong burahin.',
+    ],
+    footnote:
+        'Hindi mo kailangang magtala araw-araw. Sa loob ng ilang linggo, '
+        'lilitaw ang paulit-ulit na sanhi, at iyon ang pinakamahalagang '
+        'maipakita sa doktor.',
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Talaan ng Kilos at Triggers'),
+        title: const Text('Talaan ng Ugali'),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         actions: [
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
-            tooltip: 'Export as PDF',
+            tooltip: 'I-export bilang PDF',
             onPressed: () => _exportPdf(context),
           ),
         ],
@@ -37,7 +53,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
         backgroundColor: AppColors.logoGreen,
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: const Text(
-          'Mag-tala ng Log',
+          'Magdagdag ng Tala',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
@@ -48,21 +64,27 @@ class BehaviorHistoryScreen extends StatelessWidget {
             ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
           if (logs.isEmpty) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Text(
-                  'Wala pang naitalang behavior log.\nI-click ang "+" button para magdagdag.',
+            return ListView(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
+              children: const [
+                _howTo,
+                SizedBox(height: 24),
+                Text(
+                  'Wala ka pang naitatalang ugali.\n'
+                  'I-click ang "Magdagdag ng Tala" para magsimula.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
-              ),
+              ],
             );
           }
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 90),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
             children: [
+              _howTo,
+              const SizedBox(height: 20),
+
               // 1. SENSORY TRIGGER ANALYTICS SUMMARY
               _buildSensorySummaryCard(logs),
               const SizedBox(height: 24),
@@ -74,7 +96,12 @@ class BehaviorHistoryScreen extends StatelessWidget {
               const SizedBox(height: 14),
 
               // 2. INCIDENT CARDS LIST
-              ...logs.map((log) => _buildBehaviorCard(context, log)),
+              ...logs.map(
+                (log) => GestureDetector(
+                  onLongPress: () => _confirmDelete(context, log),
+                  child: _buildBehaviorCard(context, log),
+                ),
+              ),
             ],
           );
         },
@@ -144,7 +171,7 @@ class BehaviorHistoryScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Top Sensory Triggers',
+                  'Pinakamadalas na sanhi',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.logoGreen),
                 ),
                 Text(
@@ -250,11 +277,11 @@ class BehaviorHistoryScreen extends StatelessWidget {
             const SizedBox(height: 14),
 
             // ABC Summary
-            _buildAbcRow('A (Antecedent):', log.antecedent),
+            _buildAbcRow('Bago mangyari:', log.antecedent),
             const SizedBox(height: 8),
-            _buildAbcRow('B (Behavior):', log.behavior),
+            _buildAbcRow('Ang ginawa:', log.behavior),
             const SizedBox(height: 8),
-            _buildAbcRow('C (Consequence):', log.consequence),
+            _buildAbcRow('Pagkatapos:', log.consequence),
 
             if (log.sensoryTriggers.isNotEmpty) ...[
               const SizedBox(height: 14),
@@ -282,8 +309,44 @@ class BehaviorHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAbcRow(String label, String value) {
-    return RichText(
+  Future<void> _confirmDelete(BuildContext context, BehaviorLog log) async {
+    final isConfirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.card),
+        ),
+        title: const Text(
+          'Burahin ang tala?',
+          style: TextStyle(fontSize: 17, fontFamily: 'Nunito'),
+        ),
+        content: const Text(
+          'Hindi na ito mababawi, at mawawala rin ito sa ulat para sa doktor.',
+          style: TextStyle(fontSize: 14, fontFamily: 'Nunito'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              'Hindi',
+              style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Burahin',
+              style: TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (isConfirmed == true) await HiveService.deleteLog(log.id);
+  }
+
+  Widget _buildAbcRow(String label, String value) {    return RichText(
       text: TextSpan(
         style: const TextStyle(fontSize: 13, color: AppColors.textDark, height: 1.35),
         children: [

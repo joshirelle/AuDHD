@@ -14,6 +14,13 @@ class AppColors {
   static const Color background = Color(0xFFF4F1EA);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color textDark = Color(0xFF3A3630);
+
+  /// Pangalawang teksto. Malamig ang tono para tumugma sa background, at
+  /// pasado pa rin sa 4.5:1 laban dito at sa puti.
+  static const Color textMuted = Color(0xFF5F6B70);
+
+  /// Guhit at hindi aktibong palamuti — hindi ito para sa teksto.
+  static const Color divider = Color(0xFFDFD9CE);
   static const Color logoGreen = Color(0xFF4F6F52);
   
   // --- Pastel na palaman ---
