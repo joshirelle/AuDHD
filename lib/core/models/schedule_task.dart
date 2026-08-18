@@ -42,13 +42,56 @@ class ScheduleTask {
   @HiveField(4)
   final int starReward;
 
+  /// Minuto mula hatinggabi, hal. `450` para sa 7:30 AM.
+  ///
+  /// `null` kapag walang tiyak na oras — iyon ang lahat ng default, at ang
+  /// mga lumang gawain na naitala bago ito idagdag.
+  @HiveField(5)
+  final int? minuteOfDay;
+
   const ScheduleTask({
     required this.id,
     required this.titleTagalog,
     required this.iconKey,
     required this.timeOfDay,
     this.starReward = 1,
+    this.minuteOfDay,
   });
+
+  /// Halimbawa: `7:30 AM`. Blangko kapag walang tiyak na oras.
+  String get timeLabel {
+    final minutes = minuteOfDay;
+    if (minutes == null) return '';
+
+    final hour24 = minutes ~/ 60;
+    final minute = (minutes % 60).toString().padLeft(2, '0');
+    final suffix = hour24 < 12 ? 'AM' : 'PM';
+    final hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12;
+    return '$hour12:$minute $suffix';
+  }
+
+  /// Para sa kopya ng datos. Pangalan ng enum ang isinusulat, hindi index,
+  /// para hindi masira kapag nadagdagan ang `ScheduleTimeOfDay`.
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'titleTagalog': titleTagalog,
+    'iconKey': iconKey,
+    'timeOfDay': timeOfDay.name,
+    'starReward': starReward,
+    'minuteOfDay': minuteOfDay,
+  };
+
+  factory ScheduleTask.fromJson(Map<String, dynamic> json) => ScheduleTask(
+    id: json['id'] as String,
+    titleTagalog: json['titleTagalog'] as String? ?? '',
+    iconKey: json['iconKey'] as String? ?? 'star',
+    timeOfDay: ScheduleTimeOfDay.values.firstWhere(
+      (e) => e.name == json['timeOfDay'],
+      orElse: () => ScheduleTimeOfDay.morning,
+    ),
+    starReward: json['starReward'] as int? ?? 1,
+    minuteOfDay: json['minuteOfDay'] as int?,
+  );
 
   /// Nasa code at hindi sa Hive: kapag naisulat sa box ang mga ito sa unang
   /// pagbukas, hindi na maaabot ng susunod na bersyon ng app ang mga lumang user.

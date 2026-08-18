@@ -42,4 +42,32 @@ class BehaviorLog extends HiveObject {
     required this.durationMinutes,
     this.notes,
   });
+
+  /// Para sa kopya ng datos. Iniiwan sa Ingles ang mga susi para mabasa pa rin
+  /// ang lumang file kahit magbago ang wika ng app.
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'timestamp': timestamp.toIso8601String(),
+    'antecedent': antecedent,
+    'behavior': behavior,
+    'consequence': consequence,
+    'sensoryTriggers': sensoryTriggers,
+    'intensity': intensity,
+    'durationMinutes': durationMinutes,
+    'notes': notes,
+  };
+
+  factory BehaviorLog.fromJson(Map<String, dynamic> json) => BehaviorLog(
+    id: json['id'] as String,
+    timestamp: DateTime.parse(json['timestamp'] as String),
+    antecedent: json['antecedent'] as String? ?? '',
+    behavior: json['behavior'] as String? ?? '',
+    consequence: json['consequence'] as String? ?? '',
+    sensoryTriggers: (json['sensoryTriggers'] as List? ?? const [])
+        .map((e) => e.toString())
+        .toList(),
+    intensity: json['intensity'] as int? ?? 1,
+    durationMinutes: json['durationMinutes'] as int? ?? 0,
+    notes: json['notes'] as String?,
+  );
 }

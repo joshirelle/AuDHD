@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/services/hive_service.dart';
+
+import '../core/theme/app_theme.dart';
 
 /// Limang araw na nakasentro sa ngayon, may bituin sa mga araw na may natapos.
-class WeeklyDateStripWidget extends StatelessWidget {
-  final DateTime selectedDate;
-  final ValueChanged<DateTime> onDateSelected;
-
-  const WeeklyDateStripWidget({
+///
+/// Iba ang pinagmumulan ng bituin sa bawat screen — gawain sa bahay o iskedyul
+/// — kaya ipinapasa ito imbes na nakakabit sa iisang box.
+class WeeklyDateStrip extends StatelessWidget {
+  const WeeklyDateStrip({
     super.key,
     required this.selectedDate,
     required this.onDateSelected,
+    required this.progressSource,
+    required this.hasProgress,
   });
+
+  final DateTime selectedDate;
+  final ValueChanged<DateTime> onDateSelected;
+
+  /// Ang box na binabantayan para agad magbago ang bituin.
+  final Listenable progressSource;
+
+  final bool Function(DateTime date) hasProgress;
 
   static const List<String> _dayNames = [
     'Lun',
@@ -36,9 +45,9 @@ class WeeklyDateStripWidget extends StatelessWidget {
       (index) => today.add(Duration(days: index - 2)),
     );
 
-    return ValueListenableBuilder<Box<bool>>(
-      valueListenable: HiveService.getCompletionBox().listenable(),
-      builder: (context, box, child) {
+    return ListenableBuilder(
+      listenable: progressSource,
+      builder: (context, _) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,7 +59,7 @@ class WeeklyDateStripWidget extends StatelessWidget {
                     day: day,
                     isToday: _isSameDay(day, today),
                     isSelected: _isSameDay(day, selectedDate),
-                    hasStar: HiveService.hasAnyCompletionOn(day),
+                    hasStar: hasProgress(day),
                     isFuture: day.isAfter(today),
                   ),
                 ),
@@ -71,8 +80,8 @@ class WeeklyDateStripWidget extends StatelessWidget {
     final Color background = isSelected
         ? AppColors.skyBlue
         : isToday
-            ? AppColors.skyBlueLight
-            : Colors.white;
+        ? AppColors.skyBlueLight
+        : Colors.white;
 
     return InkWell(
       onTap: isFuture ? null : () => onDateSelected(day),

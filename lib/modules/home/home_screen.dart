@@ -12,10 +12,12 @@ import 'widgets/behavior_log_card.dart';
 import 'widgets/doctor_report_card.dart';
 import 'widgets/home_activities_card.dart';
 import 'widgets/home_tour_guide.dart';
+import 'widgets/knowledge_card.dart';
 import 'widgets/milestones_card.dart';
 import 'widgets/sensory_profile_card.dart';
 import 'widgets/star_badge_widget.dart';
 import 'widgets/visual_schedule_card.dart';
+import 'widgets/whats_new_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,11 +39,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedMood = HiveService.getMood(DateTime.now());
-    WidgetsBinding.instance.addPostFrameCallback((_) => _startTour());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startIntro());
+  }
+
+  /// Ang tour ay para sa bagong user, ang "ano ang bago" ay para sa lumang
+  /// user — magkabukod ang kondisyon, kaya hindi sila magsasabay.
+  Future<void> _startIntro() async {
+    if (!mounted) return;
+    _startTour();
+    await WhatsNewSheet.showIfNeeded(context);
   }
 
   void _startTour() {
-    if (!mounted) return;
     HomeTourGuide.showIfNeeded(context, [
       TourStep(
         targetKey: _starKey,
@@ -112,19 +121,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // 5. Visual Schedule Full-Width Card
+              // 5. Gabay sa Pag-unawa Full-Width Card
+              const KnowledgeCard(),
+              const SizedBox(height: 16),
+
+              // 6. Visual Schedule Full-Width Card
               const VisualScheduleCard(),
               const SizedBox(height: 16),
 
-              // 6. Behavior Log Full-Width Card
+              // 7. Behavior Log Full-Width Card
               const BehaviorLogCard(),
               const SizedBox(height: 16),
 
-              // 7. Sensory Profile Checklist Card
+              // 8. Sensory Profile Checklist Card
               const SensoryProfileCard(),
               const SizedBox(height: 16),
 
-              // 8. Progress Report Full-Width Card
+              // 9. Progress Report Full-Width Card
               const DoctorReportCard(),
               const SizedBox(height: 20),
             ],

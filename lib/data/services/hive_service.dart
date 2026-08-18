@@ -19,8 +19,21 @@ class HiveService {
   static const String _scheduleDoneBoxName = 'schedule_completion';
   static const String _rewardBoxName = 'custom_rewards';
 
+  /// Petsa lang ng huling kopya ng datos — hiwalay sa profile para hindi
+  /// mabura kasama nito.
+  static const String _backupMetaBoxName = 'backup_meta';
+
+  static const String _guideBookmarkBoxName = 'guide_bookmarks';
+  static const String _guideTipBoxName = 'guide_tips';
+
+  /// Sariling ayos at itinagong gawain ng magulang. Hiwalay sa `schedule_box`
+  /// para manatili sa code ang mga default at maabot pa rin sila ng update.
+  static const String _scheduleOrderBoxName = 'schedule_order';
+  static const String _scheduleHiddenBoxName = 'schedule_hidden';
+
   static const String hasSeenOnboardingKey = 'has_seen_onboarding';
   static const String hasSeenHomeTourKey = 'has_seen_home_tour';
+  static const String hasSeenScheduleTourKey = 'has_seen_schedule_tour_v4';
 
   /// I-initialize ang Hive sa app startup
   static Future<void> init() async {
@@ -43,6 +56,53 @@ class HiveService {
     await Hive.openBox<ScheduleTask>(_scheduleBoxName);
     await Hive.openBox<int>(_scheduleDoneBoxName);
     await Hive.openBox<int>(_rewardBoxName);
+    await Hive.openBox<String>(_backupMetaBoxName);
+    await Hive.openBox<bool>(_guideBookmarkBoxName);
+    await Hive.openBox<bool>(_guideTipBoxName);
+    await Hive.openBox<int>(_scheduleOrderBoxName);
+    await Hive.openBox<bool>(_scheduleHiddenBoxName);
+  }
+
+  static Box<String> getBackupMetaBox() =>
+      Hive.box<String>(_backupMetaBoxName);
+
+  static Box<bool> getGuideBookmarkBox() =>
+      Hive.box<bool>(_guideBookmarkBoxName);
+
+  static Box<bool> getGuideTipBox() => Hive.box<bool>(_guideTipBoxName);
+
+  static bool isGuideBookmarked(String cardId) =>
+      getGuideBookmarkBox().get(cardId) ?? false;
+
+  /// Binubura imbes na isulat na `false`: mas maliit ang box at ang backup.
+  static Future<void> setGuideBookmarked(String cardId, bool value) async {
+    final box = getGuideBookmarkBox();
+    if (value) {
+      await box.put(cardId, true);
+    } else {
+      await box.delete(cardId);
+    }
+  }
+
+  /// Nakabatay sa pagkakasunod ang susi, kaya kapag inayos muli ang mga tip sa
+  /// code, mababalik sa blangko ang tsek ng magulang.
+  static String guideTipKey(String cardId, int index) => '${cardId}_$index';
+
+  static bool isGuideTipDone(String cardId, int index) =>
+      getGuideTipBox().get(guideTipKey(cardId, index)) ?? false;
+
+  static Future<void> setGuideTipDone(
+    String cardId,
+    int index,
+    bool value,
+  ) async {
+    final box = getGuideTipBox();
+    final key = guideTipKey(cardId, index);
+    if (value) {
+      await box.put(key, true);
+    } else {
+      await box.delete(key);
+    }
   }
 
   /// Susi = pangalan ng pabuya, halaga = bilang ng bituing kailangan.
@@ -61,10 +121,62 @@ class HiveService {
   static Box<ScheduleTask> getScheduleBox() =>
       Hive.box<ScheduleTask>(_scheduleBoxName);
 
-  static List<ScheduleTask> getScheduleTasks() => [
-    ...ScheduleTask.defaults,
-    ...getScheduleBox().values,
-  ];
+  static Box<int> getScheduleOrderBox() =>
+      Hive.box<int>(_scheduleOrderBoxName);
+
+  static Box<bool> getScheduleHiddenBox() =>
+      Hive.box<bool>(_scheduleHiddenBoxName);
+
+  /// Lahat ng gawain kasama ang nakatago — para sa screen ng pag-aayos.
+  static List<ScheduleTask> getAllScheduleTasks() {
+    final tasks = [...ScheduleTask.defaults, ...getScheduleBox().values];
+    final natural = <String, int>{
+      for (var i = 0; i < tasks.length; i++) tasks[i].id: i,
+    };
+
+    tasks.sort((a, b) {
+      final byTimeOfDay = a.timeOfDay.index.compareTo(b.timeOfDay.index);
+      if (byTimeOfDay != 0) return byTimeOfDay;
+      return _scheduleRank(
+        a,
+        natural[a.id]!,
+      ).compareTo(_scheduleRank(b, natural[b.id]!));
+    });
+    return tasks;
+  }
+
+  /// Ang inayos ng magulang ang laging nauuna. Ang gawaing idinagdag matapos
+  /// niyang mag-ayos ay napupunta sa dulo ng sariling bahagi ng araw, hindi sa
+  /// dulo ng buong listahan.
+  static int _scheduleRank(ScheduleTask task, int naturalIndex) {
+    final explicit = getScheduleOrderBox().get(task.id);
+    if (explicit != null) return explicit;
+    return 100000 + (task.minuteOfDay ?? (1440 + naturalIndex));
+  }
+
+  static List<ScheduleTask> getScheduleTasks() => getAllScheduleTasks()
+      .where((task) => !isScheduleTaskHidden(task.id))
+      .toList();
+
+  static bool isScheduleTaskHidden(String taskId) =>
+      getScheduleHiddenBox().get(taskId) ?? false;
+
+  static Future<void> setScheduleTaskHidden(String taskId, bool hidden) async {
+    final box = getScheduleHiddenBox();
+    if (hidden) {
+      await box.put(taskId, true);
+    } else {
+      await box.delete(taskId);
+    }
+  }
+
+  static Future<void> saveScheduleOrder(List<ScheduleTask> ordered) async {
+    final box = getScheduleOrderBox();
+    await box.clear();
+    await box.putAll({
+      for (var i = 0; i < ordered.length; i++) ordered[i].id: i,
+    });
+  }
 
   static Future<void> addScheduleTask(ScheduleTask task) async {
     await getScheduleBox().put(task.id, task);
@@ -72,6 +184,36 @@ class HiveService {
 
   static Future<void> deleteScheduleTask(String taskId) async {
     await getScheduleBox().delete(taskId);
+    await getScheduleOrderBox().delete(taskId);
+    await getScheduleHiddenBox().delete(taskId);
+
+    // Ang bituin ay kinukwenta mula mismo sa talang ito, kaya kasama itong
+    // nabubura. Gamitin ang pagtatago kung nais panatilihin ang kasaysayan.
+    final done = getScheduleDoneBox();
+    await done.deleteAll(
+      done.keys.where((key) => _scheduleKeyIsFor(key, taskId)).toList(),
+    );
+  }
+
+  static bool _scheduleKeyIsFor(dynamic key, String taskId) {
+    final raw = key.toString();
+    final split = raw.indexOf('_');
+    return split != -1 && raw.substring(split + 1) == taskId;
+  }
+
+  /// Bilang ng araw na natapos ang gawain at ang kabuuang bituin nito — para
+  /// masabi sa magulang kung ano ang mawawala bago siya magbura.
+  static ({int days, int stars}) scheduleHistoryFor(String taskId) {
+    final box = getScheduleDoneBox();
+    var days = 0;
+    var stars = 0;
+
+    for (final key in box.keys) {
+      if (!_scheduleKeyIsFor(key, taskId)) continue;
+      days++;
+      stars += box.get(key) ?? 0;
+    }
+    return (days: days, stars: stars);
   }
 
   static bool isCustomScheduleTask(String taskId) =>
@@ -219,6 +361,52 @@ class HiveService {
     return getCompletionBox()
         .keys
         .any((key) => key.toString().startsWith(prefix));
+  }
+
+  static bool hasAnyScheduleDoneOn(DateTime date) {
+    final prefix = '${dateKey(date)}_';
+    return getScheduleDoneBox()
+        .keys
+        .any((key) => key.toString().startsWith(prefix));
+  }
+
+  /// Ilang araw sa saklaw natapos ang bawat gawain. Susi = `taskId`.
+  ///
+  /// Walang underscore ang petsa, kaya ang unang underscore ang hangganan —
+  /// may underscore ang ilang `taskId` gaya ng `default_almusal`.
+  static Map<String, int> scheduleDoneCountsInRange(
+    DateTime from,
+    DateTime to,
+  ) {
+    final counts = <String, int>{};
+    for (final key in getScheduleDoneBox().keys) {
+      final raw = key.toString();
+      final split = raw.indexOf('_');
+      if (split == -1) continue;
+
+      final date = DateTime.tryParse(raw.substring(0, split));
+      if (date == null || date.isBefore(from) || date.isAfter(to)) continue;
+
+      final taskId = raw.substring(split + 1);
+      counts[taskId] = (counts[taskId] ?? 0) + 1;
+    }
+    return counts;
+  }
+
+  /// Bilang ng araw sa saklaw na may kahit isang natapos na gawain.
+  static int scheduleActiveDaysInRange(DateTime from, DateTime to) {
+    final days = <String>{};
+    for (final key in getScheduleDoneBox().keys) {
+      final raw = key.toString();
+      final split = raw.indexOf('_');
+      if (split == -1) continue;
+
+      final dayKey = raw.substring(0, split);
+      final date = DateTime.tryParse(dayKey);
+      if (date == null || date.isBefore(from) || date.isAfter(to)) continue;
+      days.add(dayKey);
+    }
+    return days.length;
   }
 
   static Box<SensoryProfileResult> getSensoryBox() =>

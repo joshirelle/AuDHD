@@ -74,6 +74,9 @@ class DoctorPdfService {
           pw.SizedBox(height: 20),
 
           ..._sensorySection(sensory),
+          pw.SizedBox(height: 20),
+
+          ..._routineSection(rangeDays, cutoff, now),
         ],
       ),
     );
@@ -371,6 +374,74 @@ class DoctorPdfService {
         },
         data: result.domainBreakdown.entries
             .map((e) => [e.key, e.value])
+            .toList(),
+      ),
+    ];
+  }
+
+  /// Ang mababang bahagdan dito ay madalas hindi pagkukulang ng magulang kundi
+  /// palatandaan ng hirap sa isang partikular na gawain — mahirap itong
+  /// maikuwento sa maikling konsulta pero kitang-kita sa talahanayan.
+  static List<pw.Widget> _routineSection(
+    int rangeDays,
+    DateTime cutoff,
+    DateTime now,
+  ) {
+    final tasks = HiveService.getScheduleTasks();
+    final counts = HiveService.scheduleDoneCountsInRange(cutoff, now);
+
+    if (tasks.isEmpty || counts.isEmpty) {
+      return [
+        PdfReportTheme.sectionTitle('3. Rutina sa Bahay'),
+        pw.SizedBox(height: 8),
+        _emptyNote('Wala pang naitalang rutina sa saklaw na ito.'),
+      ];
+    }
+
+    final activeDays = HiveService.scheduleActiveDaysInRange(cutoff, now);
+    final possible = tasks.length * rangeDays;
+    // Nananatili sa box ang tala ng binurang gawain; kung isasama ito, lalampas
+    // ang bahagdan sa 100% dahil kasalukuyang gawain lang ang `possible`.
+    final done = tasks.fold(0, (sum, task) => sum + (counts[task.id] ?? 0));
+    final percent = possible == 0 ? 0 : (done * 100 / possible).round();
+
+    final ranked =
+        tasks.map((task) => MapEntry(task, counts[task.id] ?? 0)).toList()
+          ..sort((a, b) => b.value.compareTo(a.value));
+
+    return [
+      PdfReportTheme.sectionTitle('3. Rutina sa Bahay'),
+      pw.SizedBox(height: 8),
+      pw.Text(
+        'Nasunod na rutina: $percent% ($done sa $possible na posible). '
+        'May naitalang gawain sa $activeDays sa $rangeDays araw.',
+        style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey800),
+      ),
+      pw.SizedBox(height: 12),
+      PdfReportTheme.dataTable(
+        headers: ['Gawain', 'Oras', 'Nagawa', 'Bahagi'],
+        cellHeight: 22,
+        cellAlignments: {
+          0: pw.Alignment.centerLeft,
+          1: pw.Alignment.center,
+          2: pw.Alignment.center,
+          3: pw.Alignment.center,
+        },
+        columnWidths: {
+          0: const pw.FlexColumnWidth(),
+          1: PdfReportTheme.mediumColumn,
+          2: PdfReportTheme.mediumColumn,
+          3: PdfReportTheme.narrowColumn,
+        },
+        data: ranked
+            .map(
+              (entry) => [
+                entry.key.titleTagalog,
+                entry.key.timeOfDay.label,
+                '${entry.value} / $rangeDays',
+                '${(entry.value * 100 / rangeDays).round()}%',
+              ],
+            )
             .toList(),
       ),
     ];

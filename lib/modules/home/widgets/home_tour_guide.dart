@@ -14,15 +14,20 @@ class TourStep {
   });
 }
 
-/// Isang beses na paglilibot sa home screen. Hand-rolled para walang
-/// dagdag na dependency at para Tagalog ang buong teksto.
+/// Isang beses na paglilibot. Hand-rolled para walang dagdag na dependency at
+/// para Tagalog ang buong teksto.
 class HomeTourGuide {
   static const double _cutoutPadding = 8;
   static const double _cutoutRadius = 16;
 
-  /// Tumatakbo lamang kung hindi pa ito nakikita ng magulang.
-  static void showIfNeeded(BuildContext context, List<TourStep> steps) {
-    if (HiveService.hasSeen(HiveService.hasSeenHomeTourKey)) return;
+  /// Tumatakbo lamang kung hindi pa ito nakikita ng magulang. Iba ang `seenKey`
+  /// kada screen para hindi mapatay ng isa ang libot ng iba.
+  static void showIfNeeded(
+    BuildContext context,
+    List<TourStep> steps, {
+    String seenKey = HiveService.hasSeenHomeTourKey,
+  }) {
+    if (HiveService.hasSeen(seenKey)) return;
     if (steps.isEmpty) return;
 
     final overlay = Overlay.maybeOf(context);
@@ -37,7 +42,7 @@ class HomeTourGuide {
           if (isRemoved) return;
           isRemoved = true;
           entry.remove();
-          await HiveService.markSeen(HiveService.hasSeenHomeTourKey);
+          await HiveService.markSeen(seenKey);
         },
       ),
     );

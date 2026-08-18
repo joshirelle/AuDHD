@@ -1,14 +1,5 @@
 import '../../../core/constants/sensory_labels.dart';
-
-enum ActivityTarget {
-  autismSensory('Pandama at Autism'),
-  adhdFocus('Pokus at ADHD'),
-  audhdCombined('Pareho');
-
-  const ActivityTarget(this.label);
-
-  final String label;
-}
+import '../../../core/enums/skill_area.dart';
 
 class SensoryActivity {
   final String id;
@@ -16,6 +7,7 @@ class SensoryActivity {
   final String titleEnglish;
   final String targetProfile; // 'seeking', 'avoiding', 'regulation'
   final String domain; // 'proprioceptive', 'vestibular', 'tactile', 'visual', 'auditory'
+  final SkillArea skillArea;
   final int estimatedMinutes;
   final List<String> materialsNeeded;
   final String descriptionTagalog;
@@ -28,6 +20,7 @@ class SensoryActivity {
     required this.titleEnglish,
     required this.targetProfile,
     required this.domain,
+    required this.skillArea,
     required this.estimatedMinutes,
     required this.materialsNeeded,
     required this.descriptionTagalog,
@@ -49,38 +42,6 @@ class SensoryActivity {
   bool get isAvoiding => targetProfile == 'avoiding';
   bool get isRegulation => targetProfile == 'regulation';
 
-  static const Map<String, String> _domainSkill = {
-    'proprioceptive': 'Sensory Integration',
-    'vestibular': 'Balanse at Galaw',
-    'tactile': 'Tactile Tolerance',
-    'visual': 'Visual Tracking',
-    'auditory': 'Auditory Tolerance',
-  };
-
-  static const Map<String, String> _profileSkill = {
-    'seeking': 'Impulse Control',
-    'avoiding': 'Sensory Tolerance',
-    'regulation': 'Self-Regulation',
-  };
-
-  /// Hinuhugot sa `targetProfile` sa halip na iimbak nang hiwalay, para walang
-  /// pangalawang pinagmumulan na maaaring hindi magkatugma.
-  ActivityTarget get target {
-    switch (targetProfile) {
-      case 'avoiding':
-        return ActivityTarget.autismSensory;
-      case 'seeking':
-        return ActivityTarget.adhdFocus;
-      default:
-        return ActivityTarget.audhdCombined;
-    }
-  }
-
-  List<String> get skillTags => [
-    if (_domainSkill[domain] != null) _domainSkill[domain]!,
-    if (_profileSkill[targetProfile] != null) _profileSkill[targetProfile]!,
-  ];
-
   factory SensoryActivity.fromJson(Map<String, dynamic> json) {
     return SensoryActivity(
       id: json['id'] as String,
@@ -88,6 +49,7 @@ class SensoryActivity {
       titleEnglish: json['titleEnglish'] as String,
       targetProfile: json['targetProfile'] as String,
       domain: json['domain'] as String,
+      skillArea: SkillArea.fromKey(json['skillArea'] as String?),
       estimatedMinutes: json['estimatedMinutes'] as int,
       materialsNeeded: List<String>.from(json['materialsNeeded'] as List),
       descriptionTagalog: json['descriptionTagalog'] as String,
@@ -103,6 +65,7 @@ class SensoryActivity {
       'titleEnglish': titleEnglish,
       'targetProfile': targetProfile,
       'domain': domain,
+      'skillArea': skillArea.name,
       'estimatedMinutes': estimatedMinutes,
       'materialsNeeded': materialsNeeded,
       'descriptionTagalog': descriptionTagalog,

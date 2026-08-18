@@ -22,13 +22,14 @@ class ScheduleTaskAdapter extends TypeAdapter<ScheduleTask> {
       iconKey: fields[2] as String,
       timeOfDay: fields[3] as ScheduleTimeOfDay,
       starReward: fields[4] as int,
+      minuteOfDay: fields[5] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleTask obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ScheduleTaskAdapter extends TypeAdapter<ScheduleTask> {
       ..writeByte(3)
       ..write(obj.timeOfDay)
       ..writeByte(4)
-      ..write(obj.starReward);
+      ..write(obj.starReward)
+      ..writeByte(5)
+      ..write(obj.minuteOfDay);
   }
 
   @override

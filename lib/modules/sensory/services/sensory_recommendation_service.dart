@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart';
+import '../../../core/enums/skill_area.dart';
 import '../models/sensory_activity.dart';
 
 class SensoryRecommendationService {
@@ -23,27 +24,43 @@ class SensoryRecommendationService {
     return _cache!;
   }
 
-  /// Tatlong gawain: dalawang tugma sa profile ng bata, isang regulation.
+  /// Isang gawain kada bahagi ng paglaki — anim lahat, bago kada araw.
+  ///
+  /// Iisang seed kada araw: hindi nagbabago ang pili sa bawat rebuild, kaya
+  /// hindi nawawala sa listahan ang natapos nang gawain sa kalagitnaan ng araw.
   static Future<List<SensoryActivity>> getDailyRecommendations({
     required String userProfileResult,
     DateTime? date,
   }) async {
     final all = await loadAll();
     final profile = normalizeProfile(userProfileResult);
-    // Iisang seed kada araw para hindi magbago ang pili sa bawat rebuild.
     final random = Random(_seedFor(date ?? DateTime.now()));
 
     final picks = <SensoryActivity>[];
-
-    if (profile == profileMixed) {
-      picks.addAll(_pick(all, profileSeeking, 1, random));
-      picks.addAll(_pick(all, profileAvoiding, 1, random));
-    } else {
-      picks.addAll(_pick(all, profile, 2, random));
+    for (final area in SkillArea.values) {
+      final inArea = all.where((a) => a.skillArea == area).toList();
+      if (inArea.isEmpty) continue;
+      inArea.shuffle(random);
+      picks.add(_preferred(inArea, profile));
     }
-
-    picks.addAll(_pick(all, profileRegulation, 1, random));
     return picks;
+  }
+
+  /// Mas mabuti ang tugma sa profile ng bata, pero hindi ito hadlang — mas
+  /// mahalagang may kinatawan ang bawat bahagi kaysa perpektong tugma.
+  static SensoryActivity _preferred(
+    List<SensoryActivity> shuffled,
+    String profile,
+  ) {
+    if (profile != profileMixed) {
+      for (final activity in shuffled) {
+        if (activity.targetProfile == profile) return activity;
+      }
+    }
+    for (final activity in shuffled) {
+      if (activity.targetProfile == profileRegulation) return activity;
+    }
+    return shuffled.first;
   }
 
   /// Tinatanggap ang maikling code o ang buong `primaryProfile` mula sa calculator.
@@ -56,19 +73,6 @@ class SensoryRecommendationService {
     }
     // Walang malinaw na hilig — balansehin ang dalawang panig.
     return profileMixed;
-  }
-
-  static List<SensoryActivity> _pick(
-    List<SensoryActivity> all,
-    String targetProfile,
-    int count,
-    Random random,
-  ) {
-    final matches = all.where((a) => a.targetProfile == targetProfile).toList();
-    if (matches.isEmpty) return [];
-
-    matches.shuffle(random);
-    return matches.take(count).toList();
   }
 
   static int _seedFor(DateTime date) {

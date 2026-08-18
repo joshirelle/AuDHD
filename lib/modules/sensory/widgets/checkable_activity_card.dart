@@ -6,7 +6,7 @@ import '../../../widgets/kiko_card.dart';
 import '../../../widgets/star_burst_overlay.dart';
 import '../models/sensory_activity.dart';
 import 'activity_detail_sheet.dart';
-import 'activity_target_style.dart';
+import 'skill_area_badge.dart';
 
 class CheckableActivityCard extends StatelessWidget {
   final SensoryActivity activity;
@@ -81,7 +81,7 @@ class CheckableActivityCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                ActivityTargetStyle.badge(activity.target),
+                SkillAreaBadge(activity.skillArea),
                 const SizedBox(height: 6),
                 Text(
                   '${activity.durationLabel} - ${activity.domainLabel}',

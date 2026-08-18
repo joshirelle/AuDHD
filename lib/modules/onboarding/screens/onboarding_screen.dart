@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/app_branding_header.dart';
+import '../../../widgets/community_link.dart';
 
 class OnboardingSlide {
   final IconData icon;
@@ -173,7 +174,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemCount: _slides.length,
                 onPageChanged: (index) =>
                     setState(() => _currentIndex = index),
-                itemBuilder: (context, index) => _buildSlide(_slides[index]),
+                itemBuilder: (context, index) => _buildSlide(
+                  _slides[index],
+                  isLast: index == _slides.length - 1,
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -211,7 +215,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildSlide(OnboardingSlide slide) {
+  Widget _buildSlide(OnboardingSlide slide, {required bool isLast}) {
     // Mas mahaba na ang laman kaysa dati, kaya kailangang kayang mag-scroll
     // sa maiikling screen.
     return SingleChildScrollView(
@@ -256,6 +260,69 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _buildHighlight(slide, highlight),
             const SizedBox(height: 10),
           ],
+          // Sa dulo lang: bago nito, hindi pa alam ng magulang kung para saan
+          // ang app na sasalihan niya ang grupo.
+          if (isLast) ...[
+            const SizedBox(height: 12),
+            _buildCommunityInvite(),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommunityInvite() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.tintWarm,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.groups_rounded,
+                size: 20,
+                color: AppColors.coralInk,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Hindi ka nag-iisa — may grupo ng mga magulang na dumaraan '
+                  'din dito.',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    height: 1.4,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => openAudhdGroup(context),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.coralInk,
+                padding: EdgeInsets.zero,
+              ),
+              icon: const Icon(Icons.open_in_new_rounded, size: 15),
+              label: const Text(
+                'Tingnan ang grupo',
+                style: TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Nunito',
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

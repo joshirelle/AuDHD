@@ -49,6 +49,27 @@ mo ang "I-share sa Doktor", ginagamit ang share sheet ng iyong telepono at
 Kapag naipadala mo na ito, ang patakaran sa privacy ng tatanggap na app o
 serbisyo na ang sumasaklaw doon. Wala kaming access dito.
 
+May tampok ding **kopya ng datos** sa Profile. Gumagawa ito ng isang file na
+ikaw ang pumipili kung saan ilalagay. Ikaw ang may hawak ng file na iyon at
+ikaw ang may pananagutan kung saan mo ito itatabi o ipapadala.
+
+**Hindi kasama ang iyong PIN sa file na iyon**, para hindi malaman ninuman ang
+PIN mo kahit mapunta pa sa iba ang kopya.
+
+---
+
+## Ang Facebook group
+
+May link sa app papunta sa **Facebook group ng mga magulang**. Kapag pinindot
+mo ito, bubukas ang Facebook — **walang ipinapadala ang app**, at hindi namin
+alam kung pinindot mo ito o hindi.
+
+Mula sa sandaling iyon, **patakaran ng Facebook na ang sumasaklaw**, hindi ito.
+Mahalagang malaman: **makikita ng ibang miyembro ang anumang isulat mo sa
+grupo.** Hindi ito pribado gaya ng datos na nasa loob ng app.
+
+Opsyonal ang pagsali. Buo ang gamit ng app kahit hindi ka sumali.
+
 ---
 
 ## Pahintulot na hinihingi ng app
@@ -57,7 +78,7 @@ serbisyo na ang sumasaklaw doon. Wala kaming access dito.
 |---|---|
 | Camera | Opsyonal na litrato ng bata para sa profile |
 | Mga larawan / gallery | Opsyonal na pagpili ng litrato mula sa gallery |
-| Biometrics | Opsyonal na fingerprint o Face ID bilang pamalit sa PIN |
+| Biometrics | Opsyonal na fingerprint bilang pamalit sa PIN |
 
 Lahat ng ito ay **opsyonal**. Gumagana ang app kahit tanggihan mo ang lahat.
 

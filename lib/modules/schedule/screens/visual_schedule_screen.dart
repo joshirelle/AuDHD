@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/models/schedule_task.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/date_formatter.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/how_to_card.dart';
+import '../../../widgets/kiko_card.dart';
+import '../../../widgets/star_burst_overlay.dart';
+import '../../../widgets/weekly_date_strip.dart';
+import '../../home/widgets/home_tour_guide.dart';
 import '../../home/widgets/star_badge_widget.dart';
 import '../widgets/add_schedule_task_dialog.dart';
 import '../widgets/schedule_style.dart';
 import '../widgets/schedule_task_card.dart';
+import 'arrange_schedule_screen.dart';
 
 class VisualScheduleScreen extends StatefulWidget {
   const VisualScheduleScreen({super.key});
@@ -22,17 +28,49 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
   ScheduleTimeOfDay? _filter;
 
   late DateTime _today;
+  late DateTime _selectedDate;
   late final Listenable _sources;
+
+  final GlobalKey _arrangeKey = GlobalKey();
+  final GlobalKey _dateStripKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     _today = _dateOnly(DateTime.now());
+    _selectedDate = _today;
     _sources = Listenable.merge([
       HiveService.getScheduleBox().listenable(),
       HiveService.getScheduleDoneBox().listenable(),
+      HiveService.getScheduleOrderBox().listenable(),
+      HiveService.getScheduleHiddenBox().listenable(),
     ]);
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startTour());
+  }
+
+  void _startTour() {
+    if (!mounted) return;
+    HomeTourGuide.showIfNeeded(
+      context,
+      [
+        TourStep(
+          targetKey: _dateStripKey,
+          title: 'Balikan ang nakaraan',
+          body:
+              'Pindutin ang ibang araw para makita kung ano ang natapos noon. '
+              'Naka-tala ang bawat araw, hindi lang ang ngayon.',
+        ),
+        TourStep(
+          targetKey: _arrangeKey,
+          title: 'Ayusin ang iskedyul',
+          body:
+              'Dito mo mababago ang pagkakasunod-sunod, maitatago ang gawaing '
+              'hindi ninyo ginagawa, at makikita ang oras ng bawat isa.',
+        ),
+      ],
+      seenKey: HiveService.hasSeenScheduleTourKey,
+    );
   }
 
   @override
@@ -47,7 +85,14 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) return;
     final now = _dateOnly(DateTime.now());
-    if (now != _today) setState(() => _today = now);
+    if (now == _today) return;
+
+    setState(() {
+      // Huwag hilahin pabalik sa ngayon ang magulang na tumitingin ng nakaraan.
+      final wasOnToday = _selectedDate == _today;
+      _today = now;
+      if (wasOnToday) _selectedDate = now;
+    });
   }
 
   static DateTime _dateOnly(DateTime date) =>
@@ -64,8 +109,89 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
     }
   }
 
+  /// Hindi diretsong pagbura: ang maling napiling "Kailan?" ay dapat naitatama,
+  /// hindi nagiging dahilan para mawala ang gawain at ang bituin nito.
+  Future<void> _showTaskOptions(ScheduleTask task) async {
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 44,
+              height: 5,
+              decoration: BoxDecoration(
+                color: AppColors.divider,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              task.titleTagalog,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+                fontFamily: 'Nunito',
+              ),
+            ),
+            const SizedBox(height: 8),
+            ListTile(
+              leading: const Icon(
+                Icons.edit_rounded,
+                color: AppColors.logoGreen,
+              ),
+              title: const Text(
+                'Baguhin',
+                style: TextStyle(fontFamily: 'Nunito', fontSize: 15),
+              ),
+              onTap: () => Navigator.pop(context, 'edit'),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.delete_outline_rounded,
+                color: AppColors.danger,
+              ),
+              title: const Text(
+                'Burahin',
+                style: TextStyle(fontFamily: 'Nunito', fontSize: 15),
+              ),
+              onTap: () => Navigator.pop(context, 'delete'),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+    if (action == 'edit') await _editTask(task);
+    if (action == 'delete') await _confirmDelete(task);
+  }
+
+  Future<void> _editTask(ScheduleTask task) async {
+    final updated = await AddScheduleTaskDialog.show(context, existing: task);
+    if (updated == null) return;
+
+    // Ang lumang posisyon ay para sa dating bahagi ng araw; kapag lumipat ito,
+    // mas mabuting bumalik sa likas na pwesto kaysa mapunta sa gitna.
+    if (updated.timeOfDay != task.timeOfDay) {
+      await HiveService.getScheduleOrderBox().delete(task.id);
+    }
+    await HiveService.addScheduleTask(updated);
+  }
+
   Future<void> _confirmDelete(ScheduleTask task) async {
-    final isConfirmed = await showDialog<bool>(
+    final history = HiveService.scheduleHistoryFor(task.id);
+    final childName = HiveService.getChildProfile()?.displayName;
+
+    final action = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
@@ -76,19 +202,35 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           style: TextStyle(fontSize: 17, fontFamily: 'Nunito'),
         ),
         content: Text(
-          'Aalisin sa iskedyul ang "${task.titleTagalog}".',
+          'Aalisin sa iskedyul ang "${task.titleTagalog}".'
+          '${history.days == 0 ? '' : '\n\nMay ${history.days} araw na natapos '
+              'dito. Mababawasan ng ${history.stars} ang bituin '
+              '${childName == null ? 'ng bata' : 'ni $childName'}.'
+              '\n\nKung ayaw mong mabawasan, itago na lang ito.'}',
           style: const TextStyle(fontSize: 14, fontFamily: 'Nunito'),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Navigator.pop(context),
             child: const Text(
               'Hindi',
               style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
             ),
           ),
+          if (history.days > 0)
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'hide'),
+              child: const Text(
+                'Itago',
+                style: TextStyle(
+                  fontFamily: 'Nunito',
+                  color: AppColors.logoGreen,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.pop(context, 'delete'),
             child: const Text(
               'Burahin',
               style: TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
@@ -98,9 +240,11 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       ),
     );
 
-    if (isConfirmed != true) return;
-    // Hindi binabawi ang mga bituing kinita na ng bata sa gawaing ito.
-    await HiveService.deleteScheduleTask(task.id);
+    if (action == 'hide') {
+      await HiveService.setScheduleTaskHidden(task.id, true);
+    } else if (action == 'delete') {
+      await HiveService.deleteScheduleTask(task.id);
+    }
   }
 
   @override
@@ -112,8 +256,19 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
         backgroundColor: Colors.white,
         foregroundColor: AppColors.textDark,
         elevation: 0,
-        actions: const [
-          Padding(
+        actions: [
+          IconButton(
+            key: _arrangeKey,
+            tooltip: 'Ayusin ang iskedyul',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ArrangeScheduleScreen(),
+              ),
+            ),
+            icon: const Icon(Icons.tune_rounded),
+          ),
+          const Padding(
             padding: EdgeInsets.only(right: 16),
             child: Center(child: StarBadgeWidget()),
           ),
@@ -142,7 +297,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
         ? tasks
         : tasks.where((task) => task.timeOfDay == _filter).toList();
     final doneCount = HiveService.countScheduleDoneOn(
-      _today,
+      _selectedDate,
       visible.map((task) => task.id).toList(),
     );
 
@@ -159,11 +314,27 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                   'niya kung ano ang susunod na mangyayari.',
               'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
                   'hindi ikaw.',
+              'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
+                  'baguhin o burahin ito.',
             ],
             footnote:
                 'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
                 'nananatili ang listahan ng gawain.',
           ),
+        ),
+        Padding(
+          key: _dateStripKey,
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+          child: WeeklyDateStrip(
+            selectedDate: _selectedDate,
+            onDateSelected: (date) => setState(() => _selectedDate = date),
+            progressSource: HiveService.getScheduleDoneBox().listenable(),
+            hasProgress: HiveService.hasAnyScheduleDoneOn,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+          child: _buildNextUp(visible, doneCount),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
@@ -189,17 +360,202 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
               final task = visible[index];
               return ScheduleTaskCard(
                 task: task,
-                date: _today,
-                isDone: HiveService.isScheduleTaskDone(_today, task.id),
+                date: _selectedDate,
+                isDone: HiveService.isScheduleTaskDone(_selectedDate, task.id),
                 onChanged: () => setState(() {}),
-                onDelete: HiveService.isCustomScheduleTask(task.id)
-                    ? () => _confirmDelete(task)
+                onOptions: HiveService.isCustomScheduleTask(task.id)
+                    ? () => _showTaskOptions(task)
                     : null,
               );
             },
           ),
         ),
       ],
+    );
+  }
+
+  /// Ang pangunahing silbi ng visual schedule sa bata ay iisang sagot: ano ang
+  /// susunod. Walang susunod sa araw na lumipas, kaya buod ang ipinapakita doon.
+  Widget _buildNextUp(List<ScheduleTask> visible, int doneCount) {
+    if (_selectedDate != _today) {
+      return _buildPastDayNote(visible.length, doneCount);
+    }
+
+    final pending =
+        visible
+            .where((t) => !HiveService.isScheduleTaskDone(_selectedDate, t.id))
+            .toList()
+          ..sort((a, b) => a.timeOfDay.index.compareTo(b.timeOfDay.index));
+
+    if (pending.isEmpty) return _buildAllDoneNote(visible.isEmpty);
+    return _buildNextTaskCard(pending.first);
+  }
+
+  Widget _buildNextTaskCard(ScheduleTask task) {
+    final style = ScheduleTimeStyle.of(task.timeOfDay);
+
+    return KikoCard(
+      backgroundColor: style.fill,
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              ScheduleIcons.of(task.iconKey),
+              color: style.accent,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'SUSUNOD',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                    color: AppColors.textMuted,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  task.titleTagalog,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                Text(
+                  task.timeOfDay.label,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: style.accent,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () => _markDone(task),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.logoGreen,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.button),
+              ),
+            ),
+            child: const Text(
+              'Tapos!',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _markDone(ScheduleTask task) async {
+    await HiveService.setScheduleTaskDone(_selectedDate, task, true);
+    if (!mounted) return;
+    StarBurstOverlay.show(context, task.starReward);
+    setState(() {});
+  }
+
+  Widget _buildAllDoneNote(bool isEmptySchedule) {
+    return KikoCard(
+      backgroundColor: AppColors.tintSuccess,
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.check_circle_rounded,
+            color: AppColors.success,
+            size: 26,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              isEmptySchedule
+                  ? 'Wala pang gawain sa bahaging ito.'
+                  : 'Tapos na ang buong iskedyul ngayong araw!',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPastDayNote(int totalCount, int doneCount) {
+    return KikoCard(
+      backgroundColor: AppColors.tintWarm,
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          const Icon(Icons.history_rounded, color: AppColors.warning, size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tinitingnan mo ang ${DateFormatter.longDate(_selectedDate)}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                Text(
+                  '$doneCount sa $totalCount ang natapos noon.',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () => setState(() => _selectedDate = _today),
+            style: TextButton.styleFrom(foregroundColor: AppColors.logoGreen),
+            child: const Text(
+              'Bumalik',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

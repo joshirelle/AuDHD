@@ -15,7 +15,7 @@ class ScheduleTaskCard extends StatelessWidget {
   final VoidCallback onChanged;
 
   /// `null` para sa mga default — mga custom lang ang puwedeng burahin.
-  final VoidCallback? onDelete;
+  final VoidCallback? onOptions;
 
   const ScheduleTaskCard({
     super.key,
@@ -23,7 +23,7 @@ class ScheduleTaskCard extends StatelessWidget {
     required this.date,
     required this.isDone,
     required this.onChanged,
-    this.onDelete,
+    this.onOptions,
   });
 
   static const Color _doneTint = AppColors.tintSuccess;
@@ -50,7 +50,7 @@ class ScheduleTaskCard extends StatelessWidget {
       label: task.titleTagalog,
       child: GestureDetector(
         onTap: () => _toggle(context),
-        onLongPress: onDelete,
+        onLongPress: onOptions,
         child: AnimatedContainer(
           duration: _animation,
           padding: const EdgeInsets.all(10),
@@ -99,6 +99,19 @@ class ScheduleTaskCard extends StatelessWidget {
                           : TextDecoration.none,
                     ),
                   ),
+                  if (task.timeLabel.isNotEmpty)
+                    Text(
+                      task.timeLabel,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Nunito',
+                        color: AppColors.textMuted,
+                      ),
+                    ),
                 ],
               ),
               Positioned(

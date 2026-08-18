@@ -34,4 +34,31 @@ class SensoryProfileResult extends HiveObject {
     required this.primaryProfile,
     required this.domainBreakdown,
   });
+
+  /// Para sa kopya ng datos. Nananatiling Ingles ang `primaryProfile` at ang
+  /// mga domain — may ibang bahagi ng app na nagbabasa ng mga salitang iyon.
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'timestamp': timestamp.toIso8601String(),
+    'answers': answers,
+    'totalSeekingScore': totalSeekingScore,
+    'totalAvoidingScore': totalAvoidingScore,
+    'primaryProfile': primaryProfile,
+    'domainBreakdown': domainBreakdown,
+  };
+
+  factory SensoryProfileResult.fromJson(Map<String, dynamic> json) =>
+      SensoryProfileResult(
+        id: json['id'] as String,
+        timestamp: DateTime.parse(json['timestamp'] as String),
+        answers: (json['answers'] as Map? ?? const {}).map(
+          (key, value) => MapEntry(key.toString(), value as int),
+        ),
+        totalSeekingScore: json['totalSeekingScore'] as int? ?? 0,
+        totalAvoidingScore: json['totalAvoidingScore'] as int? ?? 0,
+        primaryProfile: json['primaryProfile'] as String? ?? 'Typical',
+        domainBreakdown: (json['domainBreakdown'] as Map? ?? const {}).map(
+          (key, value) => MapEntry(key.toString(), value.toString()),
+        ),
+      );
 }

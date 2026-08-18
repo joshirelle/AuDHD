@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../core/services/backup_service.dart';
 import '../../core/services/child_photo_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/age_formatter.dart';
@@ -7,9 +8,12 @@ import '../../core/utils/date_formatter.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/child_avatar.dart';
+import '../../widgets/community_link.dart';
 import '../../widgets/kiko_card.dart';
+import '../home/widgets/whats_new_sheet.dart';
 import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
+import 'widgets/backup_card.dart';
 import 'widgets/developer_feedback_card.dart';
 
 enum _PhotoAction { camera, gallery, remove }
@@ -44,7 +48,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
           'Ang mga naitalang behavior log, sensory history, '
           'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
-          'pangalan at edad sa mga PDF report.',
+          'pangalan at edad sa mga PDF report.'
+          // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
+          '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
+              'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
+              'nabura na ang mga ito.'}',
         ),
         actions: [
           TextButton(
@@ -55,7 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
               'Burahin',
-              style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: AppColors.danger,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -183,6 +194,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (child == null) _buildEmptyState() else _buildProfileSection(child),
           const SizedBox(height: 28),
           _buildSecurityCard(),
+          const SizedBox(height: 20),
+          BackupCard(onRestored: _load),
+          const SizedBox(height: 20),
+          const CommunityCard(),
+          const SizedBox(height: 20),
+          _buildWhatsNewCard(),
           const SizedBox(height: 20),
           const DeveloperFeedbackCard(),
           // Malayo sa "Baguhin ang Detalye" para hindi mapindot nang pagkakamali.
@@ -329,6 +346,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: TextDecoration.underline,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildWhatsNewCard() {
+    return KikoCard(
+      backgroundColor: AppColors.tintSuccess,
+      padding: const EdgeInsets.all(18),
+      onTap: () => WhatsNewSheet.show(context),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(9),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.auto_awesome_rounded,
+              color: AppColors.logoGreen,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 14),
+          const Expanded(
+            child: Text(
+              'Ano ang bago sa AuDHD',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 [
   {
     "id": "act_01",
+    "skillArea": "grossMotor",
     "titleTagalog": "Talon sa Unan",
     "titleEnglish": "Pillow Crash Zone",
     "targetProfile": "seeking",
@@ -17,6 +18,7 @@
   },
   {
     "id": "act_02",
+    "skillArea": "grossMotor",
     "titleTagalog": "Gapang Oso",
     "titleEnglish": "Bear Crawl Relay",
     "targetProfile": "seeking",
@@ -33,6 +35,7 @@
   },
   {
     "id": "act_03",
+    "skillArea": "grossMotor",
     "titleTagalog": "Hilahan ng Kumot",
     "titleEnglish": "Blanket Tug-of-War",
     "targetProfile": "seeking",
@@ -49,6 +52,7 @@
   },
   {
     "id": "act_04",
+    "skillArea": "grossMotor",
     "titleTagalog": "Talon Palaka",
     "titleEnglish": "Frog Jump Station",
     "targetProfile": "seeking",
@@ -65,6 +69,7 @@
   },
   {
     "id": "act_05",
+    "skillArea": "grossMotor",
     "titleTagalog": "Tulak Labahan",
     "titleEnglish": "Laundry Basket Push",
     "targetProfile": "seeking",
@@ -81,6 +86,7 @@
   },
   {
     "id": "act_06",
+    "skillArea": "sensory",
     "titleTagalog": "Ipit sa Unan",
     "titleEnglish": "Cushion Sandwich Press",
     "targetProfile": "seeking",
@@ -97,6 +103,7 @@
   },
   {
     "id": "act_07",
+    "skillArea": "sensory",
     "titleTagalog": "Balot Kumot",
     "titleEnglish": "Blanket Burrito Roll",
     "targetProfile": "avoiding",
@@ -113,6 +120,7 @@
   },
   {
     "id": "act_08",
+    "skillArea": "fineMotor",
     "titleTagalog": "Hanap sa Bigas",
     "titleEnglish": "Rice & Bean Sensory Search",
     "targetProfile": "avoiding",
@@ -129,6 +137,7 @@
   },
   {
     "id": "act_09",
+    "skillArea": "fineMotor",
     "titleTagalog": "Pisil at Hubog",
     "titleEnglish": "Playdough Squeeze & Mold",
     "targetProfile": "avoiding",
@@ -145,6 +154,7 @@
   },
   {
     "id": "act_10",
+    "skillArea": "play",
     "titleTagalog": "Habol Bula",
     "titleEnglish": "Slow Bubble Catch",
     "targetProfile": "avoiding",
@@ -161,6 +171,7 @@
   },
   {
     "id": "act_11",
+    "skillArea": "sensory",
     "titleTagalog": "Mainit na Tuwalya",
     "titleEnglish": "Warm Towel Hand Compress",
     "targetProfile": "avoiding",
@@ -177,6 +188,7 @@
   },
   {
     "id": "act_12",
+    "skillArea": "sensory",
     "titleTagalog": "Marahang Haplos",
     "titleEnglish": "Feather Light Touch",
     "targetProfile": "avoiding",
@@ -193,6 +205,7 @@
   },
   {
     "id": "act_13",
+    "skillArea": "focus",
     "titleTagalog": "Hinto at Lakad",
     "titleEnglish": "Red Light, Green Light",
     "targetProfile": "regulation",
@@ -209,6 +222,7 @@
   },
   {
     "id": "act_14",
+    "skillArea": "focus",
     "titleTagalog": "Sayaw at Tigil",
     "titleEnglish": "Freeze Dance",
     "targetProfile": "regulation",
@@ -225,6 +239,7 @@
   },
   {
     "id": "act_15",
+    "skillArea": "play",
     "titleTagalog": "Lobo sa Ere",
     "titleEnglish": "Balloon Keep-Up",
     "targetProfile": "regulation",
@@ -241,6 +256,7 @@
   },
   {
     "id": "act_16",
+    "skillArea": "focus",
     "titleTagalog": "Sabi Ko",
     "titleEnglish": "Simon Says",
     "targetProfile": "regulation",
@@ -257,6 +273,7 @@
   },
   {
     "id": "act_17",
+    "skillArea": "focus",
     "titleTagalog": "Mabagal na Robot",
     "titleEnglish": "Slow Motion Robot",
     "targetProfile": "regulation",
@@ -273,6 +290,7 @@
   },
   {
     "id": "act_18",
+    "skillArea": "fineMotor",
     "titleTagalog": "Tore ng Baso",
     "titleEnglish": "Cup Stacking Pyramid",
     "targetProfile": "regulation",
@@ -286,5 +304,311 @@
       "Dahan-dahang iligpit nang hindi nababagsak."
     ],
     "safetyNoteTagalog": "Gamitin lamang ang mga plastik o paper cups (huwag babasagin)."
+  },
+  {
+    "id": "act_19",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Bihis Mag-isa",
+    "titleEnglish": "Dress Myself",
+    "targetProfile": "regulation",
+    "domain": "tactile",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["Maluwag na damit na madaling isuot"],
+    "descriptionTagalog": "Pagsasanay sa pagsuot ng damit nang paisa-isang hakbang. Isang bahagi lang muna ang ipapagawa sa bata, hanggang sa dumami.",
+    "stepByStepTagalog": [
+      "Ihanda ang damit nang nakalatag at nakaharap sa tamang gilid.",
+      "Ikaw ang magpasok sa ulo, siya ang bahala sa isang manggas.",
+      "Kapag kaya na niya ang manggas, dagdagan ng isa pang hakbang."
+    ],
+    "safetyNoteTagalog": "Huwag magmadali. Kapag napagod na siya, ikaw na ang tumapos nang walang sermon."
+  },
+  {
+    "id": "act_20",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Sipilyo Kasabay ng Kanta",
+    "titleEnglish": "Toothbrush Song",
+    "targetProfile": "avoiding",
+    "domain": "tactile",
+    "estimatedMinutes": 3,
+    "materialsNeeded": ["Sipilyo", "Isang maikling kanta o timer"],
+    "descriptionTagalog": "Ginagawang matiyempuhan ang pagsipilyo gamit ang isang kanta, para may nakikitang hangganan ang bata.",
+    "stepByStepTagalog": [
+      "Pumili ng iisang kantang uulitin gabi-gabi.",
+      "Kapag nagsimula ang kanta, magsisimula rin ang sipilyo.",
+      "Kapag natapos ang kanta, tapos na — kahit hindi pa perpekto."
+    ],
+    "safetyNoteTagalog": "Kung masakit sa kanya ang lasa ng toothpaste, subukan muna ang walang lasa."
+  },
+  {
+    "id": "act_21",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Ligpit sa Kahon",
+    "titleEnglish": "Toy Box Sort",
+    "targetProfile": "regulation",
+    "domain": "visual",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["2-3 kahon o basket", "Mga laruan"],
+    "descriptionTagalog": "Pagliligpit ng laruan sa hiwalay na kahon ayon sa uri. Mas madali ang malinaw na lalagyan kaysa sa utos na maglinis.",
+    "stepByStepTagalog": [
+      "Maglagay ng larawan sa bawat kahon kung anong laman nito.",
+      "Isang uri muna ang ipaligpit — halimbawa, mga sasakyan lang.",
+      "Bilangin nang malakas habang naglalagay siya."
+    ],
+    "safetyNoteTagalog": "Ilagay ang mga kahon sa abot ng kamay niya para hindi siya umakyat."
+  },
+  {
+    "id": "act_22",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Salok at Salin",
+    "titleEnglish": "Scoop and Pour",
+    "targetProfile": "regulation",
+    "domain": "proprioceptive",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["2 mangkok", "Tabo o tasa", "Tubig o bigas"],
+    "descriptionTagalog": "Pagsalok at pagsalin mula sa isang mangkok papunta sa isa pa. Paghahanda ito sa pagsalok ng pagkain at pag-inom mag-isa.",
+    "stepByStepTagalog": [
+      "Maglagay ng bigas o tubig sa isang mangkok.",
+      "Ipakita kung paano sumalok at dahan-dahang isalin sa kabila.",
+      "Kapag natapos, pabalikin sa unang mangkok."
+    ],
+    "safetyNoteTagalog": "Maglatag ng tuwalya sa ilalim. Ang natapon ay bahagi ng pagsasanay, hindi kalat."
+  },
+  {
+    "id": "act_23",
+    "skillArea": "fineMotor",
+    "titleTagalog": "Ipit sa Lubid",
+    "titleEnglish": "Clothespin Line",
+    "targetProfile": "regulation",
+    "domain": "tactile",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["8-10 na plastik na sipit", "Lubid o tali"],
+    "descriptionTagalog": "Pag-ipit ng mga sipit sa lubid. Sinasanay nito ang lakas ng hinlalaki at hintuturo na siya ring ginagamit sa paghawak ng lapis.",
+    "stepByStepTagalog": [
+      "Itali ang lubid sa dalawang upuan, kasing-taas ng dibdib niya.",
+      "Ipakita kung paano pisilin ang sipit gamit ang hinlalaki at hintuturo.",
+      "Paisa-isang ipaipit ang mga sipit habang binibilang."
+    ],
+    "safetyNoteTagalog": "Gumamit ng plastik na sipit. Masakit ang matigas na kahoy kapag naipit ang daliri."
+  },
+  {
+    "id": "act_24",
+    "skillArea": "fineMotor",
+    "titleTagalog": "Hulog sa Lata",
+    "titleEnglish": "Drop in the Can",
+    "targetProfile": "regulation",
+    "domain": "tactile",
+    "estimatedMinutes": 7,
+    "materialsNeeded": ["Lata o lalagyan na may takip", "Mga takip ng bote"],
+    "descriptionTagalog": "Paghuhulog ng maliliit na bagay sa isang butas. Pagsasanay ito ng tumpak na paghawak at pagbitaw.",
+    "stepByStepTagalog": [
+      "Gumawa ng butas sa takip, bahagyang mas malaki sa takip ng bote.",
+      "Ipaisa-isang ihulog ang mga takip sa butas.",
+      "Kapag ubos na, buksan at ibuhos para ulitin."
+    ],
+    "safetyNoteTagalog": "Iwasan ang bagay na mas maliit sa hinlalaki niya kung may ugali siyang magsubo."
+  },
+  {
+    "id": "act_25",
+    "skillArea": "fineMotor",
+    "titleTagalog": "Punit at Dikit",
+    "titleEnglish": "Tear and Paste",
+    "targetProfile": "regulation",
+    "domain": "tactile",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["Lumang diyaryo o magasin", "Pandikit", "Malinis na papel"],
+    "descriptionTagalog": "Pagpunit ng papel at pagdikit nito. Sinasanay ang magkasabay na paggamit ng dalawang kamay.",
+    "stepByStepTagalog": [
+      "Ipakita kung paano punitin ang papel gamit ang dalawang kamay.",
+      "Punitin ito sa maliliit na piraso.",
+      "Idikit ang mga piraso sa malinis na papel kahit anong ayos."
+    ],
+    "safetyNoteTagalog": "Gumamit ng pandikit na ligtas sa bata."
+  },
+  {
+    "id": "act_26",
+    "skillArea": "sensory",
+    "titleTagalog": "Bote ng Kalmado",
+    "titleEnglish": "Calm Down Bottle",
+    "targetProfile": "avoiding",
+    "domain": "visual",
+    "estimatedMinutes": 5,
+    "materialsNeeded": ["Malinaw na bote na may takip", "Tubig", "Bigas o glitter"],
+    "descriptionTagalog": "Panonood sa dahan-dahang paglubog ng laman ng bote. Magamit ito kapag kailangan niyang huminahon.",
+    "stepByStepTagalog": [
+      "Lagyan ng tubig at kaunting bigas o glitter ang bote, tapos higpitan ang takip.",
+      "Kalugin at ipatingin sa kanya hanggang lumubog ang lahat.",
+      "Huminga kayo nang malalim habang nanonood."
+    ],
+    "safetyNoteTagalog": "Idikit nang mabuti ang takip gamit ang tape para hindi matapon."
+  },
+  {
+    "id": "act_27",
+    "skillArea": "sensory",
+    "titleTagalog": "Hulaan ang Hipo",
+    "titleEnglish": "Guess by Touch",
+    "targetProfile": "avoiding",
+    "domain": "tactile",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["Bag o supot na hindi nakikita ang laman", "4-5 pamilyar na bagay"],
+    "descriptionTagalog": "Paghula ng bagay sa loob ng bag gamit lang ang hipo. Tumutulong sa batang umiiwas sa ibang tekstura.",
+    "stepByStepTagalog": [
+      "Ipakita muna sa kanya ang mga bagay bago ilagay sa bag.",
+      "Ipapasok ang kamay at hulaan ang nahawakan bago ilabas.",
+      "Simulan sa makinis na bagay bago sa magaspang."
+    ],
+    "safetyNoteTagalog": "Huwag pilitin kung ayaw niyang ipasok ang kamay. Hayaan muna siyang tumingin."
+  },
+  {
+    "id": "act_28",
+    "skillArea": "grossMotor",
+    "titleTagalog": "Lakad sa Guhit",
+    "titleEnglish": "Tape Line Walk",
+    "targetProfile": "regulation",
+    "domain": "vestibular",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["Masking tape"],
+    "descriptionTagalog": "Paglakad sa ibabaw ng isang guhit na tape. Sinasanay ang balanse at ang pagpigil ng sariling galaw.",
+    "stepByStepTagalog": [
+      "Idikit ang tape sa sahig bilang isang tuwid na linya.",
+      "Palakarin siya sa ibabaw ng linya nang hindi lumalampas.",
+      "Kapag kaya na, subukan ang paatras o ang paliko-likong linya."
+    ],
+    "safetyNoteTagalog": "Tiyaking hindi madulas ang sahig at walang gamit sa magkabilang gilid."
+  },
+  {
+    "id": "act_29",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Hugas na May Bilang",
+    "titleEnglish": "Counted Handwash",
+    "targetProfile": "regulation",
+    "domain": "tactile",
+    "estimatedMinutes": 3,
+    "materialsNeeded": ["Sabon", "Tubig"],
+    "descriptionTagalog": "Paghuhugas ng kamay na may bilang, para may malinaw na simula at katapusan ang gawain.",
+    "stepByStepTagalog": [
+      "Basain ang kamay at lagyan ng sabon.",
+      "Magbilang nang malakas hanggang dalawampu habang kinukuskos.",
+      "Banlawan at punasan nang tuyo."
+    ],
+    "safetyNoteTagalog": "Tiyaking hindi mainit ang tubig bago ipahawak sa kanya."
+  },
+  {
+    "id": "act_30",
+    "skillArea": "dailyLiving",
+    "titleTagalog": "Tiklop ng Tuwalya",
+    "titleEnglish": "Towel Folding",
+    "targetProfile": "regulation",
+    "domain": "proprioceptive",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["3-4 maliliit na tuwalya"],
+    "descriptionTagalog": "Pagtitiklop ng tuwalya. Nakakatulong ito sa paggamit ng dalawang kamay at sa pakiramdam ng natapos na gawain.",
+    "stepByStepTagalog": [
+      "Ilatag ang tuwalya sa mesa o sa sahig.",
+      "Ipakita ang isang tiklop lang muna — kalahati.",
+      "Hayaan siyang gawin ang natitirang tuwalya."
+    ],
+    "safetyNoteTagalog": "Simulan sa maliliit na tuwalya. Mabigat ang malaki at nakakapanghina ng loob."
+  },
+  {
+    "id": "act_31",
+    "skillArea": "focus",
+    "titleTagalog": "Tapos Bago Tumunog",
+    "titleEnglish": "Beat the Timer",
+    "targetProfile": "regulation",
+    "domain": "auditory",
+    "estimatedMinutes": 5,
+    "materialsNeeded": ["Timer o alarm sa telepono"],
+    "descriptionTagalog": "Pagtatapos ng isang maliit na gawain bago tumunog ang timer, para makita niya ang hangganan ng oras.",
+    "stepByStepTagalog": [
+      "Pumili ng isang maliit na gawain — halimbawa, ipunin ang limang laruan.",
+      "Itakda ang timer sa tatlong minuto at ipakita sa kanya.",
+      "Purihin siya kapag natapos, kahit tumunog na ang timer."
+    ],
+    "safetyNoteTagalog": "Huwag gawing paligsahan na may talo. Ang layunin ay makita ang oras, hindi manalo."
+  },
+  {
+    "id": "act_32",
+    "skillArea": "focus",
+    "titleTagalog": "Bulong at Malakas",
+    "titleEnglish": "Whisper and Loud",
+    "targetProfile": "regulation",
+    "domain": "auditory",
+    "estimatedMinutes": 6,
+    "materialsNeeded": ["Wala"],
+    "descriptionTagalog": "Paglipat ng lakas ng boses ayon sa hudyat. Sinasanay ang pagpigil sa sarili.",
+    "stepByStepTagalog": [
+      "Magkasundo sa hudyat — taas ng kamay ay malakas, baba ay bulong.",
+      "Sabihin ang parehong salita sa dalawang lakas.",
+      "Magpalit kayo — siya naman ang magbibigay ng hudyat."
+    ],
+    "safetyNoteTagalog": "Kung masakit sa tainga niya ang malakas, bulong at karaniwang boses na lang."
+  },
+  {
+    "id": "act_33",
+    "skillArea": "play",
+    "titleTagalog": "Salitan sa Tore",
+    "titleEnglish": "Turn-Taking Tower",
+    "targetProfile": "regulation",
+    "domain": "visual",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["Mga bloke o maliliit na kahon"],
+    "descriptionTagalog": "Sabayang pagbuo ng tore na salitan ang paglalagay. Pagsasanay ito ng paghihintay ng turno.",
+    "stepByStepTagalog": [
+      "Ilagay ang mga bloke sa gitna ninyong dalawa.",
+      "Salitan kayong maglagay ng tig-isang bloke.",
+      "Sabihin nang malakas kung kaninong turno bago maglagay."
+    ],
+    "safetyNoteTagalog": "Gumamit ng magaan na bloke para hindi masakit kapag bumagsak."
+  },
+  {
+    "id": "act_34",
+    "skillArea": "play",
+    "titleTagalog": "Gulong ng Bola",
+    "titleEnglish": "Ball Roll Back",
+    "targetProfile": "regulation",
+    "domain": "vestibular",
+    "estimatedMinutes": 8,
+    "materialsNeeded": ["Magaan na bola"],
+    "descriptionTagalog": "Paggulong ng bola nang pabalik-balik habang nakaupo. Simpleng paraan ng pagsasanay sa salitan.",
+    "stepByStepTagalog": [
+      "Umupo kayong magkaharap na nakabuka ang mga paa.",
+      "Igulong ang bola sa kanya at hintaying ibalik niya.",
+      "Bilangin kung ilang beses kayong nakapagbalikan nang hindi natatapon."
+    ],
+    "safetyNoteTagalog": "Gumamit ng magaan na bola kapag sa loob ng bahay."
+  },
+  {
+    "id": "act_35",
+    "skillArea": "play",
+    "titleTagalog": "Tago at Hanap",
+    "titleEnglish": "Hide and Find",
+    "targetProfile": "seeking",
+    "domain": "visual",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["Isang paboritong laruan"],
+    "descriptionTagalog": "Paghahanap ng nakatagong laruan sa loob ng kwarto. Naghihintay siya at sumusunod sa palatandaan.",
+    "stepByStepTagalog": [
+      "Ipakita ang laruan bago ito itago.",
+      "Itago muna ito sa lugar na kitang-kita.",
+      "Bigyan siya ng palatandaan — 'malapit ka na' o 'malayo pa'."
+    ],
+    "safetyNoteTagalog": "Huwag itago sa mataas o sa likod ng mabibigat na kagamitan."
+  },
+  {
+    "id": "act_36",
+    "skillArea": "play",
+    "titleTagalog": "Kwento sa Larawan",
+    "titleEnglish": "Picture Story",
+    "targetProfile": "regulation",
+    "domain": "visual",
+    "estimatedMinutes": 10,
+    "materialsNeeded": ["3-4 larawan o lumang litrato"],
+    "descriptionTagalog": "Sabayang paggawa ng kwento mula sa mga larawan. Tumutulong ito sa pagpapalitan ng ideya.",
+    "stepByStepTagalog": [
+      "Ilatag ang mga larawan sa pagkakasunod-sunod.",
+      "Ikaw ang magsisimula ng isang pangungusap sa unang larawan.",
+      "Siya naman ang magdadagdag sa susunod na larawan."
+    ],
+    "safetyNoteTagalog": "Walang maling kwento. Huwag itama ang sagot niya."
   }
 ]
