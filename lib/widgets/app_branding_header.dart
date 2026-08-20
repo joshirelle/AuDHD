@@ -67,7 +67,7 @@ class AppBrandingHeader extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 13,
-            color: Colors.grey.shade600,
+            color: AppColors.textMuted,
             height: 1.35,
             fontFamily: 'Nunito',
           ),

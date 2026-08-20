@@ -47,7 +47,7 @@ class ScheduleTaskCard extends StatelessWidget {
     return Semantics(
       button: true,
       checked: isDone,
-      label: task.titleTagalog,
+      label: task.title,
       child: GestureDetector(
         onTap: () => _toggle(context),
         onLongPress: onOptions,
@@ -74,7 +74,7 @@ class ScheduleTaskCard extends StatelessWidget {
                     width: 52,
                     height: 52,
                     decoration: const BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -85,7 +85,7 @@ class ScheduleTaskCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 9),
                   Text(
-                    task.titleTagalog,
+                    task.title,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -130,7 +130,7 @@ class ScheduleTaskCard extends StatelessWidget {
                     child: const Icon(
                       Icons.check_rounded,
                       size: 15,
-                      color: Colors.white,
+                      color: AppColors.surface,
                     ),
                   ),
                 ),

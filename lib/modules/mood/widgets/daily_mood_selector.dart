@@ -47,10 +47,10 @@ class DailyMoodSelector extends StatelessWidget {
           duration: const Duration(milliseconds: 160),
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? tone : Colors.white,
+            color: isSelected ? tone : AppColors.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isSelected ? AppColors.logoGreen : Colors.grey.shade300,
+              color: isSelected ? AppColors.logoGreen : AppColors.divider,
               width: isSelected ? 3 : 1.5,
             ),
           ),

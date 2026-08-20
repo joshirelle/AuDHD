@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/i18n/language_controller.dart';
 import '../core/theme/app_theme.dart';
 
 /// Limang araw na nakasentro sa ngayon, may bituin sa mga araw na may natapos.
@@ -23,14 +24,16 @@ class WeeklyDateStrip extends StatelessWidget {
 
   final bool Function(DateTime date) hasProgress;
 
-  static const List<String> _dayNames = [
-    'Lun',
-    'Mar',
-    'Miy',
-    'Huw',
-    'Bye',
-    'Sab',
-    'Lin',
+  /// Pantawag lang sa mata, hindi susi — walang naitatago na naka-index dito,
+  /// kaya ligtas itong isalin. Getter para masundan ang piniling wika.
+  static List<String> get _dayNames => [
+    tr('Lun', 'Mon'),
+    tr('Mar', 'Tue'),
+    tr('Miy', 'Wed'),
+    tr('Huw', 'Thu'),
+    tr('Bye', 'Fri'),
+    tr('Sab', 'Sat'),
+    tr('Lin', 'Sun'),
   ];
 
   static bool _isSameDay(DateTime a, DateTime b) =>
@@ -81,7 +84,7 @@ class WeeklyDateStrip extends StatelessWidget {
         ? AppColors.skyBlue
         : isToday
         ? AppColors.skyBlueLight
-        : Colors.white;
+        : AppColors.surface;
 
     return InkWell(
       onTap: isFuture ? null : () => onDateSelected(day),
@@ -92,7 +95,7 @@ class WeeklyDateStrip extends StatelessWidget {
           color: background,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isToday ? AppColors.logoGreen : Colors.grey.shade200,
+            color: isToday ? AppColors.logoGreen : AppColors.divider,
             width: isToday ? 2 : 1,
           ),
         ),
@@ -104,7 +107,7 @@ class WeeklyDateStrip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: isFuture ? Colors.grey.shade400 : AppColors.textDark,
+                color: isFuture ? AppColors.textMuted : AppColors.textDark,
                 fontFamily: 'Nunito',
               ),
             ),
@@ -114,7 +117,7 @@ class WeeklyDateStrip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: isFuture ? Colors.grey.shade400 : AppColors.textDark,
+                color: isFuture ? AppColors.textMuted : AppColors.textDark,
                 fontFamily: 'Nunito',
               ),
             ),

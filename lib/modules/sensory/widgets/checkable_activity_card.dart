@@ -55,8 +55,8 @@ class CheckableActivityCard extends StatelessWidget {
     final domainColor = _domainColors[activity.domain] ?? AppColors.skyBlueLight;
 
     return KikoCard(
-      backgroundColor: isCompleted ? _completedTint : Colors.white,
-      borderColor: isCompleted ? _completedGreen : Colors.grey.shade200,
+      backgroundColor: isCompleted ? _completedTint : AppColors.surface,
+      borderColor: isCompleted ? _completedGreen : AppColors.divider,
       padding: const EdgeInsets.all(14),
       onTap: () => ActivityDetailSheet.show(context, activity, date),
       child: Row(
@@ -69,7 +69,7 @@ class CheckableActivityCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  activity.titleTagalog,
+                  activity.title,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class CheckableActivityCard extends StatelessWidget {
   Widget _buildCheckbox() {
     return Semantics(
       checked: isCompleted,
-      label: activity.titleTagalog,
+      label: activity.title,
       // Sariling context para tumapat ang burst sa mismong checkbox.
       child: Builder(
         builder: (context) => InkWell(
@@ -126,15 +126,17 @@ class CheckableActivityCard extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: isCompleted ? _completedGreen : Colors.white,
+              color: isCompleted ? _completedGreen : AppColors.surface,
               shape: BoxShape.circle,
+              // Ito ang pindutan mismo, hindi palamuti: kailangang makita ang
+              // hindi pa naitsek, kaya tinta ang gilid at hindi divider.
               border: Border.all(
-                color: isCompleted ? _completedGreen : Colors.grey.shade400,
+                color: isCompleted ? _completedGreen : AppColors.textMuted,
                 width: 2,
               ),
             ),
             child: isCompleted
-                ? const Icon(Icons.check_rounded, size: 20, color: Colors.white)
+                ? const Icon(Icons.check_rounded, size: 20, color: AppColors.surface)
                 : null,
           ),
         ),

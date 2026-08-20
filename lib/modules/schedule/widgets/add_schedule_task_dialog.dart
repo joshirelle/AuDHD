@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/schedule_task.dart';
 import '../../../core/theme/app_theme.dart';
 import 'schedule_style.dart';
@@ -116,7 +117,9 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
               ),
               const SizedBox(height: 18),
               Text(
-                _isEditing ? 'Baguhin ang Gawain' : 'Bagong Gawain',
+                _isEditing
+                    ? tr('Baguhin ang Gawain', 'Edit Task')
+                    : tr('Bagong Gawain', 'New Task'),
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -133,15 +136,20 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
                 if (_showNameError) setState(() => _showNameError = false);
               },
               decoration: InputDecoration(
-                hintText: 'Halimbawa: Pag-iinom ng gamot',
-                errorText: _showNameError ? 'Kailangan ng pangalan.' : null,
+                hintText: tr(
+                  'Halimbawa: Pag-iinom ng gamot',
+                  'Example: Take medicine',
+                ),
+                errorText: _showNameError
+                    ? tr('Kailangan ng pangalan.', 'A name is needed.')
+                    : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
             ),
             const SizedBox(height: 8),
-            _buildLabel('Kailan?'),
+            _buildLabel(tr('Kailan?', 'When?')),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -151,7 +159,7 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
               ],
             ),
             const SizedBox(height: 18),
-            _buildLabel('Tiyak na oras (opsyonal)'),
+            _buildLabel(tr('Tiyak na oras (opsyonal)', 'Exact time (optional)')),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -167,7 +175,7 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
                   icon: const Icon(Icons.schedule_rounded, size: 18),
                   label: Text(
                     _exactTime == null
-                        ? 'Pumili ng oras'
+                        ? tr('Pumili ng oras', 'Pick a time')
                         : _exactTime!.format(context),
                     style: const TextStyle(
                       fontFamily: 'Nunito',
@@ -178,7 +186,7 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
                 ),
                 if (_exactTime != null)
                   IconButton(
-                    tooltip: 'Alisin ang oras',
+                    tooltip: tr('Alisin ang oras', 'Remove the time'),
                     onPressed: () => setState(() => _exactTime = null),
                     icon: const Icon(
                       Icons.close_rounded,
@@ -189,7 +197,7 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
               ],
             ),
               const SizedBox(height: 18),
-              _buildLabel('Pumili ng icon'),
+              _buildLabel(tr('Pumili ng icon', 'Pick an icon')),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -205,11 +213,11 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Kanselahin',
-                      style: TextStyle(
+                    child: Text(
+                      tr('Kanselahin', 'Cancel'),
+                      style: const TextStyle(
                         fontFamily: 'Nunito',
-                        color: Colors.grey,
+                        color: AppColors.textMuted,
                       ),
                     ),
                   ),
@@ -227,7 +235,7 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
                       ),
                     ),
                     child: Text(
-                      _isEditing ? 'I-save' : 'I-dagdag',
+                      _isEditing ? tr('I-save', 'Save') : tr('I-dagdag', 'Add'),
                       style: const TextStyle(
                         fontFamily: 'Nunito',
                         fontWeight: FontWeight.bold,
@@ -264,10 +272,10 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? style.accent : Colors.white,
+          color: isSelected ? style.accent : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.button),
           border: Border.all(
-            color: isSelected ? style.accent : Colors.grey.shade300,
+            color: isSelected ? style.accent : AppColors.divider,
             width: 2,
           ),
         ),
@@ -277,16 +285,16 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
             Icon(
               style.icon,
               size: 15,
-              color: isSelected ? Colors.white : style.accent,
+              color: isSelected ? AppColors.surface : style.accent,
             ),
             const SizedBox(width: 5),
             Text(
-              time.label,
+              time.displayLabel,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Nunito',
-                color: isSelected ? Colors.white : AppColors.textDark,
+                color: isSelected ? AppColors.surface : AppColors.textDark,
               ),
             ),
           ],
@@ -306,10 +314,10 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
           width: 46,
           height: 46,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.mintGreen : Colors.white,
+            color: isSelected ? AppColors.mintGreen : AppColors.surface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isSelected ? AppColors.logoGreen : Colors.grey.shade300,
+              color: isSelected ? AppColors.logoGreen : AppColors.divider,
               width: 2,
             ),
           ),

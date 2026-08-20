@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../core/i18n/language_controller.dart';
 import '../core/models/reward.dart';
 import '../core/theme/app_theme.dart';
 import 'confetti_burst.dart';
@@ -96,10 +97,10 @@ class _GoalAchievedOverlayState extends State<GoalAchievedOverlay>
         children: [
           _buildLid(),
           const SizedBox(height: 16),
-          const Text(
-            'NAABOT ANG LAYUNIN!',
+          Text(
+            tr('NAABOT ANG LAYUNIN!', 'GOAL REACHED!'),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.5,
@@ -110,8 +111,11 @@ class _GoalAchievedOverlayState extends State<GoalAchievedOverlay>
           const SizedBox(height: 6),
           Text(
             widget.rewards.length == 1
-                ? 'May nabuksang pabuya.'
-                : 'May ${widget.rewards.length} nabuksang pabuya.',
+                ? tr('May nabuksang pabuya.', 'A reward is unlocked.')
+                : tr(
+                    'May ${widget.rewards.length} nabuksang pabuya.',
+                    '${widget.rewards.length} rewards are unlocked.',
+                  ),
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 12,
@@ -136,9 +140,9 @@ class _GoalAchievedOverlayState extends State<GoalAchievedOverlay>
                   borderRadius: BorderRadius.circular(AppRadius.button),
                 ),
               ),
-              child: const Text(
-                'Ayos!',
-                style: TextStyle(
+              child: Text(
+                tr('Ayos!', 'Nice!'),
+                style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',

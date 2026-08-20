@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/guide_card.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
@@ -40,8 +41,8 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gabay sa Pag-unawa'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Gabay sa Pag-unawa', 'Understanding Guide')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -103,33 +104,42 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Para saan ito?',
-                    style: TextStyle(
+                    tr('Para saan ito?', 'What is this for?'),
+                    style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textDark,
                       fontFamily: 'Nunito',
                     ),
                   ),
-                  SizedBox(height: 6),
+                  const SizedBox(height: 6),
                   Text(
-                    'Tulong ito para maunawaan ang maaaring pinagdadaanan ng '
-                    'anak mo. Hindi ito pagsusuri, at hindi nito sinasabi kung '
-                    'anong kondisyon mayroon siya.',
-                    style: TextStyle(
+                    tr(
+                      'Tulong ito para maunawaan ang maaaring pinagdadaanan ng '
+                          'anak mo. Hindi ito pagsusuri, at hindi nito sinasabi kung '
+                          'anong kondisyon mayroon siya.',
+                      'This is here to help you understand what your child may '
+                          'be going through. It is not a test, and it does not '
+                          'say what your child has.',
+                    ),
+                    style: const TextStyle(
                       fontSize: 11.5,
                       height: 1.45,
                       color: AppColors.textDark,
                       fontFamily: 'Nunito',
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
-                    'Magkakapatong ang mga karanasan dito — basahin ang naaayon '
-                    'sa nakikita mo, laktawan ang hindi.',
-                    style: TextStyle(
+                    tr(
+                      'Magkakapatong ang mga karanasan dito — basahin ang naaayon '
+                          'sa nakikita mo, laktawan ang hindi.',
+                      'These experiences overlap — read what matches what you '
+                          'see, skip what does not.',
+                    ),
+                    style: const TextStyle(
                       fontSize: 11.5,
                       height: 1.45,
                       color: AppColors.textDark,
@@ -153,12 +163,12 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           _buildChip(
-            label: 'Lahat',
+            label: tr('Lahat', 'All'),
             selected: !_savedOnly && _category == null,
             onTap: () => _selectCategory(null),
           ),
           _buildChip(
-            label: 'Naka-save',
+            label: tr('Naka-save', 'Saved'),
             icon: Icons.bookmark_rounded,
             selected: _savedOnly,
             onTap: () => setState(() {
@@ -205,7 +215,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                 Icon(
                   icon,
                   size: 16,
-                  color: selected ? Colors.white : AppColors.textMuted,
+                  color: selected ? AppColors.surface : AppColors.textMuted,
                 ),
                 const SizedBox(width: 6),
               ],
@@ -214,7 +224,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                 style: TextStyle(
                   fontSize: 12.5,
                   fontWeight: FontWeight.bold,
-                  color: selected ? Colors.white : AppColors.textDark,
+                  color: selected ? AppColors.surface : AppColors.textDark,
                   fontFamily: 'Nunito',
                 ),
               ),
@@ -249,7 +259,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: const BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.surface,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -304,7 +314,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                 horizontal: 12,
                 vertical: 10,
               ),
-              color: Colors.white.withValues(alpha: 0.55),
+              color: AppColors.surface.withValues(alpha: 0.55),
               child: Text(
                 '"${card.quote}"',
                 maxLines: 2,
@@ -338,20 +348,24 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
               color: AppColors.divider,
             ),
             const SizedBox(height: 14),
-            const Text(
-              'Wala ka pang naka-save',
-              style: TextStyle(
+            Text(
+              tr('Wala ka pang naka-save', 'Nothing saved yet'),
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: AppColors.textDark,
                 fontFamily: 'Nunito',
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Buksan ang isang gabay at pindutin ang bookmark sa itaas '
-              'para mabilis mo itong mabalikan.',
+            Text(
+              tr(
+                'Buksan ang isang gabay at pindutin ang bookmark sa itaas '
+                    'para mabilis mo itong mabalikan.',
+                'Open a guide and tap the bookmark at the top so you can come '
+                    'back to it quickly.',
+              ),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 height: 1.4,
                 color: AppColors.textMuted,

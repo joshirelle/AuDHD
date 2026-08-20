@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/i18n/language_controller.dart';
 import 'core/services/auth_service.dart';
 import 'core/services/child_photo_service.dart';
 import 'core/theme/app_theme.dart';
@@ -19,8 +20,40 @@ Future<void> main() async {
   runApp(const AuDHDApp());
 }
 
-class AuDHDApp extends StatelessWidget {
+class AuDHDApp extends StatefulWidget {
   const AuDHDApp({super.key});
+
+  @override
+  State<AuDHDApp> createState() => _AuDHDAppState();
+}
+
+class _AuDHDAppState extends State<AuDHDApp> {
+  @override
+  void initState() {
+    super.initState();
+    LanguageController.notifier.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.notifier.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  /// Hindi dumadaan sa `context` ang `tr()`, at iniimbak ng `Navigator` ang
+  /// mga naitayong ruta — kaya hindi sapat ang `setState`. Minamarkahan ang
+  /// buong puno para tiyak na muling iguguhit ang lahat nang hindi nawawala
+  /// ang pinagkakatayuan at ang naka-unlock na estado.
+  void _onLanguageChanged() {
+    setState(() {});
+
+    void markDirty(Element element) {
+      element.markNeedsBuild();
+      element.visitChildren(markDirty);
+    }
+
+    (context as Element).visitChildren(markDirty);
+  }
 
   @override
   Widget build(BuildContext context) {

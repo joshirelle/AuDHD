@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/guide_card.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
@@ -109,7 +110,9 @@ class _ParentTipSheetState extends State<ParentTipSheet> {
                 ),
                 IconButton(
                   onPressed: _toggleBookmark,
-                  tooltip: _bookmarked ? 'Alisin sa naka-save' : 'I-save',
+                  tooltip: _bookmarked
+                      ? tr('Alisin sa naka-save', 'Remove from saved')
+                      : tr('I-save', 'Save'),
                   icon: Icon(
                     _bookmarked
                         ? Icons.bookmark_rounded
@@ -152,9 +155,12 @@ class _ParentTipSheetState extends State<ParentTipSheet> {
               ),
             ),
             const SizedBox(height: 26),
-            const Text(
-              'Ano ang pwedeng gawin ng magulang?',
-              style: TextStyle(
+            Text(
+              tr(
+                'Ano ang pwedeng gawin ng magulang?',
+                'What can a parent try?',
+              ),
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textDark,
@@ -162,9 +168,12 @@ class _ParentTipSheetState extends State<ParentTipSheet> {
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              'Walang tama o mali dito. Piliin ang kaya mong subukan.',
-              style: TextStyle(
+            Text(
+              tr(
+                'Walang tama o mali dito. Piliin ang kaya mong subukan.',
+                'There is no right or wrong here. Pick what you can try.',
+              ),
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textMuted,
                 fontFamily: 'Nunito',

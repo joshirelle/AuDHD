@@ -19,14 +19,14 @@ class SkillAreaBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(area.icon, size: 11, color: Colors.white),
+          Icon(area.icon, size: 11, color: AppColors.surface),
           const SizedBox(width: 4),
           Text(
             area.label,
             style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.surface,
               fontFamily: 'Nunito',
             ),
           ),

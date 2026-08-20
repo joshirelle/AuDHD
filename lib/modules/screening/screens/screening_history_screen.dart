@@ -38,7 +38,7 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tala ng mga Screening'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -48,9 +48,9 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.history_rounded, size: 64, color: Colors.grey.shade400),
+                  Icon(Icons.history_rounded, size: 64, color: AppColors.textMuted),
                   const SizedBox(height: 12),
-                  Text('Wala pang nakatalang screening result.', style: TextStyle(color: Colors.grey.shade600)),
+                  Text('Wala pang nakatalang screening result.', style: TextStyle(color: AppColors.textMuted)),
                 ],
               ),
             )

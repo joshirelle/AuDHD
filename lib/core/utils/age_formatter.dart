@@ -1,6 +1,9 @@
+import '../i18n/language_controller.dart';
+
 /// Iisang batayan ng edad para hindi magkaiba ang ipinapakita sa app at sa PDF.
 class AgeFormatter {
-  static const String invalidBirthDate = 'Hindi wasto ang kaarawan';
+  static String get invalidBirthDate =>
+      tr('Hindi wasto ang kaarawan', 'Invalid birthday');
 
   static int monthsBetween(DateTime birthDate, DateTime asOf) {
     int months =
@@ -15,10 +18,12 @@ class AgeFormatter {
     final years = months ~/ 12;
     final remainder = months % 12;
     final parts = <String>[];
-    if (years > 0) parts.add('$years taon');
-    if (remainder > 0) parts.add('$remainder buwan');
-    if (parts.isEmpty) return 'Wala pang isang buwan';
-    return '${parts.join(', ')} ($months buwan)';
+    if (years > 0) parts.add(tr('$years taon', '$years yr'));
+    if (remainder > 0) parts.add(tr('$remainder buwan', '$remainder mo'));
+    if (parts.isEmpty) {
+      return tr('Wala pang isang buwan', 'Less than a month');
+    }
+    return '${parts.join(', ')} ${tr('($months buwan)', '($months months)')}';
   }
 
   static String formatAge(DateTime birthDate, DateTime asOf) =>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../core/i18n/language_controller.dart';
 import '../core/theme/app_theme.dart';
 import 'kiko_card.dart';
 
@@ -18,9 +19,9 @@ class HowToCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'PAANO ITO GAMITIN',
-            style: TextStyle(
+          Text(
+            tr('PAANO ITO GAMITIN', 'HOW TO USE THIS'),
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.5,
@@ -67,7 +68,7 @@ class _HowToStep extends StatelessWidget {
           height: 20,
           alignment: Alignment.center,
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.surface,
             shape: BoxShape.circle,
           ),
           child: Text(

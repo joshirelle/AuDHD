@@ -36,7 +36,7 @@ class ChildAvatar extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: tone.background,
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: AppColors.surface, width: 2),
           ),
           child: ClipOval(
             child: _buildImage(profile?.photoFileName, initial, tone),

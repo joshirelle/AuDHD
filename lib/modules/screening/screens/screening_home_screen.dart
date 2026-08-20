@@ -28,7 +28,7 @@ class ScreeningHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mga Pagsusuri'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -163,11 +163,11 @@ class ScreeningHomeScreen extends StatelessWidget {
                   children: [
                     Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+                    Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: Colors.grey),
+              const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
             ],
           ),
         ),

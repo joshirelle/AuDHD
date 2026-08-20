@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/reward.dart';
 import '../../../core/services/reward_service.dart';
 import '../../../core/services/star_service.dart';
@@ -48,11 +49,16 @@ class StarRewardDialog extends StatelessWidget {
                 color: AppColors.skyBlueLight,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Text(
-                'Gagawaran ng bituin ang bawat natapos na laro, gawain sa '
-                'iskedyul, at milestone. Ipunin ito, tapos ipagpalit sa isang '
-                'pabuya sa totoong buhay.',
-                style: TextStyle(
+              child: Text(
+                tr(
+                  'Gagawaran ng bituin ang bawat natapos na laro, gawain sa '
+                      'iskedyul, at milestone. Ipunin ito, tapos ipagpalit sa '
+                      'isang pabuya sa totoong buhay.',
+                  'Stars are given for every finished game, schedule task, and '
+                      'milestone. Save them up, then trade them for a '
+                      'real-life reward.',
+                ),
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppColors.textDark,
                   height: 1.4,
@@ -62,9 +68,9 @@ class StarRewardDialog extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            const Text(
-              'MGA PABUYA',
-              style: TextStyle(
+            Text(
+              tr('MGA PABUYA', 'REWARDS'),
+              style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w800,
                 color: AppColors.textDark,
@@ -75,14 +81,36 @@ class StarRewardDialog extends StatelessWidget {
             const SizedBox(height: 10),
             ValueListenableBuilder<Box<int>>(
               valueListenable: HiveService.getRewardBox().listenable(),
-              builder: (context, box, _) => Column(
-                children: [
-                  for (final reward in RewardService.all()) ...[
-                    _buildRewardRow(reward, total >= reward.stars),
-                    const SizedBox(height: 8),
+              builder: (context, box, _) {
+                final rewards = RewardService.all();
+                if (rewards.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text(
+                      tr(
+                        'Wala ka pang pabuya. Ikaw ang magpapasya kung ano ang '
+                            'makukuha niya sa mga bituin.',
+                        'No rewards yet. You decide what your child gets for '
+                            'the stars.',
+                      ),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 1.4,
+                        color: AppColors.textDark,
+                        fontFamily: 'Nunito',
+                      ),
+                    ),
+                  );
+                }
+                return Column(
+                  children: [
+                    for (final reward in rewards) ...[
+                      _buildRewardRow(reward, total >= reward.stars),
+                      const SizedBox(height: 8),
+                    ],
                   ],
-                ],
-              ),
+                );
+              },
             ),
             const SizedBox(height: 4),
             TextButton.icon(
@@ -92,9 +120,9 @@ class StarRewardDialog extends StatelessWidget {
                 minimumSize: const Size.fromHeight(44),
               ),
               icon: const Icon(Icons.add_rounded, size: 18),
-              label: const Text(
-                'Magdagdag ng sariling pabuya',
-                style: TextStyle(
+              label: Text(
+                tr('Magdagdag ng sariling pabuya', 'Add your own reward'),
+                style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
@@ -107,9 +135,9 @@ class StarRewardDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Ipagpatuloy ang Pag-ipon',
-            style: TextStyle(
+          child: Text(
+            tr('Ipagpatuloy ang Pag-ipon', 'Keep collecting'),
+            style: const TextStyle(
               color: AppColors.logoGreen,
               fontWeight: FontWeight.bold,
               fontFamily: 'Nunito',
@@ -135,12 +163,12 @@ class StarRewardDialog extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.starGold,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(color: AppColors.surface, width: 2),
                 ),
                 child: const Icon(
                   Icons.star_rounded,
                   size: 20,
-                  color: Colors.white,
+                  color: AppColors.surface,
                 ),
               ),
             ),
@@ -149,8 +177,11 @@ class StarRewardDialog extends StatelessWidget {
         const SizedBox(height: 14),
         Text(
           name == null
-              ? 'May $total na bituin na!'
-              : 'May $total na bituin na si $name!',
+              ? tr('May $total na bituin na!', '$total stars so far!')
+              : tr(
+                  'May $total na bituin na si $name!',
+                  '$name has $total stars now!',
+                ),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 17,
@@ -164,14 +195,14 @@ class StarRewardDialog extends StatelessWidget {
   }
 
   Widget _buildRewardRow(Reward reward, bool isUnlocked) {
-    final color = isUnlocked ? AppColors.starGold : Colors.grey.shade400;
+    final color = isUnlocked ? AppColors.starGold : AppColors.textMuted;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: isUnlocked ? AppColors.butterYellow : Colors.white,
+        color: isUnlocked ? AppColors.butterYellow : AppColors.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isUnlocked ? color : Colors.grey.shade300),
+        border: Border.all(color: isUnlocked ? color : AppColors.divider),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +216,7 @@ class StarRewardDialog extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: isUnlocked ? AppColors.textDark : Colors.grey.shade600,
+                color: isUnlocked ? AppColors.textDark : AppColors.textMuted,
                 fontFamily: 'Nunito',
               ),
             ),
@@ -195,7 +226,7 @@ class StarRewardDialog extends StatelessWidget {
               reward.label,
               style: TextStyle(
                 fontSize: 12,
-                color: isUnlocked ? AppColors.textDark : Colors.grey.shade600,
+                color: isUnlocked ? AppColors.textDark : AppColors.textMuted,
                 height: 1.3,
                 fontFamily: 'Nunito',
               ),

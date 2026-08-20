@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/community_link.dart';
-import '../../knowledge/screens/knowledge_hub_screen.dart';
 import '../../profile/profile_screen.dart';
-import '../../reports/screens/doctor_report_screen.dart';
-import '../../schedule/screens/visual_schedule_screen.dart';
 import '../../sensory/screens/home_activities_screen.dart';
 
 class _NewThing {
@@ -21,7 +19,7 @@ class _NewThing {
   final void Function(BuildContext host) open;
 }
 
-/// Buod ng mga naidagdag sa bersyon 4.
+/// Buod ng mga naidagdag sa bersyon 5.
 ///
 /// Hindi ito lumalabas sa bagong user: kung katatapos lang niya ng onboarding,
 /// lahat ay bago sa kanya at walang saysay ang "ano ang bago".
@@ -34,51 +32,79 @@ class WhatsNewSheet extends StatelessWidget {
 
   /// Bagong susi kada bersyon. Habang sinusubok, mabubuksan ito anumang oras
   /// mula sa Profile — hindi na kailangang palitan ito.
-  static const String seenKey = 'has_seen_whats_new_v4';
+  static const String seenKey = 'has_seen_whats_new_v5';
 
   static void _go(BuildContext host, Widget screen) {
     Navigator.push(host, MaterialPageRoute(builder: (context) => screen));
   }
 
-  static final List<_NewThing> _things = [
+  /// Getter, hindi `final`: nasa loob ng bawat teksto ang `tr()`, kaya kailangan
+  /// itong muling buuin sa tuwing bubuksan para tumugma sa piniling wika.
+  static List<_NewThing> get _things => [
     _NewThing(
-      Icons.save_rounded,
-      'Kopya ng Datos',
-      'Hindi na mawawala ang mga naitala mo kapag napalitan, nasira, o '
-          'nawala ang telepono. Nasa Profile ito.',
+      Icons.translate_rounded,
+      tr('Filipino o Ingles', 'Filipino or English'),
+      tr(
+        'May magulang na nagsabing Ingles lang ang naiintindihan ng anak '
+            'nila. Mapapalitan mo na ang wika ng buong app sa Profile, pati '
+            'ang PDF para sa doktor.',
+        'Some parents told us their child only understands English. You can '
+            'now switch the whole app in Profile, including the PDF for the '
+            'doctor.',
+      ),
       (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
-      Icons.menu_book_rounded,
-      'Gabay sa Pag-unawa',
-      'Walong paksa tungkol sa maaaring pinagdadaanan ng bata — ingay, '
-          'ilaw, pagsabog ng damdamin, at iba pa.',
-      (host) => _go(host, const KnowledgeHubScreen()),
+      Icons.auto_awesome_rounded,
+      tr('Tatlong pindutan sa Bahay', 'Three buttons on Home'),
+      tr(
+        'Ang Ano ang Bago, ang grupo ng magulang, at ang pag-rate ay nasa '
+            'itaas na ng Bahay — hindi na kailangang hanapin sa Profile.',
+        'What\'s New, the parent group, and rating the app are now at the top '
+            'of Home — no need to look for them in Profile.',
+      ),
+      (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
-      Icons.sports_esports_rounded,
-      '36 na gawain, dating 18',
-      'Nakahati na sa anim na bahagi ng paglaki, at anim na bagong gawain '
-          'ang lumalabas kada araw.',
+      Icons.emoji_events_rounded,
+      tr('Kayo na ang pumipili ng pabuya', 'You choose every reward'),
+      tr(
+        'Inalis na namin ang tatlong halimbawang pabuya. Kayo ang mas nakakaalam '
+            'kung ano ang tunay na pabuya sa bahay ninyo.',
+        'We removed the three sample rewards. You know better than we do what '
+            'a real reward is in your home.',
+      ),
+      (host) => _go(host, const ProfileScreen()),
+    ),
+    _NewThing(
+      Icons.palette_rounded,
+      tr('Mas malambot na kulay', 'Softer colours'),
+      tr(
+        'Inalis namin ang matingkad na puti sa buong app. Mas madali na itong '
+            'tingnan, lalo na sa gabi.',
+        'We removed the harsh white from the whole app. It is easier on the '
+            'eyes now, especially at night.',
+      ),
       (host) => _go(host, const HomeActivitiesScreen()),
     ),
     _NewThing(
-      Icons.tune_rounded,
-      'Mas malayang iskedyul',
-      'Ayusin ang pagkakasunod-sunod, itago ang hindi ninyo ginagawa, '
-          'lagyan ng tiyak na oras, at balikan ang nakaraang araw.',
-      (host) => _go(host, const VisualScheduleScreen()),
-    ),
-    _NewThing(
-      Icons.medical_information_rounded,
-      'Rutina sa ulat ng doktor',
-      'Kasama na sa PDF kung gaano kadalas nasusunod ang bawat gawain.',
-      (host) => _go(host, const DoctorReportScreen()),
+      Icons.system_update_rounded,
+      tr('Kusang nag-a-update', 'Updates on its own'),
+      tr(
+        'Kapag may bagong bersyon, tahimik itong naidodownload sa likod at '
+            'tatanungin ka lang kung kailan mo gustong i-restart.',
+        'When a new version is out, it quietly downloads in the background '
+            'and only asks when you want to restart.',
+      ),
+      (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
       Icons.groups_rounded,
-      'Grupo ng mga magulang',
-      'May Facebook group na ng mga gumagamit ng app. Nasa Profile ang link.',
+      tr('Grupo ng mga magulang', 'Group of parents'),
+      tr(
+        'May Facebook group na ng mga gumagamit ng app. Nasa Bahay na ang link.',
+        'There is now a Facebook group for app users. The link is on Home.',
+      ),
       openAudhdGroup,
     ),
   ];
@@ -137,9 +163,9 @@ class WhatsNewSheet extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
               children: [
-                const Text(
-                  'Ano ang bago sa AuDHD',
-                  style: TextStyle(
+                Text(
+                  tr('Ano ang bago sa AuDHD', "What's new in AuDHD"),
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
@@ -147,10 +173,14 @@ class WhatsNewSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Salamat sa pagsubok ng app. Pindutin ang alinman para '
-                  'makita mo agad kung nasaan ito.',
-                  style: TextStyle(
+                Text(
+                  tr(
+                    'Salamat sa pagsubok ng app. Pindutin ang alinman para '
+                        'makita mo agad kung nasaan ito.',
+                    'Thank you for trying the app. Tap any of these to see '
+                        'right away where it is.',
+                  ),
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textMuted,
                     fontFamily: 'Nunito',
@@ -177,9 +207,9 @@ class WhatsNewSheet extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: const Text(
-                  'Tingnan ko mamaya',
-                  style: TextStyle(
+                child: Text(
+                  tr('Tingnan ko mamaya', "I'll look later"),
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                     fontFamily: 'Nunito',

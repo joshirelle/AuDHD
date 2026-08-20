@@ -20,7 +20,6 @@ class StarBadgeWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.butterYellow,
               borderRadius: BorderRadius.circular(AppRadius.button),
-              border: Border.all(color: AppColors.starGold, width: 2),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

@@ -8,6 +8,7 @@ import '../../data/models/behavior_log.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/models/sensory_profile_result.dart';
 import '../../data/services/hive_service.dart';
+import '../i18n/language_controller.dart';
 import '../models/schedule_task.dart';
 import 'child_photo_service.dart';
 
@@ -129,6 +130,7 @@ class BackupService {
       'guideTips': _dump(HiveService.getGuideTipBox()),
       'scheduleOrder': _dump(HiveService.getScheduleOrderBox()),
       'scheduleHidden': _dump(HiveService.getScheduleHiddenBox()),
+      'prefs': _dump(HiveService.getPrefsBox()),
     };
   }
 
@@ -243,6 +245,10 @@ class BackupService {
     await _restore(HiveService.getGuideTipBox(), data['guideTips']);
     await _restore(HiveService.getScheduleOrderBox(), data['scheduleOrder']);
     await _restore(HiveService.getScheduleHiddenBox(), data['scheduleHidden']);
+    await _restore(HiveService.getPrefsBox(), data['prefs']);
+
+    // Nasa Hive na ang naibalik na wika pero luma pa ang hawak sa memorya.
+    LanguageController.refreshFromStorage();
 
     // Ang file na kababalik lang ay siya na mismong huling kopya niya. Kung
     // hindi ito isusulat, sasabihin ng app na wala siyang kopya kahit hawak

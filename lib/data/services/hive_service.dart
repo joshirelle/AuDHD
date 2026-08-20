@@ -31,8 +31,11 @@ class HiveService {
   static const String _scheduleOrderBoxName = 'schedule_order';
   static const String _scheduleHiddenBoxName = 'schedule_hidden';
 
+  /// Pangkalahatang kagustuhan ng magulang — kasalukuyang piniling wika.
+  static const String _prefsBoxName = 'app_prefs';
+
   static const String hasSeenOnboardingKey = 'has_seen_onboarding';
-  static const String hasSeenHomeTourKey = 'has_seen_home_tour';
+  static const String hasSeenHomeTourKey = 'has_seen_home_tour_v5';
   static const String hasSeenScheduleTourKey = 'has_seen_schedule_tour_v4';
 
   /// I-initialize ang Hive sa app startup
@@ -61,7 +64,10 @@ class HiveService {
     await Hive.openBox<bool>(_guideTipBoxName);
     await Hive.openBox<int>(_scheduleOrderBoxName);
     await Hive.openBox<bool>(_scheduleHiddenBoxName);
+    await Hive.openBox<String>(_prefsBoxName);
   }
+
+  static Box<String> getPrefsBox() => Hive.box<String>(_prefsBoxName);
 
   static Box<String> getBackupMetaBox() =>
       Hive.box<String>(_backupMetaBoxName);

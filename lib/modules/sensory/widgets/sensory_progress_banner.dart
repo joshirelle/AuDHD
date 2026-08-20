@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 
@@ -34,7 +35,10 @@ class SensoryProgressBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$completedCount sa $totalCount na gawain ang natapos ngayon!',
+                  tr(
+                    '$completedCount sa $totalCount na gawain ang natapos ngayon!',
+                    '$completedCount of $totalCount activities done today!',
+                  ),
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -53,7 +57,7 @@ class SensoryProgressBanner extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: progress,
                           minHeight: 10,
-                          backgroundColor: Colors.white,
+                          backgroundColor: AppColors.surface,
                           valueColor: const AlwaysStoppedAnimation<Color>(
                             _warmYellow,
                           ),
@@ -89,7 +93,7 @@ class SensoryProgressBanner extends StatelessWidget {
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) => Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.surface,
             shape: BoxShape.circle,
           ),
           child: const Icon(

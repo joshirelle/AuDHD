@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// Nagbabalik ng bagong pabuya, o `null` kapag kinansela.
@@ -32,13 +33,23 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
   void _save() {
     final label = _labelController.text.trim();
     if (label.isEmpty) {
-      setState(() => _error = 'Kailangan ang pangalan ng pabuya.');
+      setState(
+        () => _error = tr(
+          'Kailangan ang pangalan ng pabuya.',
+          'Please enter a reward name.',
+        ),
+      );
       return;
     }
 
     final stars = int.tryParse(_starsController.text.trim());
     if (stars == null || stars < 1) {
-      setState(() => _error = 'Kailangan ng bilang ng bituin, hindi bababa sa 1.');
+      setState(
+        () => _error = tr(
+          'Kailangan ng bilang ng bituin, hindi bababa sa 1.',
+          'Enter how many stars, at least 1.',
+        ),
+      );
       return;
     }
 
@@ -52,9 +63,9 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.card),
       ),
-      title: const Text(
-        'Bagong Pabuya',
-        style: TextStyle(
+      title: Text(
+        tr('Bagong Pabuya', 'New Reward'),
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           fontFamily: 'Nunito',
@@ -70,8 +81,11 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
             textCapitalization: TextCapitalization.sentences,
             maxLength: 60,
             decoration: InputDecoration(
-              labelText: 'Pabuya',
-              hintText: 'Halimbawa: Manood ng paboritong palabas',
+              labelText: tr('Pabuya', 'Reward'),
+              hintText: tr(
+                'Halimbawa: Manood ng paboritong palabas',
+                'Example: Watch a favorite show',
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -83,7 +97,7 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             maxLength: 3,
             decoration: InputDecoration(
-              labelText: 'Kailangang bituin',
+              labelText: tr('Kailangang bituin', 'Stars needed'),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -103,9 +117,12 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Kanselahin',
-            style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
+          child: Text(
+            tr('Kanselahin', 'Cancel'),
+            style: const TextStyle(
+              fontFamily: 'Nunito',
+              color: AppColors.textDark,
+            ),
           ),
         ),
         FilledButton(
@@ -116,9 +133,12 @@ class _AddRewardDialogState extends State<AddRewardDialog> {
               borderRadius: BorderRadius.circular(AppRadius.button),
             ),
           ),
-          child: const Text(
-            'I-dagdag',
-            style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold),
+          child: Text(
+            tr('I-dagdag', 'Add'),
+            style: const TextStyle(
+              fontFamily: 'Nunito',
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],

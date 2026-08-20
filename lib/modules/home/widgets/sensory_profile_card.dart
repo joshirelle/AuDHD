@@ -1,6 +1,7 @@
 // lib/modules/home/widgets/sensory_profile_card.dart
 
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../sensory/screens/sensory_history_screen.dart';
@@ -12,7 +13,6 @@ class SensoryProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return KikoCard(
       backgroundColor: AppColors.tintTeal,
-      borderColor: AppColors.logoGreen.withValues(alpha: 0.3),
       padding: const EdgeInsets.all(16),
       onTap: () {
         Navigator.push(
@@ -41,18 +41,21 @@ class SensoryProfileCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Checklist ng Pandama',
-                  style: TextStyle(
+                Text(
+                  tr('Checklist ng Pandama', 'Sensory Checklist'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Alamin kung naghahanap o umiiwas ang bata sa bawat uri ng pandama.',
-                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                Text(
+                  tr(
+                    'Alamin kung naghahanap o umiiwas ang bata sa bawat uri ng pandama.',
+                    'Find out if your child seeks or avoids each kind of sensation.',
+                  ),
+                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
                 ),
               ],
             ),

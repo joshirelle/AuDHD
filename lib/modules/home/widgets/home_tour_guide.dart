@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 
@@ -130,7 +131,7 @@ class _TourOverlayState extends State<_TourOverlay> {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.card),
           boxShadow: [
             BoxShadow(
@@ -158,7 +159,7 @@ class _TourOverlayState extends State<_TourOverlay> {
               step.body,
               style: TextStyle(
                 fontSize: 13,
-                color: Colors.grey.shade700,
+                color: AppColors.textMuted,
                 height: 1.45,
                 fontFamily: 'Nunito',
               ),
@@ -172,7 +173,7 @@ class _TourOverlayState extends State<_TourOverlay> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade500,
+                    color: AppColors.textMuted,
                     fontFamily: 'Nunito',
                   ),
                 ),
@@ -182,9 +183,9 @@ class _TourOverlayState extends State<_TourOverlay> {
                       TextButton(
                         onPressed: () => widget.onFinished(),
                         child: Text(
-                          'Laktawan',
+                          tr('Laktawan', 'Skip'),
                           style: TextStyle(
-                            color: Colors.grey.shade600,
+                            color: AppColors.textMuted,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Nunito',
                           ),
@@ -202,9 +203,11 @@ class _TourOverlayState extends State<_TourOverlay> {
                         ),
                       ),
                       child: Text(
-                        isLast ? 'Nakuha ko!' : 'Susunod',
+                        isLast
+                            ? tr('Nakuha ko!', 'Got it!')
+                            : tr('Susunod', 'Next'),
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Nunito',
                         ),

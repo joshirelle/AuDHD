@@ -77,7 +77,7 @@ class _ScreeningAgeGateState extends State<ScreeningAgeGate> {
         child: Text(
           'Walang piniling bata. Bumalik at pumili muna sa Profile.',
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey.shade700, fontFamily: 'Nunito'),
+          style: TextStyle(color: AppColors.textMuted, fontFamily: 'Nunito'),
         ),
       ),
     );
@@ -108,7 +108,7 @@ class _ScreeningAgeGateState extends State<ScreeningAgeGate> {
             widget.rangeDescription,
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey.shade700,
+              color: AppColors.textMuted,
               height: 1.4,
               fontFamily: 'Nunito',
             ),
@@ -144,7 +144,7 @@ class _ScreeningAgeGateState extends State<ScreeningAgeGate> {
                   'Petsa ng Kapanganakan',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade600,
+                    color: AppColors.textMuted,
                     fontFamily: 'Nunito',
                   ),
                 ),
@@ -254,7 +254,7 @@ class _ScreeningAgeGateState extends State<ScreeningAgeGate> {
         style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: AppColors.surface,
           fontFamily: 'Nunito',
         ),
       ),

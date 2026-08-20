@@ -1,12 +1,16 @@
+import '../../core/i18n/language_controller.dart';
 import '../../core/utils/age_formatter.dart';
 
 enum Gender {
-  male('Lalaki'),
-  female('Babae');
+  male('Lalaki', 'Male'),
+  female('Babae', 'Female');
 
-  const Gender(this.label);
+  const Gender(this._label, this._labelEnglish);
 
-  final String label;
+  final String _label;
+  final String _labelEnglish;
+
+  String get label => tr(_label, _labelEnglish);
 }
 
 class ChildProfile {

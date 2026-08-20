@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../core/i18n/language_controller.dart';
 import '../core/theme/app_theme.dart';
 import 'kiko_card.dart';
 
@@ -26,8 +27,13 @@ Future<void> openAudhdGroup(BuildContext context) async {
   if (isLaunched || !context.mounted) return;
 
   ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('Hindi mabuksan ang Facebook. Subukan ulit mamaya.'),
+    SnackBar(
+      content: Text(
+        tr(
+          'Hindi mabuksan ang Facebook. Subukan ulit mamaya.',
+          'Could not open Facebook. Please try again later.',
+        ),
+      ),
       backgroundColor: AppColors.danger,
     ),
   );
@@ -49,7 +55,7 @@ class CommunityCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -59,10 +65,10 @@ class CommunityCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 14),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Komunidad ng AuDHD',
-                  style: TextStyle(
+                  tr('Komunidad ng AuDHD', 'AuDHD Community'),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
@@ -73,10 +79,14 @@ class CommunityCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Hindi ka nag-iisa — may grupo ng mga magulang na dumaraan din '
-            'dito. Magtanong, magbahagi, o makinig lang.',
-            style: TextStyle(
+          Text(
+            tr(
+              'Hindi ka nag-iisa — may grupo ng mga magulang na dumaraan din '
+                  'dito. Magtanong, magbahagi, o makinig lang.',
+              'You are not alone — there is a group of parents going through '
+                  'this too. Ask, share, or just listen.',
+            ),
+            style: const TextStyle(
               fontSize: 11,
               color: AppColors.textDark,
               height: 1.4,
@@ -84,10 +94,14 @@ class CommunityCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Bubukas ito sa Facebook. Makikita ng ibang miyembro ang anumang '
-            'isulat mo doon.',
-            style: TextStyle(
+          Text(
+            tr(
+              'Bubukas ito sa Facebook. Makikita ng ibang miyembro ang anumang '
+                  'isulat mo doon.',
+              'This opens in Facebook. Other members can see anything you '
+                  'write there.',
+            ),
+            style: const TextStyle(
               fontSize: 10,
               color: AppColors.textMuted,
               height: 1.4,
@@ -108,9 +122,9 @@ class CommunityCard extends StatelessWidget {
                 ),
               ),
               icon: const Icon(Icons.open_in_new_rounded, size: 16),
-              label: const Text(
-                'Buksan ang grupo',
-                style: TextStyle(
+              label: Text(
+                tr('Buksan ang grupo', 'Open the group'),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                   fontFamily: 'Nunito',

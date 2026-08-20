@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../core/i18n/language_controller.dart';
 import '../../core/services/backup_service.dart';
 import '../../core/services/child_photo_service.dart';
 import '../../core/theme/app_theme.dart';
@@ -8,9 +9,7 @@ import '../../core/utils/date_formatter.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/child_avatar.dart';
-import '../../widgets/community_link.dart';
 import '../../widgets/kiko_card.dart';
-import '../home/widgets/whats_new_sheet.dart';
 import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
 import 'widgets/backup_card.dart';
@@ -43,27 +42,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Burahin ang profile?'),
+        title: Text(tr('Burahin ang profile?', 'Delete profile?')),
         content: Text(
-          'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
-          'Ang mga naitalang behavior log, sensory history, '
-          'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
-          'pangalan at edad sa mga PDF report.'
-          // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
-          '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
-              'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
-              'nabura na ang mga ito.'}',
+          tr(
+            'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
+            'Ang mga naitalang behavior log, sensory history, '
+            'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
+            'pangalan at edad sa mga PDF report.'
+            // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
+            '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
+                'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
+                'nabura na ang mga ito.'}',
+            'The name and birthday of ${child.name} will be deleted.\n\n'
+            'The behavior logs, sensory history, milestones, and mood you '
+            'recorded will STAY on the device. Only the name and age will be '
+            'gone from the PDF reports.'
+            '${BackupService.hasBackup ? '' : '\n\nYou do not have a backup of '
+                'your data yet. The name, birthday, and photo can no longer be '
+                'brought back once they are deleted.'}',
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Kanselahin'),
+            child: Text(tr('Kanselahin', 'Cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Burahin',
-              style: TextStyle(
+            child: Text(
+              tr('Burahin', 'Delete'),
+              style: const TextStyle(
                 color: AppColors.danger,
                 fontWeight: FontWeight.bold,
               ),
@@ -97,9 +105,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         debugPrint('ChildPhotoService: $error');
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-              'Hindi mabuksan ang litrato. Tingnan ang pahintulot ng app.',
+              tr(
+                'Hindi mabuksan ang litrato. Tingnan ang pahintulot ng app.',
+                'The photo cannot be opened. Check the app permission.',
+              ),
             ),
             backgroundColor: AppColors.danger,
           ),
@@ -141,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Icons.photo_camera_rounded,
                 color: AppColors.logoGreen,
               ),
-              title: const Text('Kumuha ng litrato'),
+              title: Text(tr('Kumuha ng litrato', 'Take a photo')),
               onTap: () => Navigator.pop(context, _PhotoAction.camera),
             ),
             ListTile(
@@ -149,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Icons.photo_library_rounded,
                 color: AppColors.logoGreen,
               ),
-              title: const Text('Pumili sa gallery'),
+              title: Text(tr('Pumili sa gallery', 'Choose from gallery')),
               onTap: () => Navigator.pop(context, _PhotoAction.gallery),
             ),
             if (hasPhoto)
@@ -158,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Icons.delete_outline_rounded,
                   color: AppColors.danger,
                 ),
-                title: const Text('Alisin ang litrato'),
+                title: Text(tr('Alisin ang litrato', 'Remove photo')),
                 onTap: () => Navigator.pop(context, _PhotoAction.remove),
               ),
             const SizedBox(height: 8),
@@ -182,8 +193,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile ng Bata'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Profile ng Bata', 'Child Profile')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -196,10 +207,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildSecurityCard(),
           const SizedBox(height: 20),
           BackupCard(onRestored: _load),
-          const SizedBox(height: 20),
-          const CommunityCard(),
-          const SizedBox(height: 20),
-          _buildWhatsNewCard(),
           const SizedBox(height: 20),
           const DeveloperFeedbackCard(),
           // Malayo sa "Baguhin ang Detalye" para hindi mapindot nang pagkakamali.
@@ -217,17 +224,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
       child: Column(
         children: [
-          Icon(Icons.child_care_rounded, size: 64, color: Colors.grey.shade400),
+          Icon(Icons.child_care_rounded, size: 64, color: AppColors.textMuted),
           const SizedBox(height: 12),
           Text(
-            'Wala pang naitalang bata.',
-            style: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.bold),
+            tr('Wala pang naitalang bata.', 'No child added yet.'),
+            style: TextStyle(color: AppColors.textMuted, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 6),
           Text(
-            'Ang pangalan at kaarawan ay lalabas sa PDF report, at gagamitin sa pagkwenta ng edad.',
+            tr(
+              'Ang pangalan at kaarawan ay lalabas sa PDF report, at gagamitin sa pagkwenta ng edad.',
+              'The name and birthday will show up in the PDF report, and will be used to work out the age.',
+            ),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600, height: 1.3),
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted, height: 1.3),
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
@@ -237,10 +247,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             ),
             onPressed: () => _openEditor(),
-            icon: const Icon(Icons.add_rounded, color: Colors.white),
-            label: const Text(
-              'Itala ang Bata',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            icon: const Icon(Icons.add_rounded, color: AppColors.surface),
+            label: Text(
+              tr('Itala ang Bata', 'Add Your Child'),
+              style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -253,8 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         KikoCard(
-          backgroundColor: Colors.white,
-          borderColor: AppColors.logoGreen,
+          backgroundColor: AppColors.tintSuccess,
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
@@ -269,16 +278,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildGenderBadge(child.gender!),
               ],
               const SizedBox(height: 16),
-              _infoRow('Pangalan', child.name),
+              _infoRow(tr('Pangalan', 'Name'), child.name),
               const SizedBox(height: 8),
-              _infoRow('Palayaw', child.nickname ?? '—'),
-              const SizedBox(height: 8),
-              _infoRow('Kaarawan', DateFormatter.longDate(child.birthDate)),
+              _infoRow(tr('Palayaw', 'Nickname'), child.nickname ?? '—'),
               const SizedBox(height: 8),
               _infoRow(
-                'Edad',
+                tr('Kaarawan', 'Birthday'),
+                DateFormatter.longDate(child.birthDate),
+              ),
+              const SizedBox(height: 8),
+              _infoRow(
+                tr('Edad', 'Age'),
                 AgeFormatter.formatMonths(child.ageInMonthsOn(DateTime.now())),
               ),
+              const SizedBox(height: 12),
+              const Divider(height: 1, color: AppColors.divider),
+              const SizedBox(height: 12),
+              _buildLanguageRow(),
             ],
           ),
         ),
@@ -291,9 +307,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           onPressed: () => _openEditor(existing: child),
           icon: const Icon(Icons.edit_rounded, color: AppColors.logoGreen),
-          label: const Text(
-            'Baguhin ang Detalye',
-            style: TextStyle(color: AppColors.logoGreen, fontWeight: FontWeight.bold),
+          label: Text(
+            tr('Baguhin ang Detalye', 'Edit Details'),
+            style: const TextStyle(color: AppColors.logoGreen, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -303,7 +319,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildEditableAvatar(ChildProfile child) {
     return Semantics(
       button: true,
-      label: 'Palitan ang litrato ni ${child.name}',
+      label: tr(
+        'Palitan ang litrato ni ${child.name}',
+        'Change the photo of ${child.name}',
+      ),
       child: GestureDetector(
         onTap: () => _changePhoto(child),
         child: Stack(
@@ -318,12 +337,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.logoGreen,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(color: AppColors.surface, width: 2),
                 ),
                 child: const Icon(
                   Icons.photo_camera_rounded,
                   size: 13,
-                  color: Colors.white,
+                  color: AppColors.surface,
                 ),
               ),
             ),
@@ -338,51 +357,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: TextButton(
         onPressed: () => _confirmDelete(child),
         style: TextButton.styleFrom(foregroundColor: AppColors.danger),
-        child: const Text(
-          'Burahin ang profile ng bata',
-          style: TextStyle(
+        child: Text(
+          tr('Burahin ang profile ng bata', 'Delete the child profile'),
+          style: const TextStyle(
             fontSize: 13,
             fontFamily: 'Nunito',
             decoration: TextDecoration.underline,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildWhatsNewCard() {
-    return KikoCard(
-      backgroundColor: AppColors.tintSuccess,
-      padding: const EdgeInsets.all(18),
-      onTap: () => WhatsNewSheet.show(context),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(9),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.auto_awesome_rounded,
-              color: AppColors.logoGreen,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 14),
-          const Expanded(
-            child: Text(
-              'Ano ang bago sa AuDHD',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                fontFamily: 'Nunito',
-              ),
-            ),
-          ),
-          const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
-        ],
       ),
     );
   }
@@ -402,9 +384,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
+            decoration: BoxDecoration(
+              color: AppColors.accentBlue.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.security_rounded,
@@ -413,23 +395,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PIN at Fingerprint',
-                  style: TextStyle(
+                  tr('PIN at Fingerprint', 'PIN and Fingerprint'),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                     fontFamily: 'Nunito',
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Protektahan ang datos ng bata gamit ang 4-digit PIN o fingerprint.',
-                  style: TextStyle(
+                  tr(
+                    'Protektahan ang datos ng bata gamit ang 4-digit PIN o fingerprint.',
+                    'Protect your child\'s data with a 4-digit PIN or fingerprint.',
+                  ),
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textDark,
                     height: 1.3,
@@ -479,12 +464,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildLanguageRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          tr('Wika', 'Language'),
+          style: const TextStyle(fontSize: 13, color: AppColors.textDark),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final lang in AppLanguage.values) ...[
+              if (lang != AppLanguage.values.first) const SizedBox(width: 8),
+              _languageChip(lang),
+            ],
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _languageChip(AppLanguage lang) {
+    final isActive = LanguageController.current == lang;
+    final label = lang == AppLanguage.filipino ? 'Filipino' : 'English';
+
+    return Semantics(
+      selected: isActive,
+      button: true,
+      child: GestureDetector(
+        onTap: () async {
+          await LanguageController.set(lang);
+          if (mounted) setState(() {});
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: isActive ? AppColors.logoGreen : AppColors.surface,
+            borderRadius: BorderRadius.circular(AppRadius.button),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: isActive ? AppColors.surface : AppColors.textMuted,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _infoRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
-        Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 13, color: AppColors.textDark),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textDark,
+          ),
+        ),
       ],
     );
   }

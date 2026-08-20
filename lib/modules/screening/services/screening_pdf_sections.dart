@@ -1,5 +1,6 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/pdf_report_theme.dart';
 import '../../../core/services/vanderbilt_scoring.dart';
 import '../../../data/models/adhd_question.dart';
@@ -10,11 +11,21 @@ import '../../../data/models/screening_result.dart';
 /// na ang lisensya, at ayusin ang bilang ng seksyon ayon sa bagong ayos ng ulat.
 class ScreeningPdfSections {
   static List<pw.Widget> mchatSection(ScreeningResult? result) {
+    final title = tr(
+      '1. Screening para sa Autism (M-CHAT-R)',
+      '1. Autism Screening (M-CHAT-R)',
+    );
+
     if (result == null) {
       return [
-        PdfReportTheme.sectionTitle('1. Autism Screening (M-CHAT-R)'),
+        PdfReportTheme.sectionTitle(title),
         pw.SizedBox(height: 8),
-        _emptyNote('Wala pang naitalang M-CHAT-R screening.'),
+        _emptyNote(
+          tr(
+            'Wala pang naitalang M-CHAT-R screening.',
+            'No M-CHAT-R screening recorded yet.',
+          ),
+        ),
       ];
     }
 
@@ -22,10 +33,12 @@ class ScreeningPdfSections {
 
     return [
       PdfReportTheme.sectionTitle(
-        '1. Autism Screening (M-CHAT-R)',
-        subtitle:
-            'Pinakahuling resulta noong '
-            '${PdfReportTheme.formatDate(result.date)}.',
+        title,
+        subtitle: tr(
+          'Pinakahuling resulta noong '
+              '${PdfReportTheme.formatDate(result.date)}.',
+          'Latest result on ${PdfReportTheme.formatDate(result.date)}.',
+        ),
       ),
       pw.SizedBox(height: 10),
       pw.Container(
@@ -46,7 +59,7 @@ class ScreeningPdfSections {
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Text(
-                  'Kategorya ng panganib',
+                  tr('Kategorya ng panganib', 'Risk category'),
                   style: const pw.TextStyle(
                     fontSize: 10,
                     color: PdfColors.grey700,
@@ -64,7 +77,7 @@ class ScreeningPdfSections {
               ],
             ),
             pw.Text(
-              'Score: ${result.score}',
+              tr('Puntos: ${result.score}', 'Score: ${result.score}'),
               style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
             ),
           ],
@@ -77,13 +90,21 @@ class ScreeningPdfSections {
     ScreeningResult? result,
     List<ADHDQuestion> questions,
   ) {
-    const title = '2. ADHD Screening (Vanderbilt)';
+    final title = tr(
+      '2. Screening para sa ADHD (Vanderbilt)',
+      '2. ADHD Screening (Vanderbilt)',
+    );
 
     if (result == null || questions.isEmpty) {
       return [
         PdfReportTheme.sectionTitle(title),
         pw.SizedBox(height: 8),
-        _emptyNote('Wala pang naitalang Vanderbilt ADHD screening.'),
+        _emptyNote(
+          tr(
+            'Wala pang naitalang Vanderbilt ADHD screening.',
+            'No Vanderbilt ADHD screening recorded yet.',
+          ),
+        ),
       ];
     }
 
@@ -108,17 +129,28 @@ class ScreeningPdfSections {
     final isHighRisk = VanderbiltScoring.isHighRisk(inattention, hyperactivity);
 
     final impression = isHighRisk
-        ? '${result.riskLevel} - umabot sa ${VanderbiltScoring.riskThreshold}+ '
-              'na sintomas ang isa o parehong subscale.'
-        : '${result.riskLevel} - hindi umabot sa ${VanderbiltScoring.riskThreshold} '
-              'na sintomas ang alinmang subscale.';
+        ? tr(
+            '${result.riskLevel} - umabot sa ${VanderbiltScoring.riskThreshold}+ '
+                'na sintomas ang isa o parehong subscale.',
+            '${result.riskLevel} - one or both subscales reached '
+                '${VanderbiltScoring.riskThreshold}+ symptoms.',
+          )
+        : tr(
+            '${result.riskLevel} - hindi umabot sa ${VanderbiltScoring.riskThreshold} '
+                'na sintomas ang alinmang subscale.',
+            '${result.riskLevel} - neither subscale reached '
+                '${VanderbiltScoring.riskThreshold} symptoms.',
+          );
 
     return [
       PdfReportTheme.sectionTitle(
         title,
-        subtitle:
-            'Pinakahuling resulta noong ${PdfReportTheme.formatDate(result.date)}. '
-            'Binibilang lamang ang "Madalas" at "Palagi" bilang sintomas.',
+        subtitle: tr(
+          'Pinakahuling resulta noong ${PdfReportTheme.formatDate(result.date)}. '
+              'Binibilang lamang ang "Madalas" at "Palagi" bilang sintomas.',
+          'Latest result on ${PdfReportTheme.formatDate(result.date)}. '
+              'Only "Often" and "Always" are counted as symptoms.',
+        ),
       ),
       pw.SizedBox(height: 10),
       pw.Container(
@@ -156,7 +188,7 @@ class ScreeningPdfSections {
             ),
             pw.SizedBox(height: 10),
             pw.Text(
-              'Impression: $impression',
+              tr('Impresyon: $impression', 'Impression: $impression'),
               style: pw.TextStyle(
                 fontSize: 11,
                 fontWeight: pw.FontWeight.bold,

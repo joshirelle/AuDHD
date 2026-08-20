@@ -75,7 +75,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seguridad'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -144,11 +144,11 @@ class _SecurityScreenState extends State<SecurityScreen> {
               ),
             ),
             onPressed: _setOrChangePin,
-            icon: const Icon(Icons.pin_rounded, color: Colors.white),
+            icon: const Icon(Icons.pin_rounded, color: AppColors.surface),
             label: Text(
               isPinSet ? 'Palitan ang PIN' : 'Gumawa ng PIN',
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.surface,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Nunito',
               ),
@@ -183,7 +183,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     : 'Walang naka-set up na biometrics sa device na ito.',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppColors.textMuted,
                   fontFamily: 'Nunito',
                 ),
               ),

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/mood_type.dart';
 import '../../../core/services/pdf_report_theme.dart';
 import '../../../data/models/behavior_log.dart';
@@ -44,7 +45,10 @@ class DoctorPdfService {
         margin: const pw.EdgeInsets.all(32),
         build: (context) => [
           PdfReportTheme.reportHeader(
-            'PROGRESS REPORT FOR DOCTOR',
+            tr(
+              'ULAT NG PAG-UNLAD PARA SA DOKTOR',
+              'PROGRESS REPORT FOR DOCTOR',
+            ),
             PdfReportTheme.formatDate(now),
             logo: logo,
           ),
@@ -53,13 +57,20 @@ class DoctorPdfService {
             birthDateText: birthDate == null
                 ? PdfReportTheme.unknown
                 : PdfReportTheme.formatDate(birthDate),
-            ageLabel: 'Edad sa araw ng ulat',
+            ageLabel: tr(
+              'Edad sa araw ng ulat',
+              'Age on the day of the report',
+            ),
             ageText: PdfReportTheme.formatMonths(childAgeMonths),
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            'Saklaw ng ulat: huling $rangeDays araw '
-            '(${PdfReportTheme.formatDate(cutoff)} - ${PdfReportTheme.formatDate(now)})',
+            tr(
+              'Saklaw ng ulat: huling $rangeDays araw '
+                  '(${PdfReportTheme.formatDate(cutoff)} - ${PdfReportTheme.formatDate(now)})',
+              'Report period: last $rangeDays days '
+                  '(${PdfReportTheme.formatDate(cutoff)} - ${PdfReportTheme.formatDate(now)})',
+            ),
             style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
           ),
           pw.SizedBox(height: 16),
@@ -112,7 +123,10 @@ class DoctorPdfService {
   static pw.Widget _moodSummary(Map<String, String> moods) {
     if (moods.isEmpty) {
       return _emptyNote(
-        'Araw-araw na mood: wala pang naitala sa saklaw na ito.',
+        tr(
+          'Araw-araw na mood: wala pang naitala sa saklaw na ito.',
+          'Daily mood: nothing recorded yet for this period.',
+        ),
       );
     }
 
@@ -137,7 +151,7 @@ class DoctorPdfService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'ARAW-ARAW NA MOOD',
+            tr('ARAW-ARAW NA MOOD', 'DAILY MOOD'),
             style: pw.TextStyle(
               fontSize: 10,
               fontWeight: pw.FontWeight.bold,
@@ -146,7 +160,10 @@ class DoctorPdfService {
           ),
           pw.SizedBox(height: 4),
           pw.Text(
-            'Naitala ng magulang sa $total araw. Hindi ito klinikal na sukatan.',
+            tr(
+              'Naitala ng magulang sa $total araw. Hindi ito klinikal na sukatan.',
+              'Recorded by the parent on $total days. This is not a clinical measure.',
+            ),
             style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
           ),
           pw.SizedBox(height: 10),
@@ -166,8 +183,12 @@ class DoctorPdfService {
                       borderRadius: pw.BorderRadius.circular(4),
                     ),
                     child: pw.Text(
-                      '${entry.key}: ${entry.value} araw '
-                      '(${(entry.value / total * 100).round()}%)',
+                      tr(
+                        '${entry.key}: ${entry.value} araw '
+                            '(${(entry.value / total * 100).round()}%)',
+                        '${entry.key}: ${entry.value} days '
+                            '(${(entry.value / total * 100).round()}%)',
+                      ),
                       style: pw.TextStyle(
                         fontSize: 10,
                         fontWeight: pw.FontWeight.bold,
@@ -187,13 +208,21 @@ class DoctorPdfService {
     int days,
     Map<String, String> moods,
   ) {
-    final title = '1. Tala ng Ugali (A-B-C) - huling $days araw';
+    final title = tr(
+      '1. Tala ng Ugali (A-B-C) - huling $days araw',
+      '1. Behavior Log (A-B-C) - last $days days',
+    );
 
     if (logs.isEmpty) {
       return [
         PdfReportTheme.sectionTitle(title),
         pw.SizedBox(height: 8),
-        _emptyNote('Walang naitalang insidente sa saklaw na ito.'),
+        _emptyNote(
+          tr(
+            'Walang naitalang insidente sa saklaw na ito.',
+            'No incidents recorded for this period.',
+          ),
+        ),
       ];
     }
 
@@ -212,7 +241,10 @@ class DoctorPdfService {
     return [
       PdfReportTheme.sectionTitle(
         title,
-        subtitle: 'Ang tindi ay 1 (banayad) hanggang 5 (napakatindi).',
+        subtitle: tr(
+          'Ang tindi ay 1 (banayad) hanggang 5 (napakatindi).',
+          'The intensity level runs from 1 (mild) to 5 (very intense).',
+        ),
       ),
       pw.SizedBox(height: 10),
       pw.Container(
@@ -227,16 +259,19 @@ class DoctorPdfService {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             PdfReportTheme.profileRow(
-              'Bilang ng insidente',
+              tr('Bilang ng insidente', 'Number of incidents'),
               '${logs.length}',
             ),
             PdfReportTheme.profileRow(
-              'Karaniwang tindi',
+              tr('Karaniwang tindi', 'Average intensity'),
               '$averageIntensity / 5',
             ),
             pw.SizedBox(height: 8),
             pw.Text(
-              'PINAKAMADALAS NA SENSORY TRIGGER',
+              tr(
+                'PINAKAMADALAS NA SENSORY TRIGGER',
+                'MOST FREQUENT SENSORY TRIGGERS',
+              ),
               style: pw.TextStyle(
                 fontSize: 10,
                 fontWeight: pw.FontWeight.bold,
@@ -246,7 +281,10 @@ class DoctorPdfService {
             pw.SizedBox(height: 8),
             if (topTriggers.isEmpty)
               pw.Text(
-                'Walang naitalang sensory tag.',
+                tr(
+                  'Walang naitalang sensory tag.',
+                  'No sensory tags recorded.',
+                ),
                 style: const pw.TextStyle(
                   fontSize: 10,
                   color: PdfColors.grey700,
@@ -255,13 +293,24 @@ class DoctorPdfService {
             else
               ...topTriggers
                   .take(5)
-                  .map((e) => PdfReportTheme.profileRow(e.key, '${e.value} ulit')),
+                  .map(
+                    (e) => PdfReportTheme.profileRow(
+                      e.key,
+                      tr('${e.value} ulit', '${e.value} times'),
+                    ),
+                  ),
           ],
         ),
       ),
       pw.SizedBox(height: 12),
       PdfReportTheme.dataTable(
-        headers: ['Petsa / Oras', 'A - B - C', 'Mood', 'Tindi', 'Min'],
+        headers: [
+          tr('Petsa / Oras', 'Date / Time'),
+          'A - B - C',
+          'Mood',
+          tr('Tindi', 'Level'),
+          'Min',
+        ],
         cellDecoration: (column, data, row) => pw.BoxDecoration(
           color: column == 2
               ? _moodColorForLabel(data.toString())
@@ -307,18 +356,28 @@ class DoctorPdfService {
   static List<pw.Widget> _sensorySection(SensoryProfileResult? result) {
     if (result == null) {
       return [
-        PdfReportTheme.sectionTitle('2. Sensory Profile'),
+        PdfReportTheme.sectionTitle(
+          tr('2. Profile ng Pandama', '2. Sensory Profile'),
+        ),
         pw.SizedBox(height: 8),
-        _emptyNote('Wala pang naitalang sensory profile checklist.'),
+        _emptyNote(
+          tr(
+            'Wala pang naitalang sensory profile checklist.',
+            'No sensory profile checklist recorded yet.',
+          ),
+        ),
       ];
     }
 
     return [
       PdfReportTheme.sectionTitle(
-        '2. Sensory Profile',
-        subtitle:
-            'Pinakahuling assessment noong '
-            '${PdfReportTheme.formatDate(result.timestamp)}.',
+        tr('2. Profile ng Pandama', '2. Sensory Profile'),
+        subtitle: tr(
+          'Pinakahuling assessment noong '
+              '${PdfReportTheme.formatDate(result.timestamp)}.',
+          'Latest assessment on '
+              '${PdfReportTheme.formatDate(result.timestamp)}.',
+        ),
       ),
       pw.SizedBox(height: 10),
       pw.Container(
@@ -333,7 +392,7 @@ class DoctorPdfService {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Text(
-              'PANGUNAHING PROFILE',
+              tr('PANGUNAHING PROFILE', 'PRIMARY PROFILE'),
               style: pw.TextStyle(
                 fontSize: 10,
                 fontWeight: pw.FontWeight.bold,
@@ -350,11 +409,14 @@ class DoctorPdfService {
             ),
             pw.SizedBox(height: 12),
             PdfReportTheme.profileRow(
-              'Sensory Seeking',
+              tr('Naghahanap ng pandama', 'Sensory Seeking'),
               '${result.totalSeekingScore} / 15',
             ),
             PdfReportTheme.profileRow(
-              'Sensory Avoiding / Sensitive',
+              tr(
+                'Umiiwas / sensitibo sa pandama',
+                'Sensory Avoiding / Sensitive',
+              ),
               '${result.totalAvoidingScore} / 15',
             ),
           ],
@@ -362,7 +424,10 @@ class DoctorPdfService {
       ),
       pw.SizedBox(height: 12),
       PdfReportTheme.dataTable(
-        headers: ['Sensory Domain', 'Resulta'],
+        headers: [
+          tr('Uri ng Pandama', 'Sensory Domain'),
+          tr('Resulta', 'Result'),
+        ],
         cellHeight: 24,
         cellAlignments: {
           0: pw.Alignment.centerLeft,
@@ -392,9 +457,14 @@ class DoctorPdfService {
 
     if (tasks.isEmpty || counts.isEmpty) {
       return [
-        PdfReportTheme.sectionTitle('3. Rutina sa Bahay'),
+        PdfReportTheme.sectionTitle(tr('3. Rutina sa Bahay', '3. Home Routine')),
         pw.SizedBox(height: 8),
-        _emptyNote('Wala pang naitalang rutina sa saklaw na ito.'),
+        _emptyNote(
+          tr(
+            'Wala pang naitalang rutina sa saklaw na ito.',
+            'No routine recorded yet for this period.',
+          ),
+        ),
       ];
     }
 
@@ -410,16 +480,25 @@ class DoctorPdfService {
           ..sort((a, b) => b.value.compareTo(a.value));
 
     return [
-      PdfReportTheme.sectionTitle('3. Rutina sa Bahay'),
+      PdfReportTheme.sectionTitle(tr('3. Rutina sa Bahay', '3. Home Routine')),
       pw.SizedBox(height: 8),
       pw.Text(
-        'Nasunod na rutina: $percent% ($done sa $possible na posible). '
-        'May naitalang gawain sa $activeDays sa $rangeDays araw.',
+        tr(
+          'Nasunod na rutina: $percent% ($done sa $possible na posible). '
+              'May naitalang gawain sa $activeDays sa $rangeDays araw.',
+          'Routine followed: $percent% ($done of $possible possible). '
+              'Tasks were recorded on $activeDays of $rangeDays days.',
+        ),
         style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey800),
       ),
       pw.SizedBox(height: 12),
       PdfReportTheme.dataTable(
-        headers: ['Gawain', 'Oras', 'Nagawa', 'Bahagi'],
+        headers: [
+          tr('Gawain', 'Task'),
+          tr('Oras', 'Time'),
+          tr('Nagawa', 'Done'),
+          tr('Bahagi', 'Rate'),
+        ],
         cellHeight: 22,
         cellAlignments: {
           0: pw.Alignment.centerLeft,

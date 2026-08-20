@@ -8,13 +8,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 10,
     "materialsNeeded": ["3-5 na unan o ilalim ng mattress"],
+    "materialsNeededEnglish": ["3-5 pillows or the bottom of a mattress"],
     "descriptionTagalog": "Pagtalon at pagbagsak nang ligtas sa bunton ng mga unan. Nakakatulong ito sa batang mahilig sa malalakas na galaw.",
+    "descriptionEnglish": "Jumping and landing safely on a pile of pillows. This is good for a child who loves big, strong movements.",
     "stepByStepTagalog": [
       "Ipunin ang mga unan sa malinis at ligtas na kwarto.",
       "Ipakita sa bata kung paano tumalon at bumagsak nang palapat (belly crash o back crash).",
       "Gawin ito nang 5 hanggang 10 beses habang binibilang."
     ],
-    "safetyNoteTagalog": "Siguraduhing walang matutulis na gamit sa paligid ng mga unan."
+    "stepByStepEnglish": [
+      "Gather the pillows in a clean, safe room.",
+      "Show your child how to jump and land flat on them (belly crash or back crash).",
+      "Do this 5 to 10 times while counting out loud."
+    ],
+    "safetyNoteTagalog": "Siguraduhing walang matutulis na gamit sa paligid ng mga unan.",
+    "safetyNoteEnglish": "Make sure there is nothing sharp around the pillows."
   },
   {
     "id": "act_02",
@@ -25,13 +33,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Malinis na sahig/rug"],
+    "materialsNeededEnglish": ["Clean floor/rug"],
     "descriptionTagalog": "Paggapang gamit ang mga kamay at paa nang hindi nakasayad ang tuhod.",
+    "descriptionEnglish": "Crawling on hands and feet, with the knees kept off the floor.",
     "stepByStepTagalog": [
       "Maglagay ng linya ng simula at hangganan sa sala.",
       "Turuan ang batang maglakad na parang oso (mga kamay at paa sa sahig).",
       "Maghatid ng maliit na laruan mula start line hanggang matapos."
     ],
-    "safetyNoteTagalog": "Iwasan ang madulas na sahig; gumamit ng medyas na anti-slip kung kinakailangan."
+    "stepByStepEnglish": [
+      "Mark a start line and a finish line in the living room.",
+      "Teach your child to walk like a bear (hands and feet on the floor).",
+      "Have your child carry a small toy from the start line to the finish."
+    ],
+    "safetyNoteTagalog": "Iwasan ang madulas na sahig; gumamit ng medyas na anti-slip kung kinakailangan.",
+    "safetyNoteEnglish": "Avoid slippery floors; use anti-slip socks if needed."
   },
   {
     "id": "act_03",
@@ -42,13 +58,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Matibay na kumot o tuwalya"],
+    "materialsNeededEnglish": ["Sturdy blanket or towel"],
     "descriptionTagalog": "Hilaan ng kumot gamit ang dalawang kamay. Napapagod ang kalamnan sa mabuting paraan.",
+    "descriptionEnglish": "Pulling a blanket with both hands. It tires out the muscles in a good way.",
     "stepByStepTagalog": [
       "Hawakan ng magulang ang isang dulo ng kumot at ang kabilang dulo sa bata.",
       "Magsimula sa dahan-dahang paghila habang parehong nakatayo o nakaupo sa sahig.",
       "Purihin ang bata sa tuwing gagamit siya ng tamang lakas."
     ],
-    "safetyNoteTagalog": "Huwag biglang bibitawan ang kumot para hindi matumba ang bata."
+    "stepByStepEnglish": [
+      "You hold one end of the blanket and your child holds the other end.",
+      "Start with slow pulls, both of you standing or sitting on the floor.",
+      "Praise your child every time they use just the right amount of strength."
+    ],
+    "safetyNoteTagalog": "Huwag biglang bibitawan ang kumot para hindi matumba ang bata.",
+    "safetyNoteEnglish": "Never let go of the blanket suddenly, so your child does not fall over."
   },
   {
     "id": "act_04",
@@ -59,13 +83,21 @@
     "domain": "vestibular",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Tape o visual markers sa sahig"],
+    "materialsNeededEnglish": ["Tape or visual markers on the floor"],
     "descriptionTagalog": "Pagtalon nang nakayuko na parang palaka. Sinasanay nito ang balanse ng bata.",
+    "descriptionEnglish": "Jumping from a squat like a frog. It gives your child practice with balance.",
     "stepByStepTagalog": [
       "Magdikit ng 3-4 na tape marker sa sahig.",
       "Turuan ang batang tumalon mula sa isang marker patungo sa isa pa habang nag-o-'kokak' sound.",
       "Ulitin nang 3 beses."
     ],
-    "safetyNoteTagalog": "Siguraduhing hindi madulas ang lalagyang marker sa sahig."
+    "stepByStepEnglish": [
+      "Stick 3-4 tape markers on the floor.",
+      "Teach your child to jump from one marker to the next while making a 'ribbit' sound.",
+      "Repeat 3 times."
+    ],
+    "safetyNoteTagalog": "Siguraduhing hindi madulas ang lalagyang marker sa sahig.",
+    "safetyNoteEnglish": "Make sure the markers are stuck down firmly and do not slip on the floor."
   },
   {
     "id": "act_05",
@@ -76,13 +108,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Laundry basket", "Mabibigat na libro o damit"],
+    "materialsNeededEnglish": ["Laundry basket", "Heavy books or clothes"],
     "descriptionTagalog": "Pagtulak sa mabigat na basket sa buong bahay. Nakakapagpakalma sa bata ang paghatak ng mabigat.",
+    "descriptionEnglish": "Pushing a heavy basket around the house. Pushing and pulling something heavy feels calming for your child.",
     "stepByStepTagalog": [
       "Lagyan ng ilang libro o tuwalya ang laundry basket.",
       "Ipatulak ito sa bata mula sa sala patungo sa kwarto.",
       "Isalin ang nilalaman sa tamang lalagyan."
     ],
-    "safetyNoteTagalog": "Huwag sobrang pabigatan ang basket; sapat lang na may kaunting resistensya."
+    "stepByStepEnglish": [
+      "Put a few books or towels inside the laundry basket.",
+      "Have your child push it from the living room to the bedroom.",
+      "Move the contents into their proper place."
+    ],
+    "safetyNoteTagalog": "Huwag sobrang pabigatan ang basket; sapat lang na may kaunting resistensya.",
+    "safetyNoteEnglish": "Do not make the basket too heavy; just heavy enough to give a little resistance."
   },
   {
     "id": "act_06",
@@ -93,13 +133,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 5,
     "materialsNeeded": ["2 malaking sofa cushion o unan"],
+    "materialsNeededEnglish": ["2 large sofa cushions or pillows"],
     "descriptionTagalog": "Dahan-dahang pagpisa sa bata sa pagitan ng dalawang unan. Nakakapagpakalma ang pantay na bigat at presyon.",
+    "descriptionEnglish": "Gently pressing your child between two cushions. The even weight and pressure feels calming.",
     "stepByStepTagalog": [
       "Ipadapa ang bata sa unang unan.",
       "Ipatong ang pangalawang unan sa kaniyang likod (ulo ay nakalabas).",
       "Dahan-dahang maglagay ng katamtamang diin sa unan at magbilang ng 1 hanggang 10."
     ],
-    "safetyNoteTagalog": "Laging tiyakin na nakakahiwa at nakakahinga nang malaya ang bata."
+    "stepByStepEnglish": [
+      "Have your child lie face down on the first cushion.",
+      "Place the second cushion on their back (keep the head uncovered).",
+      "Press down gently and evenly on the cushion while counting from 1 to 10."
+    ],
+    "safetyNoteTagalog": "Laging tiyakin na nakakahiwa at nakakahinga nang malaya ang bata.",
+    "safetyNoteEnglish": "Always make sure your child is lying comfortably and can breathe freely."
   },
   {
     "id": "act_07",
@@ -110,13 +158,21 @@
     "domain": "tactile",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Malambot na kumot"],
+    "materialsNeededEnglish": ["Soft blanket"],
     "descriptionTagalog": "Pagbabalot sa bata gamit ang kumot. Nakakapagpakalma ang mahigpit at pantay na yakap ng tela.",
+    "descriptionEnglish": "Wrapping your child snugly in a blanket. The firm, even hug of the cloth feels calming.",
     "stepByStepTagalog": [
       "Ilatag ang kumot at ipadapa ang bata sa isang gilid.",
       "Dahan-dahang i-roll ang bata sa kumot hanggang leeg.",
       "Magbigay ng gentle squeeze sa mga balikat at binti habang naka-roll."
     ],
-    "safetyNoteTagalog": "Huwag takpan ang mukha at tiyaking hindi masyadong mahigpit ang balot."
+    "stepByStepEnglish": [
+      "Spread the blanket out and have your child lie face down along one edge.",
+      "Slowly roll your child up in the blanket, up to the neck.",
+      "Give gentle squeezes on the shoulders and legs while they are rolled up."
+    ],
+    "safetyNoteTagalog": "Huwag takpan ang mukha at tiyaking hindi masyadong mahigpit ang balot.",
+    "safetyNoteEnglish": "Never cover the face, and make sure the wrap is not too tight."
   },
   {
     "id": "act_08",
@@ -127,13 +183,21 @@
     "domain": "tactile",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Plastik na lalagyan", "Bigas o monggo", "Maliliit na laruan"],
+    "materialsNeededEnglish": ["Plastic container", "Rice or mung beans", "Small toys"],
     "descriptionTagalog": "Paghahanap ng mga nakatagong maliit na laruan sa loob ng lalagyang may bigas.",
+    "descriptionEnglish": "Searching for small toys hidden inside a container of rice.",
     "stepByStepTagalog": [
       "Ibuhos ang bigas o monggo sa mababaw na lalagyan.",
       "Ibaon ang 5 maliliit na laruan.",
       "Hayaan ang batang gamitin ang kaniyang mga daliri para mahanap ang mga laruan."
     ],
-    "safetyNoteTagalog": "Bantayan ang bata upang maiwasang isubo ang mga butil."
+    "stepByStepEnglish": [
+      "Pour the rice or mung beans into a shallow container.",
+      "Bury 5 small toys in it.",
+      "Let your child use their fingers to find the toys."
+    ],
+    "safetyNoteTagalog": "Bantayan ang bata upang maiwasang isubo ang mga butil.",
+    "safetyNoteEnglish": "Watch your child the whole time so they do not put the grains in their mouth."
   },
   {
     "id": "act_09",
@@ -144,13 +208,21 @@
     "domain": "tactile",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Playdough o Homemade Clay"],
+    "materialsNeededEnglish": ["Playdough or homemade clay"],
     "descriptionTagalog": "Pagpisa, pagpukpok, at paghubog ng clay. Napapakalma nito ang kamay at ang isip.",
+    "descriptionEnglish": "Squeezing, pounding, and shaping clay. It settles both the hands and the mind.",
     "stepByStepTagalog": [
       "Ibigay ang clay sa bata.",
       "Sabihan siyang gumawa ng bilog o mahabang 'ahas' sa pamamagitan ng pag-roll.",
       "Ipapisa sa kaniyang buong palad."
     ],
-    "safetyNoteTagalog": "Tiyaking ligtas at non-toxic ang gagamiting clay."
+    "stepByStepEnglish": [
+      "Give the clay to your child.",
+      "Ask them to roll it into a ball or into a long 'snake'.",
+      "Have them flatten it with the whole palm."
+    ],
+    "safetyNoteTagalog": "Tiyaking ligtas at non-toxic ang gagamiting clay.",
+    "safetyNoteEnglish": "Make sure the clay you use is safe and non-toxic."
   },
   {
     "id": "act_10",
@@ -161,13 +233,21 @@
     "domain": "visual",
     "estimatedMinutes": 7,
     "materialsNeeded": ["Bubble solution at wand"],
+    "materialsNeededEnglish": ["Bubble solution and wand"],
     "descriptionTagalog": "Mabagal na paghihip at pagpuputok ng bula. Sinasanay nito ang mata na sundan ang gumagalaw.",
+    "descriptionEnglish": "Slowly blowing and popping bubbles. It gives the eyes practice in following something that moves.",
     "stepByStepTagalog": [
       "Dahan-dahang mag-hipan ng ilang pirasong bubbles sa eroplano ng paningin ng bata.",
       "Sabihan ang batang poppin ang bubbles gamit lamang ang isang daliri.",
       "Ipaalala ang malalim na paghinga habang pinapanood ang paglipad ng bubbles."
     ],
-    "safetyNoteTagalog": "Iwasang mapunta ang sabon sa mata ng bata."
+    "stepByStepEnglish": [
+      "Slowly blow a few bubbles at your child's eye level.",
+      "Ask your child to pop the bubbles using only one finger.",
+      "Remind them to breathe deeply while watching the bubbles float."
+    ],
+    "safetyNoteTagalog": "Iwasang mapunta ang sabon sa mata ng bata.",
+    "safetyNoteEnglish": "Keep the bubble soap out of your child's eyes."
   },
   {
     "id": "act_11",
@@ -178,13 +258,21 @@
     "domain": "tactile",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Malamig o malamig-lamig nang kaunti na basahan/tuwalya"],
+    "materialsNeededEnglish": ["Cold or slightly cool cloth/towel"],
     "descriptionTagalog": "Paggamit ng mainit na basahan para sa nakagiginhawang pagpunas sa mga kamay.",
+    "descriptionEnglish": "Using a damp cloth for a soothing wipe over the hands.",
     "stepByStepTagalog": [
       "Basain ng konting malamig na tubig ang maliit na tuwalya at pigaing mabuti.",
       "Dahan-dahang ipunas at ipitin sa mga palad at braso ng bata.",
       "Magtanong kung kumportable ba ang diin at lamig."
     ],
-    "safetyNoteTagalog": "Tiyaking hindi sobrang lamig o basa ang tuwalya."
+    "stepByStepEnglish": [
+      "Wet a small towel with a little cool water and wring it out well.",
+      "Gently wipe and press it on your child's palms and arms.",
+      "Ask whether the pressure and the coolness feel comfortable."
+    ],
+    "safetyNoteTagalog": "Tiyaking hindi sobrang lamig o basa ang tuwalya.",
+    "safetyNoteEnglish": "Make sure the towel is not too cold and not dripping wet."
   },
   {
     "id": "act_12",
@@ -195,13 +283,21 @@
     "domain": "tactile",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Malambot na feather, brush, o cotton ball"],
+    "materialsNeededEnglish": ["Soft feather, brush, or cotton ball"],
     "descriptionTagalog": "Mabagal na paghipo gamit ang malambot na bagay. Para sa batang masyadong sensitibo sa hipo.",
+    "descriptionEnglish": "Slow touching with something soft. This is for a child who is very sensitive to being touched.",
     "stepByStepTagalog": [
       "Ipakita sa bata ang cotton ball o feather.",
       "Dahan-dahang idampi ito sa likod ng kaniyang kamay.",
       "Hayaan ang batang hawakan din ito sa sarili kaniyang braso."
     ],
-    "safetyNoteTagalog": "Itigil agad kung nagpapakita ng matinding pag-ayaw o kiliti ang bata."
+    "stepByStepEnglish": [
+      "Show your child the cotton ball or feather.",
+      "Brush it gently on the back of their hand.",
+      "Let your child hold it and brush it on their own arm too."
+    ],
+    "safetyNoteTagalog": "Itigil agad kung nagpapakita ng matinding pag-ayaw o kiliti ang bata.",
+    "safetyNoteEnglish": "Stop right away if your child strongly dislikes it or is too ticklish."
   },
   {
     "id": "act_13",
@@ -212,13 +308,21 @@
     "domain": "auditory",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Wala"],
+    "materialsNeededEnglish": ["None"],
     "descriptionTagalog": "Pagsunod sa senyas ng paglakad at pagtigil. Sinasanay ang batang maghintay bago kumilos.",
+    "descriptionEnglish": "Following signals to walk and to stop. It gives your child practice in waiting before moving.",
     "stepByStepTagalog": [
       "Kapag sinabing 'Green Light!', mabilis na maglakad ang bata.",
       "Kapag sinabing 'Red Light!', kailangang huminto nang walang galaw.",
       "Subukang magpalit-palit ng bilis ng senyas."
     ],
-    "safetyNoteTagalog": "Laro sa kwartong walang mga bagay na pwedeng matapakan o mabuwal."
+    "stepByStepEnglish": [
+      "When you say 'Green Light!', your child walks quickly.",
+      "When you say 'Red Light!', they must stop and stay still.",
+      "Try changing how quickly you give the signals."
+    ],
+    "safetyNoteTagalog": "Laro sa kwartong walang mga bagay na pwedeng matapakan o mabuwal.",
+    "safetyNoteEnglish": "Play in a room with nothing on the floor to step on or trip over."
   },
   {
     "id": "act_14",
@@ -229,13 +333,21 @@
     "domain": "auditory",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Tugtog / Cellphone Speaker"],
+    "materialsNeededEnglish": ["Music / cellphone speaker"],
     "descriptionTagalog": "Pagsasayaw habang may tugtog, at pagtigil na parang estatwa kapag huminto ang musika.",
+    "descriptionEnglish": "Dancing while the music plays, and freezing like a statue when it stops.",
     "stepByStepTagalog": [
       "Patugtugin ang paboritong kanta ng bata habang sumasayaw.",
       "Biglang i-pause ang kanta — kailangang 'mag-freeze' ang bata.",
       "Ipagpatuloy kapag tumugtog uli."
     ],
-    "safetyNoteTagalog": "Siguraduhing malawak ang espasyo sa paligid."
+    "stepByStepEnglish": [
+      "Play your child's favorite song and dance along.",
+      "Pause the song suddenly — your child has to 'freeze'.",
+      "Start again when the music plays."
+    ],
+    "safetyNoteTagalog": "Siguraduhing malawak ang espasyo sa paligid.",
+    "safetyNoteEnglish": "Make sure there is plenty of open space around them."
   },
   {
     "id": "act_15",
@@ -246,13 +358,21 @@
     "domain": "visual",
     "estimatedMinutes": 10,
     "materialsNeeded": ["1-2 Balon"],
+    "materialsNeededEnglish": ["1-2 balloons"],
     "descriptionTagalog": "Pagtapik sa lobo para hindi ito bumagsak sa sahig. Sinasanay ang pokus at koordinasyon.",
+    "descriptionEnglish": "Tapping a balloon to keep it from landing on the floor. It builds focus and coordination.",
     "stepByStepTagalog": [
       "I-hipan ang isang balon.",
       "Sabihan ang batang tapikin ito pataas at huwag hayaang tumama sa sahig.",
       "Bilangin kung ilang beses maitatap bago bumagsak."
     ],
-    "safetyNoteTagalog": "Alisin ang mga matutulis na sulok ng mesa sa paligid."
+    "stepByStepEnglish": [
+      "Blow up one balloon.",
+      "Ask your child to tap it upward and not let it touch the floor.",
+      "Count how many taps they get before it drops."
+    ],
+    "safetyNoteTagalog": "Alisin ang mga matutulis na sulok ng mesa sa paligid.",
+    "safetyNoteEnglish": "Clear the area of tables with sharp corners."
   },
   {
     "id": "act_16",
@@ -263,13 +383,21 @@
     "domain": "auditory",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Wala"],
+    "materialsNeededEnglish": ["None"],
     "descriptionTagalog": "Pagsunod sa utos kapag nabanggit ang pariralang 'Sabi ko'.",
+    "descriptionEnglish": "Following an instruction only when it begins with 'Simon says'.",
     "stepByStepTagalog": [
       "Magbigay ng utos: 'Sabi ko, humawak sa tainga!'. Dapat sundin ng bata.",
       "Kapag walang 'Sabi ko' (hal. 'Humawak sa ilong!'), huwag gagawin ng bata.",
       "Purihin ang tamang pakikinig."
     ],
-    "safetyNoteTagalog": "Panatilihing masaya at huwag parusahan kapag nagkamali."
+    "stepByStepEnglish": [
+      "Give an instruction: 'Simon says, touch your ear!'. Your child should do it.",
+      "If there is no 'Simon says' (for example, 'Touch your nose!'), your child should not do it.",
+      "Praise your child for listening well."
+    ],
+    "safetyNoteTagalog": "Panatilihing masaya at huwag parusahan kapag nagkamali.",
+    "safetyNoteEnglish": "Keep it fun, and never punish your child for a mistake."
   },
   {
     "id": "act_17",
@@ -280,13 +408,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 6,
     "materialsNeeded": ["Wala"],
+    "materialsNeededEnglish": ["None"],
     "descriptionTagalog": "Paggalaw nang napakabagal na parang robot. Natututo ang batang pigilan at pakiramdaman ang sariling katawan.",
+    "descriptionEnglish": "Moving very slowly like a robot. Your child learns to slow down and feel their own body.",
     "stepByStepTagalog": [
       "Sabihin sa batang maging 'Slow-Motion Robot'.",
       "Maglakad patungo sa kabilang pader nang napakabagal na galaw.",
       "Hayaang maramdaman ang bawat kilos ng kalamnan."
     ],
-    "safetyNoteTagalog": "Siguraduhing may magandang balanse ang bata habang mabagal na kumikilos."
+    "stepByStepEnglish": [
+      "Tell your child to be a 'Slow-Motion Robot'.",
+      "Walk to the opposite wall with very slow movements.",
+      "Let them feel every movement of their muscles."
+    ],
+    "safetyNoteTagalog": "Siguraduhing may magandang balanse ang bata habang mabagal na kumikilos.",
+    "safetyNoteEnglish": "Make sure your child keeps their balance while moving slowly."
   },
   {
     "id": "act_18",
@@ -297,13 +433,21 @@
     "domain": "visual",
     "estimatedMinutes": 10,
     "materialsNeeded": ["6-10 Plastik na baso"],
+    "materialsNeededEnglish": ["6-10 plastic cups"],
     "descriptionTagalog": "Pagbuo ng tore gamit ang mga plastik na baso. Sinasanay ang maliliit na galaw ng kamay at ang pokus.",
+    "descriptionEnglish": "Building a tower with plastic cups. It works the small movements of the hands and builds focus.",
     "stepByStepTagalog": [
       "Maglagay ng 3 baso sa ilalim.",
       "Maglagay ng 2 baso sa pangalawang palapag, at 1 sa tuktok.",
       "Dahan-dahang iligpit nang hindi nababagsak."
     ],
-    "safetyNoteTagalog": "Gamitin lamang ang mga plastik o paper cups (huwag babasagin)."
+    "stepByStepEnglish": [
+      "Set 3 cups on the bottom row.",
+      "Put 2 cups on the second level, and 1 on top.",
+      "Take them down slowly without knocking the tower over."
+    ],
+    "safetyNoteTagalog": "Gamitin lamang ang mga plastik o paper cups (huwag babasagin).",
+    "safetyNoteEnglish": "Use only plastic or paper cups (nothing breakable)."
   },
   {
     "id": "act_19",
@@ -314,13 +458,21 @@
     "domain": "tactile",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Maluwag na damit na madaling isuot"],
+    "materialsNeededEnglish": ["Loose clothes that are easy to put on"],
     "descriptionTagalog": "Pagsasanay sa pagsuot ng damit nang paisa-isang hakbang. Isang bahagi lang muna ang ipapagawa sa bata, hanggang sa dumami.",
+    "descriptionEnglish": "Practicing getting dressed one step at a time. Your child does only one part at first, then more.",
     "stepByStepTagalog": [
       "Ihanda ang damit nang nakalatag at nakaharap sa tamang gilid.",
       "Ikaw ang magpasok sa ulo, siya ang bahala sa isang manggas.",
       "Kapag kaya na niya ang manggas, dagdagan ng isa pang hakbang."
     ],
-    "safetyNoteTagalog": "Huwag magmadali. Kapag napagod na siya, ikaw na ang tumapos nang walang sermon."
+    "stepByStepEnglish": [
+      "Lay the clothes out flat with the right side facing up.",
+      "You slip it over the head; your child takes care of one sleeve.",
+      "Once they can do the sleeve, add one more step."
+    ],
+    "safetyNoteTagalog": "Huwag magmadali. Kapag napagod na siya, ikaw na ang tumapos nang walang sermon.",
+    "safetyNoteEnglish": "Do not rush. When your child gets tired, finish it for them without any scolding."
   },
   {
     "id": "act_20",
@@ -331,13 +483,21 @@
     "domain": "tactile",
     "estimatedMinutes": 3,
     "materialsNeeded": ["Sipilyo", "Isang maikling kanta o timer"],
+    "materialsNeededEnglish": ["Toothbrush", "One short song or a timer"],
     "descriptionTagalog": "Ginagawang matiyempuhan ang pagsipilyo gamit ang isang kanta, para may nakikitang hangganan ang bata.",
+    "descriptionEnglish": "Timing toothbrushing with one song, so your child can tell when it ends.",
     "stepByStepTagalog": [
       "Pumili ng iisang kantang uulitin gabi-gabi.",
       "Kapag nagsimula ang kanta, magsisimula rin ang sipilyo.",
       "Kapag natapos ang kanta, tapos na — kahit hindi pa perpekto."
     ],
-    "safetyNoteTagalog": "Kung masakit sa kanya ang lasa ng toothpaste, subukan muna ang walang lasa."
+    "stepByStepEnglish": [
+      "Pick one song and use the same one every night.",
+      "When the song starts, the brushing starts too.",
+      "When the song ends, you are done — even if it was not perfect."
+    ],
+    "safetyNoteTagalog": "Kung masakit sa kanya ang lasa ng toothpaste, subukan muna ang walang lasa.",
+    "safetyNoteEnglish": "If the taste of the toothpaste is too much for your child, try one with no flavor first."
   },
   {
     "id": "act_21",
@@ -348,13 +508,21 @@
     "domain": "visual",
     "estimatedMinutes": 8,
     "materialsNeeded": ["2-3 kahon o basket", "Mga laruan"],
+    "materialsNeededEnglish": ["2-3 boxes or baskets", "Toys"],
     "descriptionTagalog": "Pagliligpit ng laruan sa hiwalay na kahon ayon sa uri. Mas madali ang malinaw na lalagyan kaysa sa utos na maglinis.",
+    "descriptionEnglish": "Putting toys away in separate boxes by type. A clear place to put things is easier to follow than an order to clean up.",
     "stepByStepTagalog": [
       "Maglagay ng larawan sa bawat kahon kung anong laman nito.",
       "Isang uri muna ang ipaligpit — halimbawa, mga sasakyan lang.",
       "Bilangin nang malakas habang naglalagay siya."
     ],
-    "safetyNoteTagalog": "Ilagay ang mga kahon sa abot ng kamay niya para hindi siya umakyat."
+    "stepByStepEnglish": [
+      "Put a picture on each box showing what goes inside.",
+      "Start with one type only — for example, just the toy cars.",
+      "Count out loud while your child puts them in."
+    ],
+    "safetyNoteTagalog": "Ilagay ang mga kahon sa abot ng kamay niya para hindi siya umakyat.",
+    "safetyNoteEnglish": "Keep the boxes within your child's reach so they do not have to climb."
   },
   {
     "id": "act_22",
@@ -365,13 +533,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 10,
     "materialsNeeded": ["2 mangkok", "Tabo o tasa", "Tubig o bigas"],
+    "materialsNeededEnglish": ["2 bowls", "Dipper or cup", "Water or rice"],
     "descriptionTagalog": "Pagsalok at pagsalin mula sa isang mangkok papunta sa isa pa. Paghahanda ito sa pagsalok ng pagkain at pag-inom mag-isa.",
+    "descriptionEnglish": "Scooping and pouring from one bowl into another. It prepares your child for serving food and drinking on their own.",
     "stepByStepTagalog": [
       "Maglagay ng bigas o tubig sa isang mangkok.",
       "Ipakita kung paano sumalok at dahan-dahang isalin sa kabila.",
       "Kapag natapos, pabalikin sa unang mangkok."
     ],
-    "safetyNoteTagalog": "Maglatag ng tuwalya sa ilalim. Ang natapon ay bahagi ng pagsasanay, hindi kalat."
+    "stepByStepEnglish": [
+      "Put rice or water in one bowl.",
+      "Show how to scoop with the dipper and pour it slowly into the other bowl.",
+      "When that is done, pour it back into the first bowl."
+    ],
+    "safetyNoteTagalog": "Maglatag ng tuwalya sa ilalim. Ang natapon ay bahagi ng pagsasanay, hindi kalat.",
+    "safetyNoteEnglish": "Spread a towel underneath. Spills are part of the practice, not a mess."
   },
   {
     "id": "act_23",
@@ -382,13 +558,21 @@
     "domain": "tactile",
     "estimatedMinutes": 8,
     "materialsNeeded": ["8-10 na plastik na sipit", "Lubid o tali"],
+    "materialsNeededEnglish": ["8-10 plastic clothespins", "String or cord"],
     "descriptionTagalog": "Pag-ipit ng mga sipit sa lubid. Sinasanay nito ang lakas ng hinlalaki at hintuturo na siya ring ginagamit sa paghawak ng lapis.",
+    "descriptionEnglish": "Clipping clothespins onto a line. It builds strength in the thumb and index finger, the same ones used to hold a pencil.",
     "stepByStepTagalog": [
       "Itali ang lubid sa dalawang upuan, kasing-taas ng dibdib niya.",
       "Ipakita kung paano pisilin ang sipit gamit ang hinlalaki at hintuturo.",
       "Paisa-isang ipaipit ang mga sipit habang binibilang."
     ],
-    "safetyNoteTagalog": "Gumamit ng plastik na sipit. Masakit ang matigas na kahoy kapag naipit ang daliri."
+    "stepByStepEnglish": [
+      "Tie the line between two chairs, at your child's chest height.",
+      "Show how to squeeze the clothespin with the thumb and index finger.",
+      "Have them clip the clothespins on one by one while counting."
+    ],
+    "safetyNoteTagalog": "Gumamit ng plastik na sipit. Masakit ang matigas na kahoy kapag naipit ang daliri.",
+    "safetyNoteEnglish": "Use plastic clothespins. Hard wooden ones hurt when a finger gets pinched."
   },
   {
     "id": "act_24",
@@ -399,13 +583,21 @@
     "domain": "tactile",
     "estimatedMinutes": 7,
     "materialsNeeded": ["Lata o lalagyan na may takip", "Mga takip ng bote"],
+    "materialsNeededEnglish": ["Tin can or container with a lid", "Bottle caps"],
     "descriptionTagalog": "Paghuhulog ng maliliit na bagay sa isang butas. Pagsasanay ito ng tumpak na paghawak at pagbitaw.",
+    "descriptionEnglish": "Dropping small objects through a hole. It is practice in holding and letting go accurately.",
     "stepByStepTagalog": [
       "Gumawa ng butas sa takip, bahagyang mas malaki sa takip ng bote.",
       "Ipaisa-isang ihulog ang mga takip sa butas.",
       "Kapag ubos na, buksan at ibuhos para ulitin."
     ],
-    "safetyNoteTagalog": "Iwasan ang bagay na mas maliit sa hinlalaki niya kung may ugali siyang magsubo."
+    "stepByStepEnglish": [
+      "Cut a hole in the lid, a little bigger than a bottle cap.",
+      "Have your child drop the bottle caps through the hole one by one.",
+      "When they are all in, open the lid and pour them out to start again."
+    ],
+    "safetyNoteTagalog": "Iwasan ang bagay na mas maliit sa hinlalaki niya kung may ugali siyang magsubo.",
+    "safetyNoteEnglish": "Do not use anything smaller than your child's thumb if they still put things in their mouth."
   },
   {
     "id": "act_25",
@@ -416,13 +608,21 @@
     "domain": "tactile",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Lumang diyaryo o magasin", "Pandikit", "Malinis na papel"],
+    "materialsNeededEnglish": ["Old newspaper or magazine", "Glue", "Clean paper"],
     "descriptionTagalog": "Pagpunit ng papel at pagdikit nito. Sinasanay ang magkasabay na paggamit ng dalawang kamay.",
+    "descriptionEnglish": "Tearing paper and pasting it down. It builds using both hands together.",
     "stepByStepTagalog": [
       "Ipakita kung paano punitin ang papel gamit ang dalawang kamay.",
       "Punitin ito sa maliliit na piraso.",
       "Idikit ang mga piraso sa malinis na papel kahit anong ayos."
     ],
-    "safetyNoteTagalog": "Gumamit ng pandikit na ligtas sa bata."
+    "stepByStepEnglish": [
+      "Show how to tear the newspaper using both hands.",
+      "Tear it into small pieces.",
+      "Paste the pieces onto a clean sheet of paper in any arrangement."
+    ],
+    "safetyNoteTagalog": "Gumamit ng pandikit na ligtas sa bata.",
+    "safetyNoteEnglish": "Use paste that is safe for children."
   },
   {
     "id": "act_26",
@@ -433,13 +633,21 @@
     "domain": "visual",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Malinaw na bote na may takip", "Tubig", "Bigas o glitter"],
+    "materialsNeededEnglish": ["Clear bottle with a lid", "Water", "Rice or glitter"],
     "descriptionTagalog": "Panonood sa dahan-dahang paglubog ng laman ng bote. Magamit ito kapag kailangan niyang huminahon.",
+    "descriptionEnglish": "Watching the contents of the bottle slowly settle. Use it when your child needs to calm down.",
     "stepByStepTagalog": [
       "Lagyan ng tubig at kaunting bigas o glitter ang bote, tapos higpitan ang takip.",
       "Kalugin at ipatingin sa kanya hanggang lumubog ang lahat.",
       "Huminga kayo nang malalim habang nanonood."
     ],
-    "safetyNoteTagalog": "Idikit nang mabuti ang takip gamit ang tape para hindi matapon."
+    "stepByStepEnglish": [
+      "Fill the bottle with water and a little rice or glitter, then tighten the cap.",
+      "Shake it and let your child watch until everything has settled.",
+      "Breathe deeply together while you watch."
+    ],
+    "safetyNoteTagalog": "Idikit nang mabuti ang takip gamit ang tape para hindi matapon.",
+    "safetyNoteEnglish": "Seal the cap tightly with tape so nothing spills out."
   },
   {
     "id": "act_27",
@@ -450,13 +658,21 @@
     "domain": "tactile",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Bag o supot na hindi nakikita ang laman", "4-5 pamilyar na bagay"],
+    "materialsNeededEnglish": ["Bag or pouch you cannot see through", "4-5 familiar objects"],
     "descriptionTagalog": "Paghula ng bagay sa loob ng bag gamit lang ang hipo. Tumutulong sa batang umiiwas sa ibang tekstura.",
+    "descriptionEnglish": "Guessing an object inside a bag by touch alone. It helps a child who avoids certain textures.",
     "stepByStepTagalog": [
       "Ipakita muna sa kanya ang mga bagay bago ilagay sa bag.",
       "Ipapasok ang kamay at hulaan ang nahawakan bago ilabas.",
       "Simulan sa makinis na bagay bago sa magaspang."
     ],
-    "safetyNoteTagalog": "Huwag pilitin kung ayaw niyang ipasok ang kamay. Hayaan muna siyang tumingin."
+    "stepByStepEnglish": [
+      "Show your child the objects first, before putting them in the bag.",
+      "They reach in and guess what they are holding before pulling it out.",
+      "Start with smooth objects before rough ones."
+    ],
+    "safetyNoteTagalog": "Huwag pilitin kung ayaw niyang ipasok ang kamay. Hayaan muna siyang tumingin.",
+    "safetyNoteEnglish": "Do not force it if your child does not want to reach in. Let them just look first."
   },
   {
     "id": "act_28",
@@ -467,13 +683,21 @@
     "domain": "vestibular",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Masking tape"],
+    "materialsNeededEnglish": ["Masking tape"],
     "descriptionTagalog": "Paglakad sa ibabaw ng isang guhit na tape. Sinasanay ang balanse at ang pagpigil ng sariling galaw.",
+    "descriptionEnglish": "Walking along a line of tape. It builds balance and control over their own movement.",
     "stepByStepTagalog": [
       "Idikit ang tape sa sahig bilang isang tuwid na linya.",
       "Palakarin siya sa ibabaw ng linya nang hindi lumalampas.",
       "Kapag kaya na, subukan ang paatras o ang paliko-likong linya."
     ],
-    "safetyNoteTagalog": "Tiyaking hindi madulas ang sahig at walang gamit sa magkabilang gilid."
+    "stepByStepEnglish": [
+      "Stick the tape on the floor as one straight line.",
+      "Have your child walk along the line without stepping off it.",
+      "Once they can do it, try walking backward or a curved line."
+    ],
+    "safetyNoteTagalog": "Tiyaking hindi madulas ang sahig at walang gamit sa magkabilang gilid.",
+    "safetyNoteEnglish": "Make sure the floor is not slippery and there is nothing on either side of the line."
   },
   {
     "id": "act_29",
@@ -484,13 +708,21 @@
     "domain": "tactile",
     "estimatedMinutes": 3,
     "materialsNeeded": ["Sabon", "Tubig"],
+    "materialsNeededEnglish": ["Soap", "Water"],
     "descriptionTagalog": "Paghuhugas ng kamay na may bilang, para may malinaw na simula at katapusan ang gawain.",
+    "descriptionEnglish": "Handwashing with counting, so the task has a clear start and a clear end.",
     "stepByStepTagalog": [
       "Basain ang kamay at lagyan ng sabon.",
       "Magbilang nang malakas hanggang dalawampu habang kinukuskos.",
       "Banlawan at punasan nang tuyo."
     ],
-    "safetyNoteTagalog": "Tiyaking hindi mainit ang tubig bago ipahawak sa kanya."
+    "stepByStepEnglish": [
+      "Wet the hands and put soap on them.",
+      "Count out loud up to twenty while scrubbing.",
+      "Rinse and wipe them dry."
+    ],
+    "safetyNoteTagalog": "Tiyaking hindi mainit ang tubig bago ipahawak sa kanya.",
+    "safetyNoteEnglish": "Check that the water is not hot before letting your child put their hands under it."
   },
   {
     "id": "act_30",
@@ -501,13 +733,21 @@
     "domain": "proprioceptive",
     "estimatedMinutes": 8,
     "materialsNeeded": ["3-4 maliliit na tuwalya"],
+    "materialsNeededEnglish": ["3-4 small towels"],
     "descriptionTagalog": "Pagtitiklop ng tuwalya. Nakakatulong ito sa paggamit ng dalawang kamay at sa pakiramdam ng natapos na gawain.",
+    "descriptionEnglish": "Folding towels. It builds the use of both hands and the feeling of finishing a job.",
     "stepByStepTagalog": [
       "Ilatag ang tuwalya sa mesa o sa sahig.",
       "Ipakita ang isang tiklop lang muna — kalahati.",
       "Hayaan siyang gawin ang natitirang tuwalya."
     ],
-    "safetyNoteTagalog": "Simulan sa maliliit na tuwalya. Mabigat ang malaki at nakakapanghina ng loob."
+    "stepByStepEnglish": [
+      "Lay the towel out on a table or on the floor.",
+      "Show just one fold first — in half.",
+      "Let your child do the rest of the towels."
+    ],
+    "safetyNoteTagalog": "Simulan sa maliliit na tuwalya. Mabigat ang malaki at nakakapanghina ng loob.",
+    "safetyNoteEnglish": "Start with small towels. Big ones are heavy and can be discouraging."
   },
   {
     "id": "act_31",
@@ -518,13 +758,21 @@
     "domain": "auditory",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Timer o alarm sa telepono"],
+    "materialsNeededEnglish": ["Timer or alarm on a phone"],
     "descriptionTagalog": "Pagtatapos ng isang maliit na gawain bago tumunog ang timer, para makita niya ang hangganan ng oras.",
+    "descriptionEnglish": "Finishing a small task before the timer rings, so your child can see where the time ends.",
     "stepByStepTagalog": [
       "Pumili ng isang maliit na gawain — halimbawa, ipunin ang limang laruan.",
       "Itakda ang timer sa tatlong minuto at ipakita sa kanya.",
       "Purihin siya kapag natapos, kahit tumunog na ang timer."
     ],
-    "safetyNoteTagalog": "Huwag gawing paligsahan na may talo. Ang layunin ay makita ang oras, hindi manalo."
+    "stepByStepEnglish": [
+      "Pick one small task — for example, gather five toys.",
+      "Set the timer for three minutes and show it to your child.",
+      "Praise them when they finish, even if the timer already rang."
+    ],
+    "safetyNoteTagalog": "Huwag gawing paligsahan na may talo. Ang layunin ay makita ang oras, hindi manalo.",
+    "safetyNoteEnglish": "Do not turn it into a race with a loser. The point is to see the time, not to win."
   },
   {
     "id": "act_32",
@@ -535,13 +783,21 @@
     "domain": "auditory",
     "estimatedMinutes": 6,
     "materialsNeeded": ["Wala"],
+    "materialsNeededEnglish": ["None"],
     "descriptionTagalog": "Paglipat ng lakas ng boses ayon sa hudyat. Sinasanay ang pagpigil sa sarili.",
+    "descriptionEnglish": "Switching how loud the voice is on a signal. It builds self-control.",
     "stepByStepTagalog": [
       "Magkasundo sa hudyat — taas ng kamay ay malakas, baba ay bulong.",
       "Sabihin ang parehong salita sa dalawang lakas.",
       "Magpalit kayo — siya naman ang magbibigay ng hudyat."
     ],
-    "safetyNoteTagalog": "Kung masakit sa tainga niya ang malakas, bulong at karaniwang boses na lang."
+    "stepByStepEnglish": [
+      "Agree on the signal — hand up means loud, hand down means whisper.",
+      "Say the same word at both volumes.",
+      "Swap roles — now your child gives the signal."
+    ],
+    "safetyNoteTagalog": "Kung masakit sa tainga niya ang malakas, bulong at karaniwang boses na lang.",
+    "safetyNoteEnglish": "If loud sounds hurt your child's ears, use only a whisper and a normal voice."
   },
   {
     "id": "act_33",
@@ -552,13 +808,21 @@
     "domain": "visual",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Mga bloke o maliliit na kahon"],
+    "materialsNeededEnglish": ["Blocks or small boxes"],
     "descriptionTagalog": "Sabayang pagbuo ng tore na salitan ang paglalagay. Pagsasanay ito ng paghihintay ng turno.",
+    "descriptionEnglish": "Building a tower together, taking turns to add a piece. It is practice in waiting for a turn.",
     "stepByStepTagalog": [
       "Ilagay ang mga bloke sa gitna ninyong dalawa.",
       "Salitan kayong maglagay ng tig-isang bloke.",
       "Sabihin nang malakas kung kaninong turno bago maglagay."
     ],
-    "safetyNoteTagalog": "Gumamit ng magaan na bloke para hindi masakit kapag bumagsak."
+    "stepByStepEnglish": [
+      "Put the blocks between the two of you.",
+      "Take turns placing one block each.",
+      "Say out loud whose turn it is before placing a block."
+    ],
+    "safetyNoteTagalog": "Gumamit ng magaan na bloke para hindi masakit kapag bumagsak.",
+    "safetyNoteEnglish": "Use light blocks so it does not hurt when the tower falls."
   },
   {
     "id": "act_34",
@@ -569,13 +833,21 @@
     "domain": "vestibular",
     "estimatedMinutes": 8,
     "materialsNeeded": ["Magaan na bola"],
+    "materialsNeededEnglish": ["Light ball"],
     "descriptionTagalog": "Paggulong ng bola nang pabalik-balik habang nakaupo. Simpleng paraan ng pagsasanay sa salitan.",
+    "descriptionEnglish": "Rolling a ball back and forth while sitting down. A simple way to practice taking turns.",
     "stepByStepTagalog": [
       "Umupo kayong magkaharap na nakabuka ang mga paa.",
       "Igulong ang bola sa kanya at hintaying ibalik niya.",
       "Bilangin kung ilang beses kayong nakapagbalikan nang hindi natatapon."
     ],
-    "safetyNoteTagalog": "Gumamit ng magaan na bola kapag sa loob ng bahay."
+    "stepByStepEnglish": [
+      "Sit facing each other with your legs apart.",
+      "Roll the ball to your child and wait for them to roll it back.",
+      "Count how many times you pass it back and forth without it getting away."
+    ],
+    "safetyNoteTagalog": "Gumamit ng magaan na bola kapag sa loob ng bahay.",
+    "safetyNoteEnglish": "Use a light ball when playing indoors."
   },
   {
     "id": "act_35",
@@ -586,13 +858,21 @@
     "domain": "visual",
     "estimatedMinutes": 10,
     "materialsNeeded": ["Isang paboritong laruan"],
+    "materialsNeededEnglish": ["One favorite toy"],
     "descriptionTagalog": "Paghahanap ng nakatagong laruan sa loob ng kwarto. Naghihintay siya at sumusunod sa palatandaan.",
+    "descriptionEnglish": "Looking for a hidden toy inside a room. Your child waits and follows clues.",
     "stepByStepTagalog": [
       "Ipakita ang laruan bago ito itago.",
       "Itago muna ito sa lugar na kitang-kita.",
       "Bigyan siya ng palatandaan — 'malapit ka na' o 'malayo pa'."
     ],
-    "safetyNoteTagalog": "Huwag itago sa mataas o sa likod ng mabibigat na kagamitan."
+    "stepByStepEnglish": [
+      "Show the toy before you hide it.",
+      "Hide it somewhere easy to see at first.",
+      "Give your child clues — 'you are close' or 'still far'."
+    ],
+    "safetyNoteTagalog": "Huwag itago sa mataas o sa likod ng mabibigat na kagamitan.",
+    "safetyNoteEnglish": "Never hide it up high or behind heavy furniture."
   },
   {
     "id": "act_36",
@@ -603,12 +883,20 @@
     "domain": "visual",
     "estimatedMinutes": 10,
     "materialsNeeded": ["3-4 larawan o lumang litrato"],
+    "materialsNeededEnglish": ["3-4 pictures or old photos"],
     "descriptionTagalog": "Sabayang paggawa ng kwento mula sa mga larawan. Tumutulong ito sa pagpapalitan ng ideya.",
+    "descriptionEnglish": "Making up a story together from pictures. It helps with going back and forth with ideas.",
     "stepByStepTagalog": [
       "Ilatag ang mga larawan sa pagkakasunod-sunod.",
       "Ikaw ang magsisimula ng isang pangungusap sa unang larawan.",
       "Siya naman ang magdadagdag sa susunod na larawan."
     ],
-    "safetyNoteTagalog": "Walang maling kwento. Huwag itama ang sagot niya."
+    "stepByStepEnglish": [
+      "Lay the pictures out in order.",
+      "You start with one sentence about the first picture.",
+      "Your child adds the next sentence for the next picture."
+    ],
+    "safetyNoteTagalog": "Walang maling kwento. Huwag itama ang sagot niya.",
+    "safetyNoteEnglish": "There is no wrong story. Do not correct your child's answer."
   }
 ]

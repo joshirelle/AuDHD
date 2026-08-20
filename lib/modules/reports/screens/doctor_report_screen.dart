@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/child_profile.dart';
 import '../../../data/services/hive_service.dart';
@@ -38,8 +39,13 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
       debugPrint('DoctorReportScreen: $error');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Hindi naibahagi ang ulat. Subukan ulit.'),
+        SnackBar(
+          content: Text(
+            tr(
+              'Hindi naibahagi ang ulat. Subukan ulit.',
+              'The report was not shared. Please try again.',
+            ),
+          ),
           backgroundColor: AppColors.danger,
         ),
       );
@@ -54,8 +60,8 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ulat para sa Doktor'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Ulat para sa Doktor', 'Doctor\'s Report')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -81,9 +87,12 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
                 size: 32,
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Kailangan muna ng profile ng bata bago makabuo ng ulat para sa doktor.',
-                style: TextStyle(
+              Text(
+                tr(
+                  'Kailangan muna ng profile ng bata bago makabuo ng ulat para sa doktor.',
+                  'A child profile is needed first before a doctor\'s report can be made.',
+                ),
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textDark,
                   fontFamily: 'Nunito',
@@ -106,9 +115,15 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildRangeChip('Huling 30 Araw', DoctorPdfService.rangeLast30Days),
+              _buildRangeChip(
+                tr('Huling 30 Araw', 'Last 30 Days'),
+                DoctorPdfService.rangeLast30Days,
+              ),
               const SizedBox(width: 10),
-              _buildRangeChip('Huling 90 Araw', DoctorPdfService.rangeLast90Days),
+              _buildRangeChip(
+                tr('Huling 90 Araw', 'Last 90 Days'),
+                DoctorPdfService.rangeLast90Days,
+              ),
             ],
           ),
         ),
@@ -138,7 +153,7 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
                 onPressed: _isSharing ? null : () => _share(child),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.logoGreen,
-                  disabledBackgroundColor: Colors.grey.shade300,
+                  disabledBackgroundColor: AppColors.divider,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -150,16 +165,18 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
                         height: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Colors.white,
+                          color: AppColors.surface,
                         ),
                       )
-                    : const Icon(Icons.ios_share_rounded, color: Colors.white),
+                    : const Icon(Icons.ios_share_rounded, color: AppColors.surface),
                 label: Text(
-                  _isSharing ? 'Inihahanda...' : 'I-share sa Doktor (PDF)',
+                  _isSharing
+                      ? tr('Inihahanda...', 'Preparing...')
+                      : tr('I-share sa Doktor (PDF)', 'Share with Doctor (PDF)'),
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: _isSharing ? Colors.grey.shade600 : Colors.white,
+                    color: _isSharing ? AppColors.textMuted : AppColors.surface,
                     fontFamily: 'Nunito',
                   ),
                 ),
@@ -184,10 +201,10 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
           padding: const EdgeInsets.symmetric(vertical: 12),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.mintGreen : Colors.white,
+            color: isSelected ? AppColors.mintGreen : AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.button),
             border: Border.all(
-              color: isSelected ? AppColors.logoGreen : Colors.grey.shade300,
+              color: isSelected ? AppColors.logoGreen : AppColors.divider,
               width: 2,
             ),
           ),

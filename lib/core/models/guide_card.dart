@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../i18n/language_controller.dart';
 import '../theme/app_theme.dart';
 
 /// Pangkat ng mga gabay. Ang kulay at icon ay nakatali rito para hindi
 /// magkaiba-iba ang hitsura ng magkakapatid na card.
 enum GuideCategory {
-  sensory('Sensory', Icons.hearing_rounded, AppColors.skyBlueLight, AppColors.skyInk),
-  emotion('Damdamin', Icons.favorite_rounded, AppColors.coralPeach, AppColors.coralInk),
-  focus('Pokus', Icons.bolt_rounded, AppColors.butterYellow, AppColors.butterInk),
-  social('Pakikisama', Icons.groups_rounded, AppColors.mintGreen, AppColors.mintInk);
+  sensory(Icons.hearing_rounded, AppColors.skyBlueLight, AppColors.skyInk),
+  emotion(Icons.favorite_rounded, AppColors.coralPeach, AppColors.coralInk),
+  focus(Icons.bolt_rounded, AppColors.butterYellow, AppColors.butterInk),
+  social(Icons.groups_rounded, AppColors.mintGreen, AppColors.mintInk);
 
-  const GuideCategory(this.label, this.icon, this.background, this.ink);
+  const GuideCategory(this.icon, this.background, this.ink);
 
-  final String label;
+  /// Getter at hindi `final` na field: kailangang mabasa muli kapag nagpalit
+  /// ng wika ang magulang.
+  String get label => switch (this) {
+    GuideCategory.sensory => tr('Sensory', 'Sensory'),
+    GuideCategory.emotion => tr('Damdamin', 'Emotions'),
+    GuideCategory.focus => tr('Pokus', 'Focus'),
+    GuideCategory.social => tr('Pakikisama', 'Getting Along'),
+  };
+
   final IconData icon;
   final Color background;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/constants/behavior_constants.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/behavior_log.dart';
 import '../../../data/services/hive_service.dart';
@@ -14,6 +15,7 @@ class AddBehaviorLogScreen extends StatefulWidget {
 }
 
 class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
+  /// Panloob na tanda lang ito, hindi naiimbak — kaya hindi isinasalin.
   static const String _customOption = 'Iba pa (Custom)';
   static const int _totalSteps = 7;
 
@@ -45,14 +47,14 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     super.dispose();
   }
 
-  static const List<String> _stepTags = [
-    'A - BAGO MANGYARI',
-    'B - ANG GINAWA NG BATA',
-    'C - PAGKATAPOS',
-    'URI NG PANDAMA',
-    'GAANO KATINDI',
-    'TAGAL',
-    'KARAGDAGANG TALA',
+  static List<String> get _stepTags => [
+    tr('A - BAGO MANGYARI', 'A - BEFORE'),
+    tr('B - ANG GINAWA NG BATA', 'B - WHAT THE CHILD DID'),
+    tr('C - PAGKATAPOS', 'C - AFTER'),
+    tr('URI NG PANDAMA', 'SENSORY TYPE'),
+    tr('GAANO KATINDI', 'INTENSITY'),
+    tr('TAGAL', 'DURATION'),
+    tr('KARAGDAGANG TALA', 'EXTRA NOTES'),
   ];
 
   static const List<IconData> _stepIcons = [
@@ -75,14 +77,20 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     AppColors.mintGreen,
   ];
 
-  static const List<String> _stepQuestions = [
-    'Ano ang nangyari bago ang insidente?',
-    'Anong kilos o reaksyon ang ipinakita?',
-    'Ano ang naging tugon o resulta?',
-    'Ano ang maaaring pumukaw sa kanya?',
-    'Gaano kalubha ang naging insidente?',
-    'Gaano ito katagal?',
-    'May nais ka pa bang idagdag?',
+  static List<String> get _stepQuestions => [
+    tr(
+      'Ano ang nangyari bago ang insidente?',
+      'What happened before the incident?',
+    ),
+    tr(
+      'Anong kilos o reaksyon ang ipinakita?',
+      'What action or reaction did you see?',
+    ),
+    tr('Ano ang naging tugon o resulta?', 'What was the response or result?'),
+    tr('Ano ang maaaring pumukaw sa kanya?', 'What may have set this off?'),
+    tr('Gaano kalubha ang naging insidente?', 'How strong was the incident?'),
+    tr('Gaano ito katagal?', 'How long did it last?'),
+    tr('May nais ka pa bang idagdag?', 'Anything else you want to add?'),
   ];
 
   /// Hindi puwedeng lumipat hangga't kulang ang A, B, o C.
@@ -151,8 +159,8 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Naitala na ang ugali.'),
+      SnackBar(
+        content: Text(tr('Naitala na ang ugali.', 'The log has been saved.')),
         backgroundColor: AppColors.logoGreen,
       ),
     );
@@ -167,11 +175,13 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
   }
 
   String _getSeverityLabel(double val) {
-    if (val == 1) return '1 - Bahagya lang';
-    if (val == 2) return '2 - Bahagya hanggang katamtaman';
-    if (val == 3) return '3 - Katamtaman';
-    if (val == 4) return '4 - Malubha';
-    return '5 - Napakalubha';
+    if (val == 1) return tr('1 - Bahagya lang', '1 - Mild only');
+    if (val == 2) {
+      return tr('2 - Bahagya hanggang katamtaman', '2 - Mild to moderate');
+    }
+    if (val == 3) return tr('3 - Katamtaman', '3 - Moderate');
+    if (val == 4) return tr('4 - Malubha', '4 - Strong');
+    return tr('5 - Napakalubha', '5 - Very strong');
   }
 
   @override
@@ -195,12 +205,12 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
 
               Center(
                 child: Text(
-                  'HAKBANG ${_currentStep + 1}',
+                  tr('HAKBANG ${_currentStep + 1}', 'STEP ${_currentStep + 1}'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
-                    color: Colors.grey.shade600,
+                    color: AppColors.textMuted,
                     letterSpacing: 1.0,
                     fontFamily: 'Nunito',
                   ),
@@ -224,18 +234,20 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                   onPressed: _canProceed ? _goNext : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.logoGreen,
-                    disabledBackgroundColor: Colors.grey.shade300,
+                    disabledBackgroundColor: AppColors.divider,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: Text(
-                    isLastStep ? 'I-SAVE ANG TALA' : 'SUSUNOD',
+                    isLastStep
+                        ? tr('I-SAVE ANG TALA', 'SAVE THIS LOG')
+                        : tr('SUSUNOD', 'NEXT'),
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: _canProceed ? Colors.white : Colors.grey.shade600,
+                      color: _canProceed ? AppColors.surface : AppColors.textMuted,
                       fontFamily: 'Nunito',
                     ),
                   ),
@@ -254,7 +266,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.skyBlueLight, width: 2),
         boxShadow: [
@@ -324,7 +336,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
           options: BehaviorConstants.commonAntecedents,
           selected: _selectedAntecedent,
           controller: _customAntecedentController,
-          hint: 'Tukuyin ang sanhi...',
+          hint: tr('Tukuyin ang sanhi...', 'Describe the cause...'),
           onSelected: (val) => setState(() => _selectedAntecedent = val),
         );
       case 1:
@@ -332,7 +344,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
           options: BehaviorConstants.commonBehaviors,
           selected: _selectedBehavior,
           controller: _customBehaviorController,
-          hint: 'Tukuyin ang kilos...',
+          hint: tr('Tukuyin ang kilos...', 'Describe the action...'),
           onSelected: (val) => setState(() => _selectedBehavior = val),
         );
       case 2:
@@ -340,7 +352,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
           options: BehaviorConstants.commonConsequences,
           selected: _selectedConsequence,
           controller: _customConsequenceController,
-          hint: 'Tukuyin ang tugon...',
+          hint: tr('Tukuyin ang tugon...', 'Describe the response...'),
           onSelected: (val) => setState(() => _selectedConsequence = val),
         );
       case 3:
@@ -373,10 +385,10 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
             final isSelected = selected == opt;
             return ChoiceChip(
               label: Text(
-                opt,
+                opt == _customOption ? tr(_customOption, 'Other (Custom)') : opt,
                 style: TextStyle(
                   fontSize: 13,
-                  color: isSelected ? Colors.white : AppColors.textDark,
+                  color: isSelected ? AppColors.surface : AppColors.textDark,
                 ),
               ),
               labelPadding: const EdgeInsets.symmetric(
@@ -487,10 +499,12 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     return TextField(
       controller: _notesController,
       maxLines: 4,
-      decoration: const InputDecoration(
-        hintText:
-            'Halimbawa: Pagod mula sa biyahe, hindi gaanong nakakain ng tanghalian...',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        hintText: tr(
+          'Halimbawa: Pagod mula sa biyahe, hindi gaanong nakakain ng tanghalian...',
+          'For example: Tired from the trip, did not eat much at lunch...',
+        ),
+        border: const OutlineInputBorder(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
@@ -27,7 +28,6 @@ class VisualScheduleCard extends StatelessWidget {
 
     return KikoCard(
       backgroundColor: AppColors.tintGold,
-      borderColor: AppColors.starGold.withValues(alpha: 0.35),
       padding: const EdgeInsets.all(16),
       onTap: () => Navigator.push(
         context,
@@ -52,9 +52,9 @@ class VisualScheduleCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Aking Iskedyul',
-                  style: TextStyle(
+                Text(
+                  tr('Aking Iskedyul', 'My Daily Schedule'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
@@ -62,8 +62,11 @@ class VisualScheduleCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '$doneCount sa ${tasks.length} na gawain ang tapos ngayong araw.',
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  tr(
+                    '$doneCount sa ${tasks.length} na gawain ang tapos ngayong araw.',
+                    '$doneCount of ${tasks.length} tasks done today.',
+                  ),
+                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
                 ),
               ],
             ),

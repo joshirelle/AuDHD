@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 import '../models/sensory_activity.dart';
@@ -50,7 +51,7 @@ class ActivityDetailSheet extends StatelessWidget {
                   width: 44,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: AppColors.divider,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -58,7 +59,7 @@ class ActivityDetailSheet extends StatelessWidget {
               const SizedBox(height: 20),
 
               Text(
-                activity.titleTagalog,
+                activity.title,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -69,15 +70,15 @@ class ActivityDetailSheet extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 '${activity.durationLabel} - ${activity.domainLabel}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppColors.textMuted,
                   fontFamily: 'Nunito',
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                activity.descriptionTagalog,
+                activity.description,
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textDark,
@@ -87,7 +88,7 @@ class ActivityDetailSheet extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              _sectionTitle('Mga Kakailanganin'),
+              _sectionTitle(tr('Mga Kakailanganin', 'What you need')),
               const SizedBox(height: 10),
               KikoCard(
                 backgroundColor: AppColors.skyBlueLight,
@@ -95,7 +96,7 @@ class ActivityDetailSheet extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (final material in activity.materialsNeeded)
+                    for (final material in activity.materials)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Row(
@@ -128,9 +129,9 @@ class ActivityDetailSheet extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              _sectionTitle('Hakbang-Hakbang'),
+              _sectionTitle(tr('Hakbang-Hakbang', 'Step by step')),
               const SizedBox(height: 10),
-              for (int i = 0; i < activity.stepByStepTagalog.length; i++)
+              for (int i = 0; i < activity.steps.length; i++)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Row(
@@ -157,7 +158,7 @@ class ActivityDetailSheet extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          activity.stepByStepTagalog[i],
+                          activity.steps[i],
                           style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.textDark,
@@ -171,7 +172,7 @@ class ActivityDetailSheet extends StatelessWidget {
                 ),
               const SizedBox(height: 12),
 
-              _sectionTitle('Paalala sa Kaligtasan'),
+              _sectionTitle(tr('Paalala sa Kaligtasan', 'Safety note')),
               const SizedBox(height: 10),
               KikoCard(
                 backgroundColor: AppColors.coralPeach,
@@ -187,7 +188,7 @@ class ActivityDetailSheet extends StatelessWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        activity.safetyNoteTagalog,
+                        activity.safetyNote,
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.coralInk,
@@ -215,15 +216,18 @@ class ActivityDetailSheet extends StatelessWidget {
                   ),
                   icon: const Icon(
                     Icons.play_arrow_rounded,
-                    color: Colors.white,
+                    color: AppColors.surface,
                     size: 26,
                   ),
                   label: Text(
-                    'Simulan (${activity.estimatedMinutes} min)',
+                    tr(
+                      'Simulan (${activity.estimatedMinutes} min)',
+                      'Start (${activity.estimatedMinutes} min)',
+                    ),
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppColors.surface,
                       fontFamily: 'Nunito',
                     ),
                   ),

@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 /// nito — ang "low-sensory" ay tungkol sa palaman, hindi sa nababasa.
 class AppColors {
   // --- Base ---
-  static const Color background = Color(0xFFF4F1EA);
-  static const Color surface = Color(0xFFFFFFFF);
+  static const Color background = Color(0xFFFFF7EB);
+  /// Hindi purong puti: sa `background` na cream, ang puti ay 1.06:1 lang —
+  /// walang naidaragdag na hangganan, matingkad lang sa mata.
+  static const Color surface = Color(0xFFFFFCF5);
   static const Color textDark = Color(0xFF3A3630);
 
   /// Pangalawang teksto. Malamig ang tono para tumugma sa background, at
@@ -84,7 +86,7 @@ class AppTheme {
     // hindi tahasang binigyan ng kulay.
     colorScheme: ColorScheme.fromSeed(seedColor: AppColors.logoGreen).copyWith(
       primary: AppColors.logoGreen,
-      onPrimary: Colors.white,
+      onPrimary: AppColors.surface,
       secondary: AppColors.skyBlue,
       onSecondary: AppColors.textDark,
       surface: AppColors.surface,
@@ -92,12 +94,33 @@ class AppTheme {
       error: AppColors.danger,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.background,
       titleTextStyle: TextStyle(
         fontFamily: 'Nunito',
         fontSize: 18,
         fontWeight: FontWeight.w800,
         color: AppColors.textDark,
+      ),
+    ),
+    // Kung wala ito, ang gagamitin ng Material 3 ay sarili nitong mala-berdeng
+    // abo na hinango sa seed — malamlam ito at hindi tugma sa app.
+    dialogTheme: DialogThemeData(
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      titleTextStyle: const TextStyle(
+        fontFamily: 'Nunito',
+        fontSize: 17,
+        fontWeight: FontWeight.w800,
+        color: AppColors.textDark,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.textDark,
+        textStyle: const TextStyle(
+          fontFamily: 'Nunito',
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

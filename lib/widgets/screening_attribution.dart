@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/app_theme.dart';
+
 /// Tekstong kailangan ng mga may-ari ng instrumento. Iisang pinagmumulan para
 /// magkatugma ang app at ang PDF.
 class ScreeningAttribution {
@@ -26,7 +28,7 @@ class ScreeningCopyright extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: 10,
-        color: Colors.grey.shade600,
+        color: AppColors.textMuted,
         height: 1.35,
         fontFamily: 'Nunito',
       ),

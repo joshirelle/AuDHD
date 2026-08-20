@@ -24,7 +24,7 @@ class ScreeningCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               shape: BoxShape.circle,
             ),
             child: const Icon(

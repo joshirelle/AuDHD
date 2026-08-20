@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/i18n/language_controller.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../data/models/child_profile.dart';
@@ -53,11 +54,15 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   Future<void> _save() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      setState(() => _error = 'Kailangan ang pangalan.');
+      setState(
+        () => _error = tr('Kailangan ang pangalan.', 'The name is needed.'),
+      );
       return;
     }
     if (_birthDate == null) {
-      setState(() => _error = 'Kailangan ang kaarawan.');
+      setState(
+        () => _error = tr('Kailangan ang kaarawan.', 'The birthday is needed.'),
+      );
       return;
     }
 
@@ -79,12 +84,16 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   @override
   Widget build(BuildContext context) {
     final birthText = _birthDate == null
-        ? 'Pumili ng kaarawan'
+        ? tr('Pumili ng kaarawan', 'Choose a birthday')
         : DateFormatter.longDate(_birthDate!);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Text(widget.existing == null ? 'Bagong Bata' : 'Baguhin ang Profile'),
+      title: Text(
+        widget.existing == null
+            ? tr('Bagong Bata', 'New Child')
+            : tr('Baguhin ang Profile', 'Edit Profile'),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,18 +101,18 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
           TextField(
             controller: _nameController,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'Pangalan ng bata',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr('Pangalan ng bata', 'Name of the child'),
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _nicknameController,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'Palayaw (opsyonal)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr('Palayaw (opsyonal)', 'Nickname (optional)'),
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 12),
@@ -153,14 +162,14 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Kanselahin'),
+          child: Text(tr('Kanselahin', 'Cancel')),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.logoGreen),
           onPressed: _save,
-          child: const Text(
-            'I-save',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          child: Text(
+            tr('I-save', 'Save'),
+            style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -178,17 +187,17 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? color.withValues(alpha: 0.12) : Colors.white,
+          color: isSelected ? color.withValues(alpha: 0.12) : AppColors.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? color : Colors.grey.shade300,
+            color: isSelected ? color : AppColors.divider,
             width: 2,
           ),
         ),
         child: Icon(
           icon,
           size: 32,
-          color: isSelected ? color : Colors.grey.shade400,
+          color: isSelected ? color : AppColors.textMuted,
         ),
       ),
     );

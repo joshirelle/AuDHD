@@ -1,10 +1,12 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../i18n/language_controller.dart';
 import '../utils/age_formatter.dart';
 
 /// Magkatulad na header, profile card, at disclaimer sa lahat ng PDF na ulat.
 class PdfReportTheme {
-  static const String unknown = 'Hindi nakatala';
+  // Getter, hindi const: nakadepende sa wikang pinili ng magulang.
+  static String get unknown => tr('Hindi nakatala', 'Not recorded');
   static const PdfColor headerColor = PdfColors.teal800;
   static const double tableFontSize = 9;
 
@@ -66,7 +68,10 @@ class PdfReportTheme {
                     ),
                   ),
                   pw.Text(
-                    'Tala ng Obserbasyon ng Magulang',
+                    tr(
+                      'Tala ng Obserbasyon ng Magulang',
+                      'Record of Parent Observations',
+                    ),
                     style: const pw.TextStyle(
                       fontSize: 10,
                       color: PdfColors.grey700,
@@ -75,7 +80,10 @@ class PdfReportTheme {
                 ],
               ),
             ),
-            pw.Text('Petsa: $dateText', style: const pw.TextStyle(fontSize: 11)),
+            pw.Text(
+              tr('Petsa: $dateText', 'Date: $dateText'),
+              style: const pw.TextStyle(fontSize: 11),
+            ),
           ],
         ),
         pw.SizedBox(height: 16),
@@ -103,7 +111,7 @@ class PdfReportTheme {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'DETALYE NG BATA',
+            tr('DETALYE NG BATA', 'CHILD DETAILS'),
             style: pw.TextStyle(
               fontSize: 10,
               fontWeight: pw.FontWeight.bold,
@@ -111,8 +119,8 @@ class PdfReportTheme {
             ),
           ),
           pw.SizedBox(height: 8),
-          profileRow('Pangalan', nameText),
-          profileRow('Kaarawan', birthDateText),
+          profileRow(tr('Pangalan', 'Name'), nameText),
+          profileRow(tr('Kaarawan', 'Date of birth'), birthDateText),
           profileRow(ageLabel, ageText),
         ],
       ),
@@ -127,7 +135,10 @@ class PdfReportTheme {
         borderRadius: pw.BorderRadius.circular(6),
       ),
       child: pw.Text(
-        'PAALALA: Ang ulat na ito ay tala lamang ng obserbasyon ng magulang sa bahay at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
+        tr(
+          'PAALALA: Ang ulat na ito ay tala lamang ng obserbasyon ng magulang sa bahay at HINDI opisyal na medikal na diagnosis. Mangyaring isangguni ito sa isang Developmental Pediatrician para sa buong evaluation.',
+          "NOTE: This report is only a record of the parent's observations at home and is NOT an official medical diagnosis. Please refer it to a Developmental Pediatrician for a full evaluation.",
+        ),
         style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey800),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/enums/skill_area.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/how_to_card.dart';
@@ -81,8 +82,8 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mga Gawain sa Bahay'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Mga Gawain sa Bahay', 'Home Activities')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         actions: const [
@@ -112,18 +113,32 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       children: [
-        const HowToCard(
+        HowToCard(
           steps: [
-            'Pindutin ang gawain para mabasa ang paliwanag at ang paalala sa '
-                'kaligtasan bago kayo magsimula.',
-            'May timer ang bawat gawain, kaya hindi mo na kailangang bantayan '
-                'ang oras. Samahan mo lang ang bata.',
-            'Kapag tapos na, matsetsek ito at may bituing madadagdag sa bata.',
+            tr(
+              'Pindutin ang gawain para mabasa ang paliwanag at ang paalala sa '
+                  'kaligtasan bago kayo magsimula.',
+              'Tap an activity to read the how-to and the safety note before '
+                  'you start.',
+            ),
+            tr(
+              'May timer ang bawat gawain, kaya hindi mo na kailangang bantayan '
+                  'ang oras. Samahan mo lang ang bata.',
+              'Each activity has a timer, so you do not have to watch the '
+                  'clock. Just stay with your child.',
+            ),
+            tr(
+              'Kapag tapos na, matsetsek ito at may bituing madadagdag sa bata.',
+              'Once it is done, it gets checked off and your child earns stars.',
+            ),
           ],
-          footnote:
-              'Hindi kailangang matapos lahat sa isang araw. Mas malaki ang '
-              'naitutulong ng maikli pero tuloy-tuloy kaysa sa mahaba pero '
-              'paminsan-minsan.',
+          footnote: tr(
+            'Hindi kailangang matapos lahat sa isang araw. Mas malaki ang '
+                'naitutulong ng maikli pero tuloy-tuloy kaysa sa mahaba pero '
+                'paminsan-minsan.',
+            'You do not have to finish everything in one day. Short but steady '
+                'helps more than long but only once in a while.',
+          ),
         ),
         const SizedBox(height: 16),
 
@@ -149,7 +164,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
 
           _buildSectionHeader(
             icon: Icons.sports_esports_rounded,
-            title: 'Mga Gawain Ngayong Araw',
+            title: tr('Mga Gawain Ngayong Araw', "Today's Activities"),
             durationLabel: _remainingLabel(_daily),
           ),
           const SizedBox(height: 12),
@@ -161,7 +176,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
 
           _buildSectionHeader(
             icon: Icons.grid_view_rounded,
-            title: 'Lahat ng Gawain',
+            title: tr('Lahat ng Gawain', 'All Activities'),
             durationLabel: _remainingLabel(_filteredActivities()),
           ),
           const SizedBox(height: 12),
@@ -194,9 +209,9 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
   Widget _buildSkillFilterHeader() {
     return Row(
       children: [
-        const Text(
-          'Anong Natututuhan?',
-          style: TextStyle(
+        Text(
+          tr('Anong Natututuhan?', 'What is this for?'),
+          style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
             color: AppColors.textDark,
@@ -226,7 +241,12 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildFilterChip('Lahat', null, Icons.apps_rounded, AppColors.logoGreen),
+          _buildFilterChip(
+            tr('Lahat', 'All'),
+            null,
+            Icons.apps_rounded,
+            AppColors.logoGreen,
+          ),
           for (final area in SkillArea.values) ...[
             const SizedBox(width: 8),
             _buildFilterChip(area.label, area, area.icon, area.ink),
@@ -249,10 +269,10 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
         decoration: BoxDecoration(
-          color: isSelected ? color : Colors.white,
+          color: isSelected ? color : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.button),
           border: Border.all(
-            color: isSelected ? color : Colors.grey.shade300,
+            color: isSelected ? color : AppColors.divider,
             width: 2,
           ),
         ),
@@ -262,7 +282,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
             Icon(
               icon,
               size: 16,
-              color: isSelected ? Colors.white : color,
+              color: isSelected ? AppColors.surface : color,
             ),
             const SizedBox(width: 6),
             Text(
@@ -270,7 +290,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.white : AppColors.textDark,
+                color: isSelected ? AppColors.surface : AppColors.textDark,
                 fontFamily: 'Nunito',
               ),
             ),
@@ -297,10 +317,13 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
                 size: 36,
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Hindi mabuksan ang listahan ng mga gawain.',
+              Text(
+                tr(
+                  'Hindi mabuksan ang listahan ng mga gawain.',
+                  'The list of activities could not be opened.',
+                ),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textDark,
                   fontFamily: 'Nunito',
@@ -315,9 +338,9 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
                   });
                   _load();
                 },
-                child: const Text(
-                  'Subukan ulit',
-                  style: TextStyle(
+                child: Text(
+                  tr('Subukan ulit', 'Try again'),
+                  style: const TextStyle(
                     color: AppColors.butterInk,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Nunito',
@@ -404,15 +427,18 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
         .where((a) => !HiveService.isActivityCompleted(_selectedDate, a.id))
         .toList();
 
-    if (remaining.isEmpty) return 'Tapos na';
-    return '${_formatMinutes(_totalMinutes(remaining))} pa';
+    if (remaining.isEmpty) return tr('Tapos na', 'Done');
+    final left = _formatMinutes(_totalMinutes(remaining));
+    return tr('$left pa', '$left left');
   }
 
   String _formatMinutes(int minutes) {
-    if (minutes < 60) return '$minutes minuto';
+    if (minutes < 60) return tr('$minutes minuto', '$minutes min');
 
     final hours = minutes ~/ 60;
     final rest = minutes % 60;
-    return rest == 0 ? '$hours oras' : '$hours oras $rest min';
+    return rest == 0
+        ? tr('$hours oras', '$hours hr')
+        : tr('$hours oras $rest min', '$hours hr $rest min');
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/enums/skill_area.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 
 Future<void> showSkillAreaInfoSheet(BuildContext context) {
@@ -42,9 +43,9 @@ class SkillAreaInfoSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Anong Natututuhan?',
-              style: TextStyle(
+            Text(
+              tr('Anong Natututuhan?', 'What is this for?'),
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textDark,
@@ -52,12 +53,18 @@ class SkillAreaInfoSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'May tinutulungang bahagi ng paglaki ang bawat gawain. Hindi ito '
-              'pagsusuri at hindi ito panukat — gabay lang para malaman mo kung '
-              'ano ang pinapasanay.\n\n'
-              'Piliin ang naaayon sa kaya ng anak mo ngayon, hindi sa edad niya.',
-              style: TextStyle(
+            Text(
+              tr(
+                'May tinutulungang bahagi ng paglaki ang bawat gawain. Hindi ito '
+                    'pagsusuri at hindi ito panukat — gabay lang para malaman mo kung '
+                    'ano ang pinapasanay.\n\n'
+                    'Piliin ang naaayon sa kaya ng anak mo ngayon, hindi sa edad niya.',
+                'Each activity helps a part of growing up. This is not a test '
+                    'and not a score — it is only a guide so you know what is '
+                    'being practiced.\n\n'
+                    'Pick what fits what your child can do now, not their age.',
+              ),
+              style: const TextStyle(
                 fontSize: 13,
                 height: 1.5,
                 color: AppColors.textDark,
@@ -95,7 +102,7 @@ class _AreaRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               shape: BoxShape.circle,
             ),
             child: Icon(area.icon, size: 20, color: area.ink),

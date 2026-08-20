@@ -78,7 +78,7 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: riskColor, width: 2),
                 ),
@@ -86,7 +86,7 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                   children: [
                     Text(
                       'RESULTA NG PAGSUSURI',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textMuted),
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -126,7 +126,7 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
                 onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-                child: const Text('Bumalik sa Home', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text('Bumalik sa Home', style: TextStyle(color: AppColors.surface, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 20),
               const ScreeningCopyright(text: ScreeningAttribution.mchat),

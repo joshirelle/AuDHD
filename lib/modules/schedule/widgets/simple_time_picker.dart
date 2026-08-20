@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// Payak na pagpili ng oras.
@@ -54,9 +55,9 @@ class _SimpleTimePickerDialogState extends State<_SimpleTimePickerDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.card),
       ),
-      title: const Text(
-        'Anong oras ito ginagawa?',
-        style: TextStyle(
+      title: Text(
+        tr('Anong oras ito ginagawa?', 'What time is this done?'),
+        style: const TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.bold,
           fontFamily: 'Nunito',
@@ -108,9 +109,12 @@ class _SimpleTimePickerDialogState extends State<_SimpleTimePickerDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Kanselahin',
-            style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
+          child: Text(
+            tr('Kanselahin', 'Cancel'),
+            style: const TextStyle(
+              fontFamily: 'Nunito',
+              color: AppColors.textMuted,
+            ),
           ),
         ),
         FilledButton(
@@ -121,9 +125,12 @@ class _SimpleTimePickerDialogState extends State<_SimpleTimePickerDialog> {
               borderRadius: BorderRadius.circular(AppRadius.button),
             ),
           ),
-          child: const Text(
-            'Piliin',
-            style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold),
+          child: Text(
+            tr('Piliin', 'Choose'),
+            style: const TextStyle(
+              fontFamily: 'Nunito',
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
@@ -141,7 +148,7 @@ class _SimpleTimePickerDialogState extends State<_SimpleTimePickerDialog> {
       isExpanded: true,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),

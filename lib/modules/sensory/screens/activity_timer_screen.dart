@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
@@ -112,8 +113,8 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Oras ng Gawain'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Oras ng Gawain', 'Activity Timer')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -125,7 +126,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                widget.activity.titleTagalog,
+                widget.activity.title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 19,
@@ -141,9 +142,9 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
               Text(
                 _statusText,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade600,
+                  color: AppColors.textMuted,
                   fontFamily: 'Nunito',
                 ),
               ),
@@ -158,9 +159,14 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
   }
 
   String get _statusText {
-    if (_isFinished) return 'Tapos na! Nakakuha ng bituin si bata.';
-    if (_isRunning) return 'Kasalukuyang ginagawa...';
-    return 'Naka-pause';
+    if (_isFinished) {
+      return tr(
+        'Tapos na! Nakakuha ng bituin si bata.',
+        'Done! Your child earned stars.',
+      );
+    }
+    if (_isRunning) return tr('Kasalukuyang ginagawa...', 'Doing it now...');
+    return tr('Naka-pause', 'Paused');
   }
 
   Widget _buildDial() {
@@ -178,7 +184,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
             child: CircularProgressIndicator(
               value: _isFinished ? 1 : progress,
               strokeWidth: 14,
-              backgroundColor: Colors.grey.shade200,
+              backgroundColor: AppColors.divider,
               valueColor: AlwaysStoppedAnimation<Color>(
                 _isFinished ? AppColors.logoGreen : AppColors.starGold,
               ),
@@ -209,7 +215,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
   Widget _buildActions() {
     if (_isFinished) {
       return _buildPrimaryButton(
-        label: 'Tapos na',
+        label: tr('Tapos na', 'Done'),
         color: AppColors.logoGreen,
         onPressed: () => Navigator.pop(context),
       );
@@ -219,18 +225,20 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildPrimaryButton(
-          label: _isRunning ? 'I-pause' : 'Ipagpatuloy',
+          label: _isRunning
+              ? tr('I-pause', 'Pause')
+              : tr('Ipagpatuloy', 'Resume'),
           color: _isRunning ? AppColors.skyBlue : AppColors.logoGreen,
-          textColor: _isRunning ? AppColors.skyInk : Colors.white,
+          textColor: _isRunning ? AppColors.skyInk : AppColors.surface,
           onPressed: _isRunning ? _pause : _resume,
         ),
         const SizedBox(height: 10),
         TextButton(
           onPressed: _finish,
           child: Text(
-            'Tapusin na agad',
+            tr('Tapusin na agad', 'Finish now'),
             style: TextStyle(
-              color: Colors.grey.shade600,
+              color: AppColors.textMuted,
               fontWeight: FontWeight.bold,
               fontFamily: 'Nunito',
             ),
@@ -244,7 +252,7 @@ class _ActivityTimerScreenState extends State<ActivityTimerScreen> {
     required String label,
     required Color color,
     required VoidCallback onPressed,
-    Color textColor = Colors.white,
+    Color textColor = AppColors.surface,
   }) {
     return SizedBox(
       height: 56,

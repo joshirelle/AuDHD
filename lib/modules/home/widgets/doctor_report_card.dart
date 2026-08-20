@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../reports/screens/doctor_report_screen.dart';
@@ -22,9 +23,9 @@ class DoctorReportCard extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
+            decoration: BoxDecoration(
+              color: AppColors.accentBlue.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.medical_information_rounded,
@@ -33,23 +34,26 @@ class DoctorReportCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ULAT PARA SA DOKTOR',
-                  style: TextStyle(
+                  tr('ULAT PARA SA DOKTOR', 'DOCTOR\'S REPORT'),
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                     fontFamily: 'Nunito',
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Buuin ang PDF na dadalhin mo sa developmental pediatrician.',
-                  style: TextStyle(
+                  tr(
+                    'Buuin ang PDF na dadalhin mo sa developmental pediatrician.',
+                    'Build the PDF you can bring to your developmental pediatrician.',
+                  ),
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textDark,
                     fontFamily: 'Nunito',

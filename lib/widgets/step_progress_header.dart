@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../core/i18n/language_controller.dart';
 import '../core/theme/app_theme.dart';
 
 /// Bumalik + progress bar + bilang, ginagamit ng screening, checklist, at behavior log.
@@ -21,17 +22,17 @@ class StepProgressHeader extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: onBack,
-          child: const Row(
+          child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.arrow_back_ios_new_rounded,
                 size: 16,
                 color: AppColors.accentBlue,
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
-                'Bumalik',
-                style: TextStyle(
+                tr('Bumalik', 'Back'),
+                style: const TextStyle(
                   color: AppColors.accentBlue,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
@@ -48,7 +49,7 @@ class StepProgressHeader extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: (currentIndex + 1) / totalCount,
                 minHeight: 12,
-                backgroundColor: Colors.grey.shade200,
+                backgroundColor: AppColors.divider,
                 // Halos hindi makita ang pastel na palaman sa kulay-abong track.
                 color: AppColors.logoGreen,
               ),

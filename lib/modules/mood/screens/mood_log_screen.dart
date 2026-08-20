@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/mood_type.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
@@ -48,7 +49,9 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
     unawaited(HapticFeedback.lightImpact());
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Naitala: ${mood.label}'),
+        content: Text(
+          tr('Naitala: ${mood.label}', 'Logged: ${mood.label}'),
+        ),
         backgroundColor: AppColors.logoGreen,
       ),
     );
@@ -62,8 +65,8 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mood Ngayong Araw'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Mood Ngayong Araw', 'Mood Today')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
       ),
@@ -73,8 +76,14 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
         children: [
           Text(
             hasName
-                ? 'Kumusta ang pakiramdam ni $child ngayon?'
-                : 'Kumusta ang pakiramdam ng iyong anak ngayon?',
+                ? tr(
+                    'Kumusta ang pakiramdam ni $child ngayon?',
+                    'How is $child feeling today?',
+                  )
+                : tr(
+                    'Kumusta ang pakiramdam ng iyong anak ngayon?',
+                    'How is your child feeling today?',
+                  ),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -84,8 +93,11 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Pumili ng isa. Mababago mo ito anumang oras ngayong araw.',
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            tr(
+              'Pumili ng isa. Mababago mo ito anumang oras ngayong araw.',
+              'Pick one. You can change it anytime today.',
+            ),
+            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
           ),
           const SizedBox(height: 20),
 
@@ -95,9 +107,9 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
           ),
           const SizedBox(height: 24),
 
-          const Text(
-            'Karagdagang Tala (Opsyonal)',
-            style: TextStyle(
+          Text(
+            tr('Karagdagang Tala (Opsyonal)', 'Extra Note (Optional)'),
+            style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w800,
               color: AppColors.textDark,
@@ -108,9 +120,12 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
           TextField(
             controller: _noteController,
             maxLines: 3,
-            decoration: const InputDecoration(
-              hintText: 'Halimbawa: Maaga siyang nagising at maganda ang umaga.',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              hintText: tr(
+                'Halimbawa: Maaga siyang nagising at maganda ang umaga.',
+                'Example: Woke up early and had a good morning.',
+              ),
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 24),
@@ -121,20 +136,20 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
               onPressed: _selected == null ? null : _save,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.logoGreen,
-                disabledBackgroundColor: Colors.grey.shade300,
+                disabledBackgroundColor: AppColors.divider,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.button),
                 ),
               ),
               child: Text(
-                'I-tala ang Mood',
+                tr('I-tala ang Mood', 'Log the Mood'),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: _selected == null
-                      ? Colors.grey.shade600
-                      : Colors.white,
+                      ? AppColors.textMuted
+                      : AppColors.surface,
                 ),
               ),
             ),

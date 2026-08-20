@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 import '../../sensory/screens/home_activities_screen.dart';
@@ -22,10 +23,10 @@ class HomeActivitiesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.logoGreen.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.sports_esports_rounded,
@@ -34,9 +35,9 @@ class HomeActivitiesCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'MGA GAWAIN\nSA BAHAY',
-            style: TextStyle(
+          Text(
+            tr('MGA GAWAIN\nSA BAHAY', 'HOME\nACTIVITIES'),
+            style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: AppColors.textDark,
@@ -45,9 +46,12 @@ class HomeActivitiesCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Mga larong pansensory na kayang gawin araw-araw sa bahay.',
-            style: TextStyle(
+          Text(
+            tr(
+              'Mga larong pansensory na kayang gawin araw-araw sa bahay.',
+              'Sensory play you can do at home every day.',
+            ),
+            style: const TextStyle(
               fontSize: 11,
               color: AppColors.textDark,
               fontFamily: 'Nunito',

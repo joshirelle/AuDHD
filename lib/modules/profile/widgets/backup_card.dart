@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/backup_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -53,9 +54,9 @@ class _BackupCardState extends State<BackupCard> {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+                decoration: BoxDecoration(
+                  color: AppColors.butterInk.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   Icons.save_rounded,
@@ -64,10 +65,10 @@ class _BackupCardState extends State<BackupCard> {
                 ),
               ),
               const SizedBox(width: 14),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Kopya ng Datos',
-                  style: TextStyle(
+                  tr('Kopya ng Datos', 'Data Backup'),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
@@ -78,10 +79,15 @@ class _BackupCardState extends State<BackupCard> {
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Hindi na mababalik ang mga naitala mo kapag nasira, nawala, o '
-            'na-format ang telepono. Gumawa ng kopya paminsan-minsan.',
-            style: TextStyle(
+          Text(
+            tr(
+              'Hindi na mababalik ang mga naitala mo kapag nasira, nawala, o '
+              'na-format ang telepono. Gumawa ng kopya paminsan-minsan.',
+              'What you have recorded can no longer be brought back if the '
+              'phone breaks, gets lost, or is formatted. Make a backup once in '
+              'a while.',
+            ),
+            style: const TextStyle(
               fontSize: 11,
               color: AppColors.textDark,
               height: 1.4,
@@ -91,9 +97,9 @@ class _BackupCardState extends State<BackupCard> {
           const SizedBox(height: 14),
           Row(
             children: [
-              const Text(
-                'Huling kopya: ',
-                style: TextStyle(
+              Text(
+                tr('Huling kopya: ', 'Last backup: '),
+                style: const TextStyle(
                   fontSize: 11,
                   color: AppColors.textMuted,
                   fontFamily: 'Nunito',
@@ -101,7 +107,7 @@ class _BackupCardState extends State<BackupCard> {
               ),
               Text(
                 lastBackup == null
-                    ? 'Wala pa'
+                    ? tr('Wala pa', 'None yet')
                     : DateFormatter.longDate(lastBackup),
                 style: TextStyle(
                   fontSize: 11,
@@ -128,10 +134,10 @@ class _BackupCardState extends State<BackupCard> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Gumawa ng kopya',
-                    style: TextStyle(
-                      color: Colors.white,
+                  child: Text(
+                    tr('Gumawa ng kopya', 'Make a backup'),
+                    style: const TextStyle(
+                      color: AppColors.surface,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                       fontFamily: 'Nunito',
@@ -151,9 +157,9 @@ class _BackupCardState extends State<BackupCard> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Ibalik',
-                    style: TextStyle(
+                  child: Text(
+                    tr('Ibalik', 'Restore'),
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                       fontFamily: 'Nunito',
@@ -187,22 +193,28 @@ Future<bool> showRestoreFlow(BuildContext context) async {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Papalitan ang datos?'),
-        content: const Text(
-          'Papalitan ng laman ng file ang lahat ng nasa app ngayon — '
-          'mga behavior log, sensory history, milestone, at mood.\n\n'
-          'Hindi na maibabalik ang kasalukuyang laman.',
+        title: Text(tr('Papalitan ang datos?', 'Replace the data?')),
+        content: Text(
+          tr(
+            'Papalitan ng laman ng file ang lahat ng nasa app ngayon — '
+            'mga behavior log, sensory history, milestone, at mood.\n\n'
+            'Hindi na maibabalik ang kasalukuyang laman.',
+            'The contents of the file will replace everything in the app right '
+            'now — the behavior logs, sensory history, milestones, and mood.'
+            '\n\n'
+            'The current contents can no longer be brought back.',
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Kanselahin'),
+            child: Text(tr('Kanselahin', 'Cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Ipagpatuloy',
-              style: TextStyle(
+            child: Text(
+              tr('Ipagpatuloy', 'Continue'),
+              style: const TextStyle(
                 color: AppColors.danger,
                 fontWeight: FontWeight.bold,
               ),

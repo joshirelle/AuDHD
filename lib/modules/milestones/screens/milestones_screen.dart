@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/constants/milestone_constants.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/star_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -36,8 +37,8 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mga Milestone ng Paglaki'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Mga Milestone ng Paglaki', 'Growth Milestones')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         actions: const [
@@ -59,18 +60,32 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
             children: [
-              const HowToCard(
+              HowToCard(
                 steps: [
-                  'Piliin sa itaas kung aling bahagi ng paglaki ang gusto mong '
-                      'tingnan.',
-                  'Tsekan lamang ang mga nagagawa na ng bata nang kusa, hindi '
-                      'ang mga natutulungan mo pa.',
-                  'Balikan ito paminsan-minsan. Nagbabago ang kakayahan ng bata '
-                      'sa paglipas ng panahon.',
+                  tr(
+                    'Piliin sa itaas kung aling bahagi ng paglaki ang gusto mong '
+                        'tingnan.',
+                    'Choose above which part of growing up you want to look at.',
+                  ),
+                  tr(
+                    'Tsekan lamang ang mga nagagawa na ng bata nang kusa, hindi '
+                        'ang mga natutulungan mo pa.',
+                    'Tick only what the child already does on their own, not '
+                        'what you still help with.',
+                  ),
+                  tr(
+                    'Balikan ito paminsan-minsan. Nagbabago ang kakayahan ng bata '
+                        'sa paglipas ng panahon.',
+                    'Come back to this now and then. What a child can do keeps '
+                        'changing over time.',
+                  ),
                 ],
-                footnote:
-                    'Hindi ito paligsahan. Magkakaiba ang bilis ng bawat bata, '
-                    'at ang hindi pa natsetsekan ay hindi kabiguan.',
+                footnote: tr(
+                  'Hindi ito paligsahan. Magkakaiba ang bilis ng bawat bata, '
+                      'at ang hindi pa natsetsekan ay hindi kabiguan.',
+                  'This is not a race. Every child moves at their own pace, and '
+                      'an unticked box is not a failure.',
+                ),
               ),
               const SizedBox(height: 18),
               _buildFilterChips(),
@@ -94,7 +109,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildChip('Lahat', null),
+          _buildChip(tr('Lahat', 'All'), null),
           for (final domain in MilestoneDomain.values) ...[
             const SizedBox(width: 8),
             _buildChip(domain.label, domain),
@@ -112,10 +127,10 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.logoGreen : Colors.white,
+          color: isSelected ? AppColors.logoGreen : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.button),
           border: Border.all(
-            color: isSelected ? AppColors.logoGreen : Colors.grey.shade300,
+            color: isSelected ? AppColors.logoGreen : AppColors.divider,
             width: 2,
           ),
         ),
@@ -124,7 +139,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : AppColors.textDark,
+            color: isSelected ? AppColors.surface : AppColors.textDark,
             fontFamily: 'Nunito',
           ),
         ),
@@ -142,7 +157,10 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '$achieved sa $total na Milestones ang Naabot',
+            tr(
+              '$achieved sa $total na Milestones ang Naabot',
+              '$achieved of $total Milestones Reached',
+            ),
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
@@ -152,10 +170,12 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            _filter == null ? 'Lahat ng bahagi' : _filter!.label,
+            _filter == null
+                ? tr('Lahat ng bahagi', 'All areas')
+                : _filter!.label,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey.shade700,
+              color: AppColors.textMuted,
               fontFamily: 'Nunito',
             ),
           ),
@@ -168,7 +188,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 10,
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.surface,
                     valueColor: const AlwaysStoppedAnimation<Color>(
                       AppColors.logoGreen,
                     ),
@@ -198,8 +218,8 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
     final domainColor = _domainColors[milestone.domain] ?? AppColors.skyBlueLight;
 
     return KikoCard(
-      backgroundColor: isAchieved ? _achievedTint : Colors.white,
-      borderColor: isAchieved ? _achievedGreen : Colors.grey.shade200,
+      backgroundColor: isAchieved ? _achievedTint : AppColors.surface,
+      borderColor: isAchieved ? _achievedGreen : AppColors.divider,
       padding: const EdgeInsets.all(14),
       onTap: () => _toggle(context, milestone, isAchieved),
       child: Row(
@@ -212,7 +232,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  milestone.titleTagalog,
+                  milestone.title,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -237,7 +257,10 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
                 if (achievedDate != null) ...[
                   const SizedBox(height: 8),
                   Text(
-                    'Naabot noong ${DateFormatter.longDate(achievedDate)}',
+                    tr(
+                      'Naabot noong ${DateFormatter.longDate(achievedDate)}',
+                      'Reached on ${DateFormatter.longDate(achievedDate)}',
+                    ),
                     style: const TextStyle(
                       fontSize: 11,
                       color: _achievedGreen,
@@ -257,7 +280,7 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
   Widget _buildCheckbox(Milestone milestone, bool isAchieved) {
     return Semantics(
       checked: isAchieved,
-      label: milestone.titleTagalog,
+      label: milestone.title,
       // Sariling context para tumapat ang burst sa mismong checkbox.
       child: Builder(
         builder: (context) => InkWell(
@@ -267,15 +290,15 @@ class _MilestonesScreenState extends State<MilestonesScreen> {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: isAchieved ? _achievedGreen : Colors.white,
+              color: isAchieved ? _achievedGreen : AppColors.surface,
               shape: BoxShape.circle,
               border: Border.all(
-                color: isAchieved ? _achievedGreen : Colors.grey.shade400,
+                color: isAchieved ? _achievedGreen : AppColors.textMuted,
                 width: 2,
               ),
             ),
             child: isAchieved
-                ? const Icon(Icons.check_rounded, size: 20, color: Colors.white)
+                ? const Icon(Icons.check_rounded, size: 20, color: AppColors.surface)
                 : null,
           ),
         ),

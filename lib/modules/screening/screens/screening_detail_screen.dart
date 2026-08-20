@@ -54,7 +54,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalyadong Resulta'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         actions: [
@@ -96,7 +96,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: color.withValues(alpha: 0.3),
@@ -111,7 +111,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.8,
-                      color: Colors.grey.shade500,
+                      color: AppColors.textMuted,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -120,7 +120,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade600,
+                      color: AppColors.textMuted,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -135,7 +135,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                   const SizedBox(height: 4),
                   Text(
                     'Petsa ng Screening: $formattedDate',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                   ),
                 ],
               ),
@@ -157,7 +157,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                   : 'Ang may pulang bandila ay nagdagdag ng risk point sa kabuuang score.',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey.shade600,
+                color: AppColors.textMuted,
                 height: 1.3,
               ),
             ),
@@ -185,7 +185,7 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
-                    color: isAtRisk ? AppColors.tintDanger : Colors.white,
+                    color: isAtRisk ? AppColors.tintDanger : AppColors.surface,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                       side: BorderSide(
@@ -256,8 +256,8 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                             ),
                             decoration: BoxDecoration(
                               color: isAtRisk
-                                  ? Colors.red.shade50
-                                  : Colors.green.shade50,
+                                  ? AppColors.tintDanger
+                                  : AppColors.tintSuccess,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -265,8 +265,8 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: isAtRisk
-                                    ? Colors.red.shade800
-                                    : Colors.green.shade800,
+                                    ? AppColors.danger
+                                    : AppColors.success,
                               ),
                             ),
                           ),

@@ -38,6 +38,7 @@ void main() {
     await Hive.openBox<bool>('guide_tips');
     await Hive.openBox<int>('schedule_order');
     await Hive.openBox<bool>('schedule_hidden');
+    await Hive.openBox<String>('app_prefs');
   });
 
   tearDownAll(() async {
@@ -97,6 +98,7 @@ void main() {
     await HiveService.setGuideTipDone('ingay', 2, true);
     await HiveService.setScheduleTaskHidden('default_aaral', true);
     await HiveService.getScheduleOrderBox().put('default_almusal', 3);
+    await HiveService.getPrefsBox().put('selected_language', 'eng');
   }
 
   Future<void> wipe() async {
@@ -114,6 +116,7 @@ void main() {
     await HiveService.getGuideTipBox().clear();
     await HiveService.getScheduleOrderBox().clear();
     await HiveService.getScheduleHiddenBox().clear();
+    await HiveService.getPrefsBox().clear();
   }
 
   setUp(() async {
@@ -168,6 +171,7 @@ void main() {
     expect(HiveService.isGuideTipDone('ingay', 2), isTrue);
     expect(HiveService.isScheduleTaskHidden('default_aaral'), isTrue);
     expect(HiveService.getScheduleOrderBox().get('default_almusal'), 3);
+    expect(HiveService.getPrefsBox().get('selected_language'), 'eng');
   });
 
   test('the PIN never leaves the device inside a backup', () async {

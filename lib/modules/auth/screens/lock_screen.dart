@@ -179,7 +179,7 @@ class _LockScreenState extends State<LockScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.logoGreen.withValues(alpha: 0.15),
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(
             Icons.lock_outline_rounded,
@@ -202,7 +202,7 @@ class _LockScreenState extends State<LockScreen> {
           'Upang mapanatiling ligtas ang datos ng bata',
           style: TextStyle(
             fontSize: 12,
-            color: Colors.grey.shade600,
+            color: AppColors.textMuted,
             fontFamily: 'Nunito',
           ),
         ),
@@ -217,7 +217,7 @@ class _LockScreenState extends State<LockScreen> {
               height: 16,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isFilled ? AppColors.logoGreen : Colors.grey.shade300,
+                color: isFilled ? AppColors.logoGreen : AppColors.divider,
               ),
             );
           }),
@@ -291,7 +291,7 @@ class _LockScreenState extends State<LockScreen> {
                 iconSize: 28,
                 icon: const Icon(
                   Icons.backspace_outlined,
-                  color: Colors.grey,
+                  color: AppColors.textMuted,
                 ),
                 onPressed: _onBackspace,
               ),
@@ -307,22 +307,21 @@ class _LockScreenState extends State<LockScreen> {
 
     return InkWell(
       onTap: isDisabled ? null : () => _onKeyPress(number),
-      borderRadius: BorderRadius.circular(32),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         width: 64,
         height: 64,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isDisabled ? Colors.grey.shade100 : Colors.white,
-          border: Border.all(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(16),
+          color: isDisabled ? AppColors.divider : AppColors.skyBlueLight,
         ),
         child: Text(
           number,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: isDisabled ? Colors.grey.shade400 : AppColors.textDark,
+            color: isDisabled ? AppColors.textMuted : AppColors.textDark,
             fontFamily: 'Nunito',
           ),
         ),

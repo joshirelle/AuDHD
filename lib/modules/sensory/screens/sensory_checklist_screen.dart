@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/constants/sensory_constants.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/sensory_calculator_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/sensory_profile_result.dart';
@@ -23,8 +24,11 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
   Future<void> _submitChecklist() async {
     if (_answers.length < SensoryConstants.questions.length) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Mangyaring sagutan ang lahat ng tanong bago magpatuloy.'),
+        SnackBar(
+          content: Text(tr(
+            'Mangyaring sagutan ang lahat ng tanong bago magpatuloy.',
+            'Please answer all the questions before continuing.',
+          )),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -82,7 +86,10 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
     return ScreeningQuestionView(
       currentIndex: _currentIndex,
       totalCount: questions.length,
-      tagLabel: 'TANONG #${_currentIndex + 1}',
+      tagLabel: tr(
+        'TANONG #${_currentIndex + 1}',
+        'QUESTION #${_currentIndex + 1}',
+      ),
       category: ScreeningCategory.forSensory(currentQ.domain),
       questionText: currentQ.textTagalog,
       questionEnglish: '',
@@ -90,28 +97,28 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
       onBack: _goBack,
       choices: [
         ScreeningChoice(
-          label: 'Hindi Kailanman',
+          label: tr('Hindi Kailanman', 'Never'),
           color: AppColors.mintGreen,
           textColor: AppColors.mintInk,
           isSelected: selected == 0,
           onPressed: () => _answerQuestion(0),
         ),
         ScreeningChoice(
-          label: 'Minsan',
+          label: tr('Minsan', 'Sometimes'),
           color: AppColors.skyBlue,
           textColor: AppColors.skyInk,
           isSelected: selected == 1,
           onPressed: () => _answerQuestion(1),
         ),
         ScreeningChoice(
-          label: 'Madalas',
+          label: tr('Madalas', 'Often'),
           color: AppColors.butterYellow,
           textColor: AppColors.butterInk,
           isSelected: selected == 2,
           onPressed: () => _answerQuestion(2),
         ),
         ScreeningChoice(
-          label: 'Palagi',
+          label: tr('Palagi', 'Always'),
           color: AppColors.coralPeach,
           textColor: AppColors.coralInk,
           isSelected: selected == 3,

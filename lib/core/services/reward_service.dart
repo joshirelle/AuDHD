@@ -3,18 +3,11 @@ import '../models/reward.dart';
 import 'star_service.dart';
 
 class RewardService {
-  /// Nasa code para maabot ng update ng app ang lahat ng user; ang mga dagdag
-  /// ng magulang ay nasa `custom_rewards`.
-  static const List<Reward> defaults = [
-    Reward(label: '15 minutong dagdag na laro sa labas', stars: 5),
-    Reward(label: 'Paboritong meryenda', stars: 10),
-    Reward(label: 'Kwento bago matulog', stars: 15),
-  ];
-
+  /// Walang default: ang magulang ang nakakaalam kung ano ang tunay na
+  /// pabuya sa kanilang bahay, kaya sila ang naglalagay ng lahat.
   static List<Reward> all() {
     final box = HiveService.getRewardBox();
     return <Reward>[
-      ...defaults,
       for (final key in box.keys)
         Reward(label: key as String, stars: box.get(key)!, isCustom: true),
     ]..sort((a, b) => a.stars.compareTo(b.stars));

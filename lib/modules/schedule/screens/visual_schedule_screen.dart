@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/schedule_task.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -56,17 +57,23 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       [
         TourStep(
           targetKey: _dateStripKey,
-          title: 'Balikan ang nakaraan',
-          body:
-              'Pindutin ang ibang araw para makita kung ano ang natapos noon. '
-              'Naka-tala ang bawat araw, hindi lang ang ngayon.',
+          title: tr('Balikan ang nakaraan', 'Look back at past days'),
+          body: tr(
+            'Pindutin ang ibang araw para makita kung ano ang natapos noon. '
+            'Naka-tala ang bawat araw, hindi lang ang ngayon.',
+            'Tap another day to see what was finished then. Every day is '
+            'saved, not only today.',
+          ),
         ),
         TourStep(
           targetKey: _arrangeKey,
-          title: 'Ayusin ang iskedyul',
-          body:
-              'Dito mo mababago ang pagkakasunod-sunod, maitatago ang gawaing '
-              'hindi ninyo ginagawa, at makikita ang oras ng bawat isa.',
+          title: tr('Ayusin ang iskedyul', 'Arrange the schedule'),
+          body: tr(
+            'Dito mo mababago ang pagkakasunod-sunod, maitatago ang gawaing '
+            'hindi ninyo ginagawa, at makikita ang oras ng bawat isa.',
+            'Here you can change the order, hide tasks you do not do, and '
+            'see the time of each one.',
+          ),
         ),
       ],
       seenKey: HiveService.hasSeenScheduleTourKey,
@@ -133,7 +140,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              task.titleTagalog,
+              task.title,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -147,9 +154,9 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                 Icons.edit_rounded,
                 color: AppColors.logoGreen,
               ),
-              title: const Text(
-                'Baguhin',
-                style: TextStyle(fontFamily: 'Nunito', fontSize: 15),
+              title: Text(
+                tr('Baguhin', 'Edit'),
+                style: const TextStyle(fontFamily: 'Nunito', fontSize: 15),
               ),
               onTap: () => Navigator.pop(context, 'edit'),
             ),
@@ -158,9 +165,9 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                 Icons.delete_outline_rounded,
                 color: AppColors.danger,
               ),
-              title: const Text(
-                'Burahin',
-                style: TextStyle(fontFamily: 'Nunito', fontSize: 15),
+              title: Text(
+                tr('Burahin', 'Delete'),
+                style: const TextStyle(fontFamily: 'Nunito', fontSize: 15),
               ),
               onTap: () => Navigator.pop(context, 'delete'),
             ),
@@ -197,32 +204,42 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.card),
         ),
-        title: const Text(
-          'Burahin ang gawain?',
-          style: TextStyle(fontSize: 17, fontFamily: 'Nunito'),
+        title: Text(
+          tr('Burahin ang gawain?', 'Delete this task?'),
+          style: const TextStyle(fontSize: 17, fontFamily: 'Nunito'),
         ),
         content: Text(
-          'Aalisin sa iskedyul ang "${task.titleTagalog}".'
-          '${history.days == 0 ? '' : '\n\nMay ${history.days} araw na natapos '
-              'dito. Mababawasan ng ${history.stars} ang bituin '
-              '${childName == null ? 'ng bata' : 'ni $childName'}.'
-              '\n\nKung ayaw mong mabawasan, itago na lang ito.'}',
+          tr(
+            'Aalisin sa iskedyul ang "${task.title}".'
+            '${history.days == 0 ? '' : '\n\nMay ${history.days} araw na natapos '
+                  'dito. Mababawasan ng ${history.stars} ang bituin '
+                  '${childName == null ? 'ng bata' : 'ni $childName'}.'
+                  '\n\nKung ayaw mong mabawasan, itago na lang ito.'}',
+            'This will remove "${task.title}" from the schedule.'
+            '${history.days == 0 ? '' : '\n\nFinished days: ${history.days}. This '
+                  'also takes back ${history.stars} of the stars '
+                  '${childName ?? 'the child'} earned.'
+                  '\n\nIf you do not want that, just hide it instead.'}',
+          ),
           style: const TextStyle(fontSize: 14, fontFamily: 'Nunito'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Hindi',
-              style: TextStyle(fontFamily: 'Nunito', color: Colors.grey),
+            child: Text(
+              tr('Hindi', 'No'),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.textMuted,
+              ),
             ),
           ),
           if (history.days > 0)
             TextButton(
               onPressed: () => Navigator.pop(context, 'hide'),
-              child: const Text(
-                'Itago',
-                style: TextStyle(
+              child: Text(
+                tr('Itago', 'Hide'),
+                style: const TextStyle(
                   fontFamily: 'Nunito',
                   color: AppColors.logoGreen,
                   fontWeight: FontWeight.bold,
@@ -231,9 +248,12 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
             ),
           TextButton(
             onPressed: () => Navigator.pop(context, 'delete'),
-            child: const Text(
-              'Burahin',
-              style: TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
+            child: Text(
+              tr('Burahin', 'Delete'),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.danger,
+              ),
             ),
           ),
         ],
@@ -252,14 +272,14 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Aking Iskedyul'),
-        backgroundColor: Colors.white,
+        title: Text(tr('Aking Iskedyul', 'My Daily Schedule')),
+        backgroundColor: AppColors.background,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         actions: [
           IconButton(
             key: _arrangeKey,
-            tooltip: 'Ayusin ang iskedyul',
+            tooltip: tr('Ayusin ang iskedyul', 'Arrange the schedule'),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -277,11 +297,14 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addTask,
         backgroundColor: AppColors.logoGreen,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.surface,
         icon: const Icon(Icons.add_rounded),
-        label: const Text(
-          'Gawain',
-          style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold),
+        label: Text(
+          tr('Gawain', 'Task'),
+          style: const TextStyle(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ListenableBuilder(
@@ -304,22 +327,41 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: HowToCard(
             steps: [
-              'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at ang '
-                  'oras ng araw kung kailan ito ginagawa.',
-              'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
-                  'niya kung ano ang susunod na mangyayari.',
-              'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
-                  'hindi ikaw.',
-              'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
-                  'baguhin o burahin ito.',
+              tr(
+                'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at '
+                'ang oras ng araw kung kailan ito ginagawa.',
+                'Tap "Task" to add one, with a picture and the time of day '
+                'when it is done.',
+              ),
+              tr(
+                'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
+                'niya kung ano ang susunod na mangyayari.',
+                'Show the schedule to your child at the start of the day so '
+                'they know what happens next.',
+              ),
+              tr(
+                'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
+                'hindi ikaw.',
+                'Let them tick off what is finished. They should be the one '
+                'tapping, not you.',
+              ),
+              tr(
+                'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
+                'baguhin o burahin ito.',
+                'Press and hold a task you added yourself to edit or delete '
+                'it.',
+              ),
             ],
-            footnote:
-                'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
-                'nananatili ang listahan ng gawain.',
+            footnote: tr(
+              'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
+              'nananatili ang listahan ng gawain.',
+              'The ticks clear on their own each new day, but the list of '
+              'tasks stays.',
+            ),
           ),
         ),
         Padding(
@@ -402,7 +444,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           Container(
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -416,9 +458,9 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'SUSUNOD',
-                  style: TextStyle(
+                Text(
+                  tr('SUSUNOD', 'NEXT UP'),
+                  style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
@@ -428,7 +470,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  task.titleTagalog,
+                  task.title,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -437,7 +479,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                   ),
                 ),
                 Text(
-                  task.timeOfDay.label,
+                  task.timeOfDay.displayLabel,
                   style: TextStyle(
                     fontSize: 11,
                     color: style.accent,
@@ -458,10 +500,10 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                 borderRadius: BorderRadius.circular(AppRadius.button),
               ),
             ),
-            child: const Text(
-              'Tapos!',
-              style: TextStyle(
-                color: Colors.white,
+            child: Text(
+              tr('Tapos!', 'Done!'),
+              style: const TextStyle(
+                color: AppColors.surface,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
                 fontFamily: 'Nunito',
@@ -495,8 +537,14 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           Expanded(
             child: Text(
               isEmptySchedule
-                  ? 'Wala pang gawain sa bahaging ito.'
-                  : 'Tapos na ang buong iskedyul ngayong araw!',
+                  ? tr(
+                      'Wala pang gawain sa bahaging ito.',
+                      'No tasks in this part of the day yet.',
+                    )
+                  : tr(
+                      'Tapos na ang buong iskedyul ngayong araw!',
+                      'The whole schedule is done for today!',
+                    ),
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -523,7 +571,10 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Tinitingnan mo ang ${DateFormatter.longDate(_selectedDate)}',
+                  tr(
+                    'Tinitingnan mo ang ${DateFormatter.longDate(_selectedDate)}',
+                    'You are looking at ${DateFormatter.longDate(_selectedDate)}',
+                  ),
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -532,7 +583,10 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                   ),
                 ),
                 Text(
-                  '$doneCount sa $totalCount ang natapos noon.',
+                  tr(
+                    '$doneCount sa $totalCount ang natapos noon.',
+                    '$doneCount of $totalCount were finished then.',
+                  ),
                   style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textDark,
@@ -545,9 +599,9 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           TextButton(
             onPressed: () => setState(() => _selectedDate = _today),
             style: TextButton.styleFrom(foregroundColor: AppColors.logoGreen),
-            child: const Text(
-              'Bumalik',
-              style: TextStyle(
+            child: Text(
+              tr('Bumalik', 'Back'),
+              style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Nunito',
@@ -566,7 +620,10 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$doneCount sa $totalCount na gawain ang tapos ngayong araw',
+          tr(
+            '$doneCount sa $totalCount na gawain ang tapos ngayong araw',
+            '$doneCount of $totalCount tasks are done today',
+          ),
           style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -580,7 +637,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           child: LinearProgressIndicator(
             value: ratio,
             minHeight: 8,
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor: AppColors.divider,
             valueColor: const AlwaysStoppedAnimation(AppColors.logoGreen),
           ),
         ),
@@ -594,7 +651,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       child: Row(
         children: [
           _buildFilterChip(
-            'Lahat',
+            tr('Lahat', 'All'),
             null,
             Icons.apps_rounded,
             AppColors.logoGreen,
@@ -602,7 +659,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           for (final time in ScheduleTimeOfDay.values) ...[
             const SizedBox(width: 8),
             _buildFilterChip(
-              time.label,
+              time.displayLabel,
               time,
               ScheduleTimeStyle.of(time).icon,
               ScheduleTimeStyle.of(time).accent,
@@ -626,17 +683,17 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
         decoration: BoxDecoration(
-          color: isSelected ? color : Colors.white,
+          color: isSelected ? color : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.button),
           border: Border.all(
-            color: isSelected ? color : Colors.grey.shade300,
+            color: isSelected ? color : AppColors.divider,
             width: 2,
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 16, color: isSelected ? Colors.white : color),
+            Icon(icon, size: 16, color: isSelected ? AppColors.surface : color),
             const SizedBox(width: 6),
             Text(
               label,
@@ -644,7 +701,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Nunito',
-                color: isSelected ? Colors.white : AppColors.textDark,
+                color: isSelected ? AppColors.surface : AppColors.textDark,
               ),
             ),
           ],

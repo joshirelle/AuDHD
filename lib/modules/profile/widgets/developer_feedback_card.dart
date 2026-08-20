@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/kiko_card.dart';
 
@@ -42,8 +43,13 @@ class _DeveloperFeedbackCardState extends State<DeveloperFeedbackCard> {
     if (isLaunched || !mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Hindi mabuksan ang Facebook. Subukan ulit mamaya.'),
+      SnackBar(
+        content: Text(
+          tr(
+            'Hindi mabuksan ang Facebook. Subukan ulit mamaya.',
+            'Facebook cannot be opened. Try again later.',
+          ),
+        ),
         backgroundColor: AppColors.danger,
       ),
     );
@@ -57,9 +63,9 @@ class _DeveloperFeedbackCardState extends State<DeveloperFeedbackCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'May feedback o suhestiyon?',
-            style: TextStyle(
+          Text(
+            tr('May feedback o suhestiyon?', 'Any feedback or suggestions?'),
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: AppColors.textDark,
@@ -67,9 +73,12 @@ class _DeveloperFeedbackCardState extends State<DeveloperFeedbackCard> {
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
-            'Mag-message nang direkta sa developer para sa mga tanong o tulong.',
-            style: TextStyle(
+          Text(
+            tr(
+              'Mag-message nang direkta sa developer para sa mga tanong o tulong.',
+              'Message the developer directly for any questions or help.',
+            ),
+            style: const TextStyle(
               fontSize: 12,
               color: AppColors.textDark,
               height: 1.35,
@@ -92,9 +101,9 @@ class _DeveloperFeedbackCardState extends State<DeveloperFeedbackCard> {
               size: 18,
               color: AppColors.accentBlue,
             ),
-            label: const Text(
-              'Kausapin ang Developer',
-              style: TextStyle(
+            label: Text(
+              tr('Kausapin ang Developer', 'Message the Developer'),
+              style: const TextStyle(
                 color: AppColors.accentBlue,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Nunito',

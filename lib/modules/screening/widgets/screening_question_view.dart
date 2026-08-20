@@ -69,7 +69,7 @@ class ScreeningQuestionView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
-                    color: Colors.grey.shade600,
+                    color: AppColors.textMuted,
                     letterSpacing: 1.0,
                     fontFamily: 'Nunito',
                   ),
@@ -105,7 +105,7 @@ class ScreeningQuestionView extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.skyBlueLight, width: 2),
         boxShadow: [
@@ -139,7 +139,7 @@ class ScreeningQuestionView extends StatelessWidget {
               questionEnglish,
               style: TextStyle(
                 fontSize: 13,
-                color: Colors.grey.shade600,
+                color: AppColors.textMuted,
                 height: 1.35,
                 fontStyle: FontStyle.italic,
                 fontFamily: 'Nunito',
