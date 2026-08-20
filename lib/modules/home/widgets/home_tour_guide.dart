@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
@@ -23,17 +25,21 @@ class HomeTourGuide {
 
   /// Tumatakbo lamang kung hindi pa ito nakikita ng magulang. Iba ang `seenKey`
   /// kada screen para hindi mapatay ng isa ang libot ng iba.
-  static void showIfNeeded(
+  ///
+  /// Overlay ito at hindi humaharang gaya ng dialog, kaya kailangang hintayin
+  /// ang ibinabalik na `Future` kung may susunod pang ipapakita.
+  static Future<void> showIfNeeded(
     BuildContext context,
     List<TourStep> steps, {
     String seenKey = HiveService.hasSeenHomeTourKey,
   }) {
-    if (HiveService.hasSeen(seenKey)) return;
-    if (steps.isEmpty) return;
+    if (HiveService.hasSeen(seenKey)) return Future.value();
+    if (steps.isEmpty) return Future.value();
 
     final overlay = Overlay.maybeOf(context);
-    if (overlay == null) return;
+    if (overlay == null) return Future.value();
 
+    final done = Completer<void>();
     var isRemoved = false;
     late final OverlayEntry entry;
     entry = OverlayEntry(
@@ -44,11 +50,13 @@ class HomeTourGuide {
           isRemoved = true;
           entry.remove();
           await HiveService.markSeen(seenKey);
+          done.complete();
         },
       ),
     );
 
     overlay.insert(entry);
+    return done.future;
   }
 
   static Rect? rectFor(GlobalKey key) {
@@ -106,9 +114,7 @@ class _TourOverlayState extends State<_TourOverlay> {
           Positioned.fill(
             child: GestureDetector(
               onTap: _next,
-              child: CustomPaint(
-                painter: _CutoutPainter(target: target),
-              ),
+              child: CustomPaint(painter: _CutoutPainter(target: target)),
             ),
           ),
           _buildCard(step, target, screen, isLast),
@@ -197,9 +203,7 @@ class _TourOverlayState extends State<_TourOverlay> {
                         backgroundColor: AppColors.logoGreen,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppRadius.button,
-                          ),
+                          borderRadius: BorderRadius.circular(AppRadius.button),
                         ),
                       ),
                       child: Text(

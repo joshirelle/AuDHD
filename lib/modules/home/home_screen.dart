@@ -48,31 +48,40 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _startIntro());
   }
 
-  /// Ang tour ay para sa bagong user, ang "ano ang bago" ay para sa lumang
-  /// user — magkabukod ang kondisyon, kaya hindi sila magsasabay.
+  /// Hininga sa pagitan ng bawat modal. Kapag walang lalabas ay hindi ito
+  /// napapansin — pinapakita lang nito ang Bahay bago ang susunod.
+  static const Duration _modalGap = Duration(milliseconds: 500);
+
+  /// Sunod-sunod, hindi sabay. Kailangang hintayin ang tour dahil overlay ito
+  /// at hindi humaharang gaya ng dialog.
   Future<void> _startIntro() async {
     if (!mounted) return;
-    _startTour();
+    await _startTour();
+
+    await Future.delayed(_modalGap);
+    if (!mounted) return;
     await WhatsNewSheet.showIfNeeded(context);
 
+    await Future.delayed(_modalGap);
     if (!mounted) return;
     await ThankYouSheet.showIfNeeded(context);
 
     // Panghuli para hindi makasabay ang SnackBar sa tour o sa "ano ang bago".
+    await Future.delayed(_modalGap);
     if (!mounted) return;
     await UpdateService.checkAndPrompt(context);
   }
 
-  void _startTour() {
-    HomeTourGuide.showIfNeeded(context, [
+  Future<void> _startTour() {
+    return HomeTourGuide.showIfNeeded(context, [
       TourStep(
         targetKey: _starKey,
         title: tr('Ang bituin ni Kiko', "Kiko's stars"),
         body: tr(
           'Tumataas ito sa bawat larong natapos at milestone na naabot. '
-          'Pindutin para makita ang mga mungkahing pabuya sa bata.',
+              'Pindutin para makita ang mga mungkahing pabuya sa bata.',
           'This goes up with every activity finished and milestone reached. '
-          'Tap it to see the rewards you have set for your child.',
+              'Tap it to see the rewards you have set for your child.',
         ),
       ),
       TourStep(
@@ -80,9 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: tr('Tatlong maiikling pindutan', 'Three quick buttons'),
         body: tr(
           'Ang Bago ay kung ano ang naidagdag sa app. Ang Grupo ay ang '
-          'Facebook ng mga magulang. Ang I-rate ay bubukas sa Play Store.',
+              'Facebook ng mga magulang. Ang I-rate ay bubukas sa Play Store.',
           'New shows what was added to the app. Group opens the parents\' '
-          'Facebook. Rate opens the Play Store.',
+              'Facebook. Rate opens the Play Store.',
         ),
       ),
       TourStep(
@@ -90,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: tr('Mga gawain sa bahay', 'Home activities'),
         body: tr(
           'Dito ang mga larong pansensory na kayang gawin araw-araw. May '
-          'timer ang bawat isa at may paliwanag kung paano ito ginagawa.',
+              'timer ang bawat isa at may paliwanag kung paano ito ginagawa.',
           'Sensory activities you can do at home every day. Each one has a '
-          'timer and step-by-step instructions.',
+              'timer and step-by-step instructions.',
         ),
       ),
       TourStep(
@@ -100,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: tr('Tatlong pangunahing bahagi', 'Three main sections'),
         body: tr(
           'Bahay para sa buod, Laro para sa mga gawain sa bahay, at Profile '
-          'para sa detalye ng bata at sa PIN lock.',
+              'para sa detalye ng bata at sa PIN lock.',
           'Home for the summary, Activities for things to do at home, and '
-          'Profile for your child\'s details and the PIN lock.',
+              'Profile for your child\'s details and the PIN lock.',
         ),
       ),
     ]);
@@ -232,7 +241,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ValueListenableBuilder<Box>(
                 valueListenable: HiveService.getProfileBox().listenable(),
                 builder: (context, box, child) {
-                  final name = HiveService.getChildProfile()?.displayName.trim();
+                  final name = HiveService.getChildProfile()?.displayName
+                      .trim();
                   final hasName = name != null && name.isNotEmpty;
                   final greeting = DateFormatter.timeGreeting(DateTime.now());
 
@@ -242,9 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         tr(
                           '$greeting!\nNarito ulit tayo\n'
-                          '${hasName ? 'para kay $name.' : 'para sa inyo.'}',
+                              '${hasName ? 'para kay $name.' : 'para sa inyo.'}',
                           '$greeting!\nWe are here\n'
-                          '${hasName ? 'for $name.' : 'for you.'}',
+                              '${hasName ? 'for $name.' : 'for you.'}',
                         ),
                         style: const TextStyle(
                           fontSize: 20,
@@ -258,9 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         tr(
                           'Kumusta ang pakiramdam\n'
-                          '${hasName ? 'ni $name' : 'ng iyong anak'} ngayon?',
+                              '${hasName ? 'ni $name' : 'ng iyong anak'} ngayon?',
                           'How is ${hasName ? name : 'your child'}\n'
-                          'feeling today?',
+                              'feeling today?',
                         ),
                         style: const TextStyle(
                           fontSize: 12,
@@ -385,9 +395,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => index == 1
-            ? const HomeActivitiesScreen()
-            : const ProfileScreen(),
+        builder: (context) =>
+            index == 1 ? const HomeActivitiesScreen() : const ProfileScreen(),
       ),
     );
 

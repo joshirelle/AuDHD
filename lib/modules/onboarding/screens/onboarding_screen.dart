@@ -3,6 +3,8 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/app_branding_header.dart';
 import '../../../widgets/community_link.dart';
+import '../../home/widgets/thank_you_sheet.dart';
+import '../../home/widgets/whats_new_sheet.dart';
 
 class OnboardingSlide {
   final IconData icon;
@@ -118,6 +120,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _finish() async {
     await HiveService.markSeen(HiveService.hasSeenOnboardingKey);
+    // Bago sa kanya ang lahat, kaya walang saysay ang "ano ang bago" at ang
+    // pasasalamat sa matagal nang gumagamit. Ang tour lang ang makikita niya.
+    await HiveService.markSeen(WhatsNewSheet.seenKey);
+    await HiveService.markSeen(ThankYouSheet.seenKey);
     widget.onFinished();
   }
 
@@ -172,8 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView.builder(
                 controller: _controller,
                 itemCount: _slides.length,
-                onPageChanged: (index) =>
-                    setState(() => _currentIndex = index),
+                onPageChanged: (index) => setState(() => _currentIndex = index),
                 itemBuilder: (context, index) => _buildSlide(
                   _slides[index],
                   isLast: index == _slides.length - 1,
@@ -262,10 +267,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
           // Sa dulo lang: bago nito, hindi pa alam ng magulang kung para saan
           // ang app na sasalihan niya ang grupo.
-          if (isLast) ...[
-            const SizedBox(height: 12),
-            _buildCommunityInvite(),
-          ],
+          if (isLast) ...[const SizedBox(height: 12), _buildCommunityInvite()],
         ],
       ),
     );
@@ -339,11 +341,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             color: slide.background,
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            Icons.check_rounded,
-            size: 13,
-            color: slide.iconColor,
-          ),
+          child: Icon(Icons.check_rounded, size: 13, color: slide.iconColor),
         ),
         const SizedBox(width: 10),
         Expanded(
