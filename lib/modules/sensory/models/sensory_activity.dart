@@ -7,7 +7,8 @@ class SensoryActivity {
   final String titleTagalog;
   final String titleEnglish;
   final String targetProfile; // 'seeking', 'avoiding', 'regulation'
-  final String domain; // 'proprioceptive', 'vestibular', 'tactile', 'visual', 'auditory'
+  final String
+  domain; // 'proprioceptive', 'vestibular', 'tactile', 'visual', 'auditory'
   final SkillArea skillArea;
   final int estimatedMinutes;
   final List<String> materialsNeeded;
@@ -54,7 +55,8 @@ class SensoryActivity {
       : materialsNeeded;
 
   /// Halimbawa: '10 minuto'
-  String get durationLabel => '$estimatedMinutes minuto';
+  String get durationLabel =>
+      tr('$estimatedMinutes minuto', '$estimatedMinutes min');
 
   /// Halimbawa: 'Lakas at presyon'
   String get domainLabel => domain.isEmpty

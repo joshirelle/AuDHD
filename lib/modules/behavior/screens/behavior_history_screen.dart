@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:printing/printing.dart';
+import '../../../core/constants/behavior_constants.dart';
 import '../../../core/i18n/language_controller.dart';
 import '../../../core/services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
@@ -55,7 +56,10 @@ class BehaviorHistoryScreen extends StatelessWidget {
         foregroundColor: AppColors.textDark,
         actions: [
           IconButton(
-            icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
+            icon: const Icon(
+              Icons.picture_as_pdf_rounded,
+              color: AppColors.logoGreen,
+            ),
             tooltip: tr('I-export bilang PDF', 'Export as PDF'),
             onPressed: () => _exportPdf(context),
           ),
@@ -66,14 +70,19 @@ class BehaviorHistoryScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddBehaviorLogScreen()),
+            MaterialPageRoute(
+              builder: (context) => const AddBehaviorLogScreen(),
+            ),
           );
         },
         backgroundColor: AppColors.logoGreen,
         icon: const Icon(Icons.add_rounded, color: AppColors.surface),
         label: Text(
           tr('Magdagdag ng Tala', 'Add a Log'),
-          style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            color: AppColors.surface,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ValueListenableBuilder<Box<BehaviorLog>>(
@@ -96,7 +105,10 @@ class BehaviorHistoryScreen extends StatelessWidget {
                         'Tap "Add a Log" to start.',
                   ),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textMuted, fontSize: 14),
+                  style: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             );
@@ -114,7 +126,11 @@ class BehaviorHistoryScreen extends StatelessWidget {
 
               Text(
                 tr('Mga Naitalang Insidente', 'Logged Incidents'),
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
               ),
               const SizedBox(height: 14),
 
@@ -157,7 +173,10 @@ class BehaviorHistoryScreen extends StatelessWidget {
     );
 
     // Malayang teksto ang pangalan, kaya sinasala ang mga bawal sa filename.
-    final safeName = (child?.name ?? 'Bata').replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
+    final safeName = (child?.name ?? 'Bata').replaceAll(
+      RegExp(r'[^A-Za-z0-9]+'),
+      '_',
+    );
     final now = DateTime.now();
     final fileDate = '${now.year}-${now.month}-${now.day}';
 
@@ -175,7 +194,9 @@ class BehaviorHistoryScreen extends StatelessWidget {
 
     for (var log in logs) {
       for (var trigger in log.sensoryTriggers) {
-        triggerCounts[trigger] = (triggerCounts[trigger] ?? 0) + 1;
+        // Iisang susi ang magkatulad na tala kahit iba ang wikang ginamit.
+        final key = BehaviorConstants.canonical(trigger);
+        triggerCounts[key] = (triggerCounts[key] ?? 0) + 1;
         totalTriggersLogged++;
       }
     }
@@ -200,7 +221,11 @@ class BehaviorHistoryScreen extends StatelessWidget {
               children: [
                 Text(
                   tr('Pinakamadalas na sanhi', 'Most common causes'),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.logoGreen),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.logoGreen,
+                  ),
                 ),
                 Text(
                   tr('${logs.length} insidente', '${logs.length} incidents'),
@@ -211,8 +236,14 @@ class BehaviorHistoryScreen extends StatelessWidget {
             const SizedBox(height: 16),
             if (sortedEntries.isEmpty)
               Text(
-                tr('Walang sensory tags na naitala.', 'No sensory tags logged.'),
-                style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                tr(
+                  'Walang sensory tags na naitala.',
+                  'No sensory tags logged.',
+                ),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textMuted,
+                ),
               )
             else
               ...sortedEntries.take(4).map((entry) {
@@ -229,15 +260,21 @@ class BehaviorHistoryScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            entry.key,
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                            BehaviorConstants.localize(entry.key),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           Text(
                             tr(
                               '${entry.value} ulit (${(percentage * 100).toStringAsFixed(0)}%)',
                               '${entry.value} times (${(percentage * 100).toStringAsFixed(0)}%)',
                             ),
-                            style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textMuted,
+                            ),
                           ),
                         ],
                       ),
@@ -248,7 +285,9 @@ class BehaviorHistoryScreen extends StatelessWidget {
                           value: percentage,
                           minHeight: 10,
                           backgroundColor: AppColors.divider,
-                          valueColor: const AlwaysStoppedAnimation<Color>(AppColors.logoGreen),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppColors.logoGreen,
+                          ),
                         ),
                       ),
                     ],
@@ -272,7 +311,10 @@ class BehaviorHistoryScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: severityColor.withValues(alpha: 0.35), width: 2),
+        border: Border.all(
+          color: severityColor.withValues(alpha: 0.35),
+          width: 2,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -288,7 +330,10 @@ class BehaviorHistoryScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: AppColors.textMuted),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: severityColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
@@ -308,11 +353,20 @@ class BehaviorHistoryScreen extends StatelessWidget {
             const SizedBox(height: 14),
 
             // ABC Summary
-            _buildAbcRow(tr('Bago mangyari:', 'Before:'), log.antecedent),
+            _buildAbcRow(
+              tr('Bago mangyari:', 'Before:'),
+              BehaviorConstants.localize(log.antecedent),
+            ),
             const SizedBox(height: 8),
-            _buildAbcRow(tr('Ang ginawa:', 'Behavior:'), log.behavior),
+            _buildAbcRow(
+              tr('Ang ginawa:', 'Behavior:'),
+              BehaviorConstants.localize(log.behavior),
+            ),
             const SizedBox(height: 8),
-            _buildAbcRow(tr('Pagkatapos:', 'After:'), log.consequence),
+            _buildAbcRow(
+              tr('Pagkatapos:', 'After:'),
+              BehaviorConstants.localize(log.consequence),
+            ),
 
             if (log.sensoryTriggers.isNotEmpty) ...[
               const SizedBox(height: 14),
@@ -321,14 +375,20 @@ class BehaviorHistoryScreen extends StatelessWidget {
                 runSpacing: 6,
                 children: log.sensoryTriggers.map((tag) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.skyBlueLight,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      '# $tag',
-                      style: const TextStyle(fontSize: 10, color: AppColors.skyInk),
+                      '# ${BehaviorConstants.localize(tag)}',
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: AppColors.skyInk,
+                      ),
                     ),
                   );
                 }).toList(),
@@ -363,14 +423,20 @@ class BehaviorHistoryScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               tr('Hindi', 'No'),
-              style: const TextStyle(fontFamily: 'Nunito', color: AppColors.textMuted),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.textMuted,
+              ),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               tr('Burahin', 'Delete'),
-              style: const TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.danger,
+              ),
             ),
           ),
         ],
@@ -380,11 +446,19 @@ class BehaviorHistoryScreen extends StatelessWidget {
     if (isConfirmed == true) await HiveService.deleteLog(log.id);
   }
 
-  Widget _buildAbcRow(String label, String value) {    return RichText(
+  Widget _buildAbcRow(String label, String value) {
+    return RichText(
       text: TextSpan(
-        style: const TextStyle(fontSize: 13, color: AppColors.textDark, height: 1.35),
+        style: const TextStyle(
+          fontSize: 13,
+          color: AppColors.textDark,
+          height: 1.35,
+        ),
         children: [
-          TextSpan(text: '$label ', style: const TextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(
+            text: '$label ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           TextSpan(text: value),
         ],
       ),
@@ -399,7 +473,9 @@ class BehaviorHistoryScreen extends StatelessWidget {
   }
 
   String _formatTime(DateTime date) {
-    final hour = date.hour > 12 ? date.hour - 12 : (date.hour == 0 ? 12 : date.hour);
+    final hour = date.hour > 12
+        ? date.hour - 12
+        : (date.hour == 0 ? 12 : date.hour);
     final minute = date.minute.toString().padLeft(2, '0');
     final period = date.hour >= 12 ? 'PM' : 'AM';
     return '$hour:$minute $period';

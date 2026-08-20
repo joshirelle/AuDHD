@@ -36,4 +36,13 @@ class DateFormatter {
     final months = LanguageController.isEnglish ? _monthsEng : _monthsFil;
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
+
+  /// Bati ayon sa oras. Ang gabi ay umaabot hanggang madaling-araw dahil
+  /// karaniwang gising pa ang magulang sa mga oras na iyon.
+  static String timeGreeting(DateTime now) {
+    final hour = now.hour;
+    if (hour >= 5 && hour < 12) return tr('Magandang umaga', 'Good morning');
+    if (hour >= 12 && hour < 18) return tr('Magandang hapon', 'Good afternoon');
+    return tr('Magandang gabi', 'Good evening');
+  }
 }

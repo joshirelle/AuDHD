@@ -146,7 +146,7 @@
       "Place the second cushion on their back (keep the head uncovered).",
       "Press down gently and evenly on the cushion while counting from 1 to 10."
     ],
-    "safetyNoteTagalog": "Laging tiyakin na nakakahiwa at nakakahinga nang malaya ang bata.",
+    "safetyNoteTagalog": "Laging tiyakin na komportable ang pagkakahiga at nakakahinga nang malaya ang bata.",
     "safetyNoteEnglish": "Always make sure your child is lying comfortably and can breathe freely."
   },
   {
@@ -252,15 +252,15 @@
   {
     "id": "act_11",
     "skillArea": "sensory",
-    "titleTagalog": "Mainit na Tuwalya",
-    "titleEnglish": "Warm Towel Hand Compress",
+    "titleTagalog": "Malamig na Tuwalya",
+    "titleEnglish": "Cool Towel Hand Compress",
     "targetProfile": "avoiding",
     "domain": "tactile",
     "estimatedMinutes": 5,
     "materialsNeeded": ["Malamig o malamig-lamig nang kaunti na basahan/tuwalya"],
     "materialsNeededEnglish": ["Cold or slightly cool cloth/towel"],
-    "descriptionTagalog": "Paggamit ng mainit na basahan para sa nakagiginhawang pagpunas sa mga kamay.",
-    "descriptionEnglish": "Using a damp cloth for a soothing wipe over the hands.",
+    "descriptionTagalog": "Paggamit ng malamig na basahan para sa nakagiginhawang pagpunas sa mga kamay.",
+    "descriptionEnglish": "Using a cool damp cloth for a soothing wipe over the hands.",
     "stepByStepTagalog": [
       "Basain ng konting malamig na tubig ang maliit na tuwalya at pigaing mabuti.",
       "Dahan-dahang ipunas at ipitin sa mga palad at braso ng bata.",
@@ -357,12 +357,12 @@
     "targetProfile": "regulation",
     "domain": "visual",
     "estimatedMinutes": 10,
-    "materialsNeeded": ["1-2 Balon"],
+    "materialsNeeded": ["1-2 lobo"],
     "materialsNeededEnglish": ["1-2 balloons"],
     "descriptionTagalog": "Pagtapik sa lobo para hindi ito bumagsak sa sahig. Sinasanay ang pokus at koordinasyon.",
     "descriptionEnglish": "Tapping a balloon to keep it from landing on the floor. It builds focus and coordination.",
     "stepByStepTagalog": [
-      "I-hipan ang isang balon.",
+      "Hipan ang isang lobo.",
       "Sabihan ang batang tapikin ito pataas at huwag hayaang tumama sa sahig.",
       "Bilangin kung ilang beses maitatap bago bumagsak."
     ],
@@ -371,8 +371,8 @@
       "Ask your child to tap it upward and not let it touch the floor.",
       "Count how many taps they get before it drops."
     ],
-    "safetyNoteTagalog": "Alisin ang mga matutulis na sulok ng mesa sa paligid.",
-    "safetyNoteEnglish": "Clear the area of tables with sharp corners."
+    "safetyNoteTagalog": "Alisin ang mga matutulis na sulok ng mesa sa paligid. Kapag pumutok ang lobo, agad ipulot at itapon ang lahat ng piraso dahil nakakabulunan ang mga ito. Huwag iwang mag-isa ang bata kasama ang lobo.",
+    "safetyNoteEnglish": "Clear the area of tables with sharp corners. If a balloon pops, pick up and throw away every piece right away because they are a choking hazard. Never leave your child alone with a balloon."
   },
   {
     "id": "act_16",

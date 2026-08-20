@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../core/i18n/language_controller.dart';
 import '../core/theme/app_theme.dart';
 
 /// Panturo ng bigkas. Nakahiwalay para magamit sa home header kada buksan,
@@ -63,9 +64,12 @@ class AppBrandingHeader extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Araw-araw na gabay para sa bawat batang AuDHD.',
+          tr(
+            'Araw-araw na gabay para sa bawat batang AuDHD.',
+            'Everyday guidance for every AuDHD child.',
+          ),
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 13,
             color: AppColors.textMuted,
             height: 1.35,

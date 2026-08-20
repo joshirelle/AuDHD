@@ -5,18 +5,18 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/community_link.dart';
 import '../../profile/profile_screen.dart';
-import '../../sensory/screens/home_activities_screen.dart';
+import 'star_reward_dialog.dart';
 
 class _NewThing {
-  const _NewThing(this.icon, this.title, this.body, this.open);
+  const _NewThing(this.icon, this.title, this.body, {this.open});
 
   final IconData icon;
   final String title;
   final String body;
 
-  /// Dinadala ang magulang mismo sa feature. Ang wizard ay nagsasabi kung ano
-  /// ang bago; ito ang sumasagot kung saan.
-  final void Function(BuildContext host) open;
+  /// Dinadala ang magulang mismo sa feature. Walang laman kapag wala talagang
+  /// pupuntahan — huwag mangakong may mabubuksan kung wala naman.
+  final void Function(BuildContext host)? open;
 }
 
 /// Buod ng mga naidagdag sa bersyon 5.
@@ -52,7 +52,7 @@ class WhatsNewSheet extends StatelessWidget {
             'now switch the whole app in Profile, including the PDF for the '
             'doctor.',
       ),
-      (host) => _go(host, const ProfileScreen()),
+      open: (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
       Icons.auto_awesome_rounded,
@@ -63,7 +63,6 @@ class WhatsNewSheet extends StatelessWidget {
         'What\'s New, the parent group, and rating the app are now at the top '
             'of Home — no need to look for them in Profile.',
       ),
-      (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
       Icons.emoji_events_rounded,
@@ -74,7 +73,7 @@ class WhatsNewSheet extends StatelessWidget {
         'We removed the three sample rewards. You know better than we do what '
             'a real reward is in your home.',
       ),
-      (host) => _go(host, const ProfileScreen()),
+      open: StarRewardDialog.show,
     ),
     _NewThing(
       Icons.palette_rounded,
@@ -85,7 +84,6 @@ class WhatsNewSheet extends StatelessWidget {
         'We removed the harsh white from the whole app. It is easier on the '
             'eyes now, especially at night.',
       ),
-      (host) => _go(host, const HomeActivitiesScreen()),
     ),
     _NewThing(
       Icons.system_update_rounded,
@@ -96,7 +94,6 @@ class WhatsNewSheet extends StatelessWidget {
         'When a new version is out, it quietly downloads in the background '
             'and only asks when you want to restart.',
       ),
-      (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
       Icons.groups_rounded,
@@ -105,7 +102,7 @@ class WhatsNewSheet extends StatelessWidget {
         'May Facebook group na ng mga gumagamit ng app. Nasa Bahay na ang link.',
         'There is now a Facebook group for app users. The link is on Home.',
       ),
-      openAudhdGroup,
+      open: openAudhdGroup,
     ),
   ];
 
@@ -175,10 +172,10 @@ class WhatsNewSheet extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   tr(
-                    'Salamat sa pagsubok ng app. Pindutin ang alinman para '
-                        'makita mo agad kung nasaan ito.',
-                    'Thank you for trying the app. Tap any of these to see '
-                        'right away where it is.',
+                    'Salamat sa pagsubok ng app. May pana sa dulo ang mga '
+                        'mabubuksan agad mula rito.',
+                    'Thank you for trying the app. The ones with an arrow at '
+                        'the end can be opened right from here.',
                   ),
                   style: const TextStyle(
                     fontSize: 12,
@@ -224,52 +221,48 @@ class WhatsNewSheet extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext sheetContext, _NewThing thing) {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(sheetContext);
-        thing.open(host);
-      },
-      borderRadius: BorderRadius.circular(14),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(9),
-              decoration: const BoxDecoration(
-                color: AppColors.tintSuccess,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(thing.icon, size: 20, color: AppColors.logoGreen),
+    final open = thing.open;
+    final row = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(9),
+            decoration: const BoxDecoration(
+              color: AppColors.tintSuccess,
+              shape: BoxShape.circle,
             ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    thing.title,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textDark,
-                      fontFamily: 'Nunito',
-                    ),
+            child: Icon(thing.icon, size: 20, color: AppColors.logoGreen),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  thing.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    thing.body,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      height: 1.4,
-                      color: AppColors.textMuted,
-                      fontFamily: 'Nunito',
-                    ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  thing.body,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    height: 1.4,
+                    color: AppColors.textMuted,
+                    fontFamily: 'Nunito',
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
+          if (open != null)
             const Padding(
               padding: EdgeInsets.only(top: 8, left: 6),
               child: Icon(
@@ -278,9 +271,19 @@ class WhatsNewSheet extends StatelessWidget {
                 color: AppColors.textMuted,
               ),
             ),
-          ],
-        ),
+        ],
       ),
+    );
+
+    if (open == null) return row;
+
+    return InkWell(
+      onTap: () {
+        Navigator.pop(sheetContext);
+        open(host);
+      },
+      borderRadius: BorderRadius.circular(14),
+      child: row,
     );
   }
 }

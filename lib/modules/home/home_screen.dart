@@ -4,6 +4,7 @@ import '../../core/i18n/language_controller.dart';
 import '../../core/models/mood_type.dart';
 import '../../core/services/update_service.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/date_formatter.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
@@ -233,14 +234,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, box, child) {
                   final name = HiveService.getChildProfile()?.displayName.trim();
                   final hasName = name != null && name.isNotEmpty;
+                  final greeting = DateFormatter.timeGreeting(DateTime.now());
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         tr(
-                          'Magandang\naraw,\n${hasName ? name : 'Magulang'}!',
-                          'Welcome back,\n${hasName ? name : 'Parent'}!',
+                          '$greeting!\nNarito ulit tayo\n'
+                          '${hasName ? 'para kay $name.' : 'para sa inyo.'}',
+                          '$greeting!\nWe are here\n'
+                          '${hasName ? 'for $name.' : 'for you.'}',
                         ),
                         style: const TextStyle(
                           fontSize: 20,
@@ -255,8 +259,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         tr(
                           'Kumusta ang pakiramdam\n'
                           '${hasName ? 'ni $name' : 'ng iyong anak'} ngayon?',
-                          'Let us see how '
-                          '${hasName ? name : 'your child'} is doing today.',
+                          'How is ${hasName ? name : 'your child'}\n'
+                          'feeling today?',
                         ),
                         style: const TextStyle(
                           fontSize: 12,

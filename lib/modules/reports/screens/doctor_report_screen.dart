@@ -33,7 +33,10 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
       final bytes = await _buildPdf(child);
       await Printing.sharePdf(
         bytes: bytes,
-        filename: 'progress-report-$_rangeDays-araw.pdf',
+        filename: tr(
+          'progress-report-$_rangeDays-araw.pdf',
+          'progress-report-$_rangeDays-days.pdf',
+        ),
       );
     } catch (error) {
       debugPrint('DoctorReportScreen: $error');
@@ -168,11 +171,17 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
                           color: AppColors.surface,
                         ),
                       )
-                    : const Icon(Icons.ios_share_rounded, color: AppColors.surface),
+                    : const Icon(
+                        Icons.ios_share_rounded,
+                        color: AppColors.surface,
+                      ),
                 label: Text(
                   _isSharing
                       ? tr('Inihahanda...', 'Preparing...')
-                      : tr('I-share sa Doktor (PDF)', 'Share with Doctor (PDF)'),
+                      : tr(
+                          'I-share sa Doktor (PDF)',
+                          'Share with Doctor (PDF)',
+                        ),
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

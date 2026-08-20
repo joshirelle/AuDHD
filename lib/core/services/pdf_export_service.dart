@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../constants/behavior_constants.dart';
 import '../constants/sensory_constants.dart';
 import '../i18n/language_controller.dart';
 import '../../data/models/behavior_log.dart';
@@ -183,7 +184,9 @@ class PdfExportService {
     final Map<String, int> triggerCounts = {};
     for (final log in logs) {
       for (final trigger in log.sensoryTriggers) {
-        triggerCounts[trigger] = (triggerCounts[trigger] ?? 0) + 1;
+        // Iisang susi ang magkatulad na tala kahit iba ang wikang ginamit.
+        final key = BehaviorConstants.canonical(trigger);
+        triggerCounts[key] = (triggerCounts[key] ?? 0) + 1;
       }
     }
     final topTriggers = triggerCounts.entries.toList()
@@ -259,7 +262,7 @@ class PdfExportService {
                         .take(5)
                         .map(
                           (e) => _profileRow(
-                            e.key,
+                            BehaviorConstants.localize(e.key),
                             tr('${e.value} ulit', '${e.value} times'),
                           ),
                         ),
@@ -306,11 +309,14 @@ class PdfExportService {
               },
               data: sorted.map((log) {
                 final abc = StringBuffer()
-                  ..writeln('A: ${log.antecedent}')
-                  ..writeln('B: ${log.behavior}')
-                  ..write('C: ${log.consequence}');
+                  ..writeln('A: ${BehaviorConstants.localize(log.antecedent)}')
+                  ..writeln('B: ${BehaviorConstants.localize(log.behavior)}')
+                  ..write('C: ${BehaviorConstants.localize(log.consequence)}');
                 if (log.sensoryTriggers.isNotEmpty) {
-                  abc.write('\nTags: ${log.sensoryTriggers.join(', ')}');
+                  final tags = log.sensoryTriggers
+                      .map(BehaviorConstants.localize)
+                      .join(', ');
+                  abc.write('\nTags: $tags');
                 }
                 return [
                   '${_formatDate(log.timestamp)}\n${_formatTime(log.timestamp)}',

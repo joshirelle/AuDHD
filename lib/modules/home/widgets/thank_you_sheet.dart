@@ -8,8 +8,9 @@ import '../../../data/services/hive_service.dart';
 class ThankYouSheet {
   static const String seenKey = 'has_seen_thanks_v5';
 
-  /// Bilang ng magulang na nasa closed testing nang ilabas ang v5.
-  static const int testerCount = 220;
+  /// Binilog pababa ang bilang ng magulang sa closed testing — mas ligtas
+  /// mangako nang kulang kaysa sumobra.
+  static const int testerCount = 200;
 
   static Future<void> showIfNeeded(BuildContext context) async {
     // Hindi ito ang unang bagay na dapat makita ng bagong user — pasasalamat
@@ -53,8 +54,10 @@ class _ThankYouDialog extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             tr(
-              '${ThankYouSheet.testerCount} na magulang na tayo.',
-              '${ThankYouSheet.testerCount} parents and counting.',
+              '${ThankYouSheet.testerCount}+ na tayo sa community, '
+                  'maraming salamat po!',
+              '${ThankYouSheet.testerCount}+ of us in the community now. '
+                  'Thank you so much!',
             ),
             style: const TextStyle(
               fontSize: 17,
@@ -68,16 +71,16 @@ class _ThankYouDialog extends StatelessWidget {
           Text(
             tr(
               'Mula sa aming puso, maraming salamat sa bawat magulang na '
-              'nagbukas ng pinto para sa AuDHD app. Maraming salamat sa tiwala '
-              'na gawin kaming katuwang ninyo sa araw-araw na paggabay at '
-              'pagmamahal sa inyong mga anak. Ang inyong patuloy na suporta ang '
-              'nagbibigay-inspirasyon sa amin na lalo pang pagbutihin ang app '
-              'na ito para sa bawat pamilya.',
+                  'nagbukas ng pinto para sa AuDHD app. Maraming salamat sa tiwala '
+                  'na gawin kaming katuwang ninyo sa araw-araw na paggabay at '
+                  'pagmamahal sa inyong mga anak. Ang inyong patuloy na suporta ang '
+                  'nagbibigay-inspirasyon sa amin na lalo pang pagbutihin ang app '
+                  'na ito para sa bawat pamilya.',
               'From our hearts, thank you to every parent who opened the door '
-              'for the AuDHD app. Thank you for the trust you placed in us to '
-              'be your companion in guiding and loving your children every '
-              'day. Your continued support is what inspires us to make this '
-              'app better for every family.',
+                  'for the AuDHD app. Thank you for the trust you placed in us to '
+                  'be your companion in guiding and loving your children every '
+                  'day. Your continued support is what inspires us to make this '
+                  'app better for every family.',
             ),
             style: const TextStyle(
               fontSize: 13,

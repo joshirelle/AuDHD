@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import '../../../core/constants/behavior_constants.dart';
 import '../../../core/i18n/language_controller.dart';
 import '../../../core/models/mood_type.dart';
 import '../../../core/services/pdf_report_theme.dart';
@@ -229,7 +230,9 @@ class DoctorPdfService {
     final Map<String, int> triggerCounts = {};
     for (final log in logs) {
       for (final trigger in log.sensoryTriggers) {
-        triggerCounts[trigger] = (triggerCounts[trigger] ?? 0) + 1;
+        // Iisang susi ang magkatulad na tala kahit iba ang wikang ginamit.
+        final key = BehaviorConstants.canonical(trigger);
+        triggerCounts[key] = (triggerCounts[key] ?? 0) + 1;
       }
     }
     final topTriggers = triggerCounts.entries.toList()
@@ -295,7 +298,7 @@ class DoctorPdfService {
                   .take(5)
                   .map(
                     (e) => PdfReportTheme.profileRow(
-                      e.key,
+                      BehaviorConstants.localize(e.key),
                       tr('${e.value} ulit', '${e.value} times'),
                     ),
                   ),
@@ -332,11 +335,14 @@ class DoctorPdfService {
         },
         data: logs.map((log) {
           final abc = StringBuffer()
-            ..writeln('A: ${log.antecedent}')
-            ..writeln('B: ${log.behavior}')
-            ..write('C: ${log.consequence}');
+            ..writeln('A: ${BehaviorConstants.localize(log.antecedent)}')
+            ..writeln('B: ${BehaviorConstants.localize(log.behavior)}')
+            ..write('C: ${BehaviorConstants.localize(log.consequence)}');
           if (log.sensoryTriggers.isNotEmpty) {
-            abc.write('\nTags: ${log.sensoryTriggers.join(', ')}');
+            final tags = log.sensoryTriggers
+                .map(BehaviorConstants.localize)
+                .join(', ');
+            abc.write('\nTags: $tags');
           }
           return [
             '${PdfReportTheme.formatDate(log.timestamp)}\n'
