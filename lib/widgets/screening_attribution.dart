@@ -5,7 +5,8 @@ import '../core/theme/app_theme.dart';
 /// Tekstong kailangan ng mga may-ari ng instrumento. Iisang pinagmumulan para
 /// magkatugma ang app at ang PDF.
 class ScreeningAttribution {
-  static const String mchat = 'M-CHAT-R\u2122 \u00a9 2009 Robins, Fein, & Barton.';
+  static const String mchat =
+      'M-CHAT-R\u2122 \u00a9 2009 Robins, Fein, & Barton.';
   static const String vanderbilt =
       'NICHQ Vanderbilt Assessment Scale \u00a9 NICHQ & AAP.';
   static const String both = '$mchat $vanderbilt';

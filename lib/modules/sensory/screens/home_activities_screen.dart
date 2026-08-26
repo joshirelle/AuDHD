@@ -279,11 +279,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 16,
-              color: isSelected ? AppColors.surface : color,
-            ),
+            Icon(icon, size: 16, color: isSelected ? AppColors.surface : color),
             const SizedBox(width: 6),
             Text(
               label,
@@ -397,11 +393,7 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.schedule_rounded,
-            size: 13,
-            color: AppColors.skyInk,
-          ),
+          const Icon(Icons.schedule_rounded, size: 13, color: AppColors.skyInk),
           const SizedBox(width: 4),
           Text(
             label,

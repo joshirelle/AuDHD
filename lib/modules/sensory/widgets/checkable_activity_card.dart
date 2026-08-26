@@ -52,7 +52,8 @@ class CheckableActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final domainColor = _domainColors[activity.domain] ?? AppColors.skyBlueLight;
+    final domainColor =
+        _domainColors[activity.domain] ?? AppColors.skyBlueLight;
 
     return KikoCard(
       backgroundColor: isCompleted ? _completedTint : AppColors.surface,
@@ -136,7 +137,11 @@ class CheckableActivityCard extends StatelessWidget {
               ),
             ),
             child: isCompleted
-                ? const Icon(Icons.check_rounded, size: 20, color: AppColors.surface)
+                ? const Icon(
+                    Icons.check_rounded,
+                    size: 20,
+                    color: AppColors.surface,
+                  )
                 : null,
           ),
         ),

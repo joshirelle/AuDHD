@@ -63,9 +63,7 @@ class _AuDHDAppState extends State<AuDHDApp> {
       theme: AppTheme.light,
       navigatorKey: RewardWatcher.navigatorKey,
       builder: (context, child) => RewardWatcher(child: child!),
-      home: const AuthGate(
-        child: OnboardingGate(child: HomeScreen()),
-      ),
+      home: const AuthGate(child: OnboardingGate(child: HomeScreen())),
     );
   }
 }

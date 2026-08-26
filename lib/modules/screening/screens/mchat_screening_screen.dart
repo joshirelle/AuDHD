@@ -27,8 +27,9 @@ class _MChatScreeningScreenState extends State<MChatScreeningScreen> {
   }
 
   Future<void> _loadQuestions() async {
-    final String response =
-        await rootBundle.loadString('assets/json/mchat_questions.json');
+    final String response = await rootBundle.loadString(
+      'assets/json/mchat_questions.json',
+    );
     final List<dynamic> data = json.decode(response);
     setState(() {
       _questions = data.map((json) => MChatQuestion.fromJson(json)).toList();

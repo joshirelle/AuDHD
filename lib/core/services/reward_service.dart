@@ -23,7 +23,9 @@ class RewardService {
 
   /// Naabot na ang bituin pero hindi pa naipagdiriwang.
   static List<Reward> newlyUnlocked(int totalStars) => all()
-      .where((reward) => totalStars >= reward.stars && !wasCelebrated(reward.label))
+      .where(
+        (reward) => totalStars >= reward.stars && !wasCelebrated(reward.label),
+      )
       .toList();
 
   static Future<void> addCustom(String label, int stars) async {

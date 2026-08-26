@@ -35,7 +35,13 @@ class SensoryCalculatorService {
 
     // Per-Domain Breakdown
     final Map<String, String> domainBreakdown = {};
-    final domains = ['Auditory', 'Visual', 'Tactile', 'Vestibular', 'Proprioceptive'];
+    final domains = [
+      'Auditory',
+      'Visual',
+      'Tactile',
+      'Vestibular',
+      'Proprioceptive',
+    ];
 
     for (var d in domains) {
       final sScore = domainSeekingScores[d] ?? 0;

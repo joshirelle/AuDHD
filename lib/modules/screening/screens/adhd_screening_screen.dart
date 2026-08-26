@@ -27,8 +27,9 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
   }
 
   Future<void> _loadQuestions() async {
-    final String response =
-        await rootBundle.loadString('assets/json/vanderbilt_questions.json');
+    final String response = await rootBundle.loadString(
+      'assets/json/vanderbilt_questions.json',
+    );
     final List<dynamic> data = json.decode(response);
     setState(() {
       _questions = data.map((json) => ADHDQuestion.fromJson(json)).toList();
@@ -46,10 +47,8 @@ class _ADHDScreeningScreenState extends State<ADHDScreeningScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ADHDResultScreen(
-            questions: _questions,
-            userAnswers: _scores,
-          ),
+          builder: (context) =>
+              ADHDResultScreen(questions: _questions, userAnswers: _scores),
         ),
       );
     }

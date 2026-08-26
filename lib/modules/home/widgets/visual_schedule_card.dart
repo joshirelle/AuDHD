@@ -66,7 +66,10 @@ class VisualScheduleCard extends StatelessWidget {
                     '$doneCount sa ${tasks.length} na gawain ang tapos ngayong araw.',
                     '$doneCount of ${tasks.length} tasks done today.',
                   ),
-                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ],
             ),

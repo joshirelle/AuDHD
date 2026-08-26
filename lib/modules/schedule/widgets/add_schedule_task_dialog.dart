@@ -129,73 +129,75 @@ class _AddScheduleTaskDialogState extends State<AddScheduleTaskDialog> {
               ),
               const SizedBox(height: 14),
               TextField(
-              controller: _nameController,
-              textCapitalization: TextCapitalization.sentences,
-              maxLength: 30,
-              onChanged: (_) {
-                if (_showNameError) setState(() => _showNameError = false);
-              },
-              decoration: InputDecoration(
-                hintText: tr(
-                  'Halimbawa: Pag-iinom ng gamot',
-                  'Example: Take medicine',
-                ),
-                errorText: _showNameError
-                    ? tr('Kailangan ng pangalan.', 'A name is needed.')
-                    : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                controller: _nameController,
+                textCapitalization: TextCapitalization.sentences,
+                maxLength: 30,
+                onChanged: (_) {
+                  if (_showNameError) setState(() => _showNameError = false);
+                },
+                decoration: InputDecoration(
+                  hintText: tr(
+                    'Halimbawa: Pag-iinom ng gamot',
+                    'Example: Take medicine',
+                  ),
+                  errorText: _showNameError
+                      ? tr('Kailangan ng pangalan.', 'A name is needed.')
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            _buildLabel(tr('Kailan?', 'When?')),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              children: [
-                for (final time in ScheduleTimeOfDay.values)
-                  _buildTimeChip(time),
-              ],
-            ),
-            const SizedBox(height: 18),
-            _buildLabel(tr('Tiyak na oras (opsyonal)', 'Exact time (optional)')),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                OutlinedButton.icon(
-                  onPressed: _pickTime,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.logoGreen,
-                    side: const BorderSide(color: AppColors.divider),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.button),
+              const SizedBox(height: 8),
+              _buildLabel(tr('Kailan?', 'When?')),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: [
+                  for (final time in ScheduleTimeOfDay.values)
+                    _buildTimeChip(time),
+                ],
+              ),
+              const SizedBox(height: 18),
+              _buildLabel(
+                tr('Tiyak na oras (opsyonal)', 'Exact time (optional)'),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: _pickTime,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.logoGreen,
+                      side: const BorderSide(color: AppColors.divider),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.button),
+                      ),
+                    ),
+                    icon: const Icon(Icons.schedule_rounded, size: 18),
+                    label: Text(
+                      _exactTime == null
+                          ? tr('Pumili ng oras', 'Pick a time')
+                          : _exactTime!.format(context),
+                      style: const TextStyle(
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
-                  icon: const Icon(Icons.schedule_rounded, size: 18),
-                  label: Text(
-                    _exactTime == null
-                        ? tr('Pumili ng oras', 'Pick a time')
-                        : _exactTime!.format(context),
-                    style: const TextStyle(
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                  if (_exactTime != null)
+                    IconButton(
+                      tooltip: tr('Alisin ang oras', 'Remove the time'),
+                      onPressed: () => setState(() => _exactTime = null),
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        size: 18,
+                        color: AppColors.textMuted,
+                      ),
                     ),
-                  ),
-                ),
-                if (_exactTime != null)
-                  IconButton(
-                    tooltip: tr('Alisin ang oras', 'Remove the time'),
-                    onPressed: () => setState(() => _exactTime = null),
-                    icon: const Icon(
-                      Icons.close_rounded,
-                      size: 18,
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-              ],
-            ),
+                ],
+              ),
               const SizedBox(height: 18),
               _buildLabel(tr('Pumili ng icon', 'Pick an icon')),
               const SizedBox(height: 8),

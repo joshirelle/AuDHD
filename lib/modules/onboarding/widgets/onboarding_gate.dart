@@ -25,8 +25,6 @@ class _OnboardingGateState extends State<OnboardingGate> {
   Widget build(BuildContext context) {
     if (_hasSeen) return widget.child;
 
-    return OnboardingScreen(
-      onFinished: () => setState(() => _hasSeen = true),
-    );
+    return OnboardingScreen(onFinished: () => setState(() => _hasSeen = true));
   }
 }

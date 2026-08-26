@@ -192,11 +192,7 @@ class ScreeningQuestionView extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.home_rounded,
-            size: 18,
-            color: _accentBlue,
-          ),
+          const Icon(Icons.home_rounded, size: 18, color: _accentBlue),
           const SizedBox(width: 10),
           Expanded(
             child: Text(

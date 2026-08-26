@@ -408,10 +408,7 @@ class DoctorPdfService {
             pw.SizedBox(height: 4),
             pw.Text(
               result.primaryProfile,
-              style: pw.TextStyle(
-                fontSize: 14,
-                fontWeight: pw.FontWeight.bold,
-              ),
+              style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold),
             ),
             pw.SizedBox(height: 12),
             PdfReportTheme.profileRow(
@@ -435,10 +432,7 @@ class DoctorPdfService {
           tr('Resulta', 'Result'),
         ],
         cellHeight: 24,
-        cellAlignments: {
-          0: pw.Alignment.centerLeft,
-          1: pw.Alignment.center,
-        },
+        cellAlignments: {0: pw.Alignment.centerLeft, 1: pw.Alignment.center},
         columnWidths: {
           0: const pw.FlexColumnWidth(),
           1: const pw.FixedColumnWidth(110),
@@ -463,7 +457,9 @@ class DoctorPdfService {
 
     if (tasks.isEmpty || counts.isEmpty) {
       return [
-        PdfReportTheme.sectionTitle(tr('3. Rutina sa Bahay', '3. Home Routine')),
+        PdfReportTheme.sectionTitle(
+          tr('3. Rutina sa Bahay', '3. Home Routine'),
+        ),
         pw.SizedBox(height: 8),
         _emptyNote(
           tr(

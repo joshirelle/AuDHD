@@ -7,7 +7,8 @@ class ScreeningResult {
   final int score;
   final String riskLevel;
   final String type;
-  final Map<String, dynamic> answers; // bool para sa M-CHAT, int 0-3 para sa ADHD
+  final Map<String, dynamic>
+  answers; // bool para sa M-CHAT, int 0-3 para sa ADHD
 
   ScreeningResult({
     required this.id,

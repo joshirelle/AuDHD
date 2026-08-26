@@ -24,8 +24,11 @@ class StarService {
       HiveService.getMilestoneBox().length * starsPerMilestone;
 
   /// Suma ng naitalang gantimpala, hindi bilang × 1: nababago ang `starReward`.
-  static int scheduleStars() => HiveService.getScheduleDoneBox().values
-      .fold(0, (sum, stars) => sum + stars);
+  static int scheduleStars() => HiveService.getScheduleDoneBox().values.fold(
+    0,
+    (sum, stars) => sum + stars,
+  );
 
-  static int totalStars() => sensoryStars() + milestoneStars() + scheduleStars();
+  static int totalStars() =>
+      sensoryStars() + milestoneStars() + scheduleStars();
 }

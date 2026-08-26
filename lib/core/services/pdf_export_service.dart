@@ -21,7 +21,8 @@ class PdfExportService {
     DateTime? birthDate,
   }) async {
     final pdf = pw.Document();
-    final formattedDate = '${result.date.day}/${result.date.month}/${result.date.year}';
+    final formattedDate =
+        '${result.date.day}/${result.date.month}/${result.date.year}';
     final isAdhd = result.type == ScreeningResult.typeADHD;
     final screeningLabel = isAdhd ? 'Vanderbilt ADHD' : 'M-CHAT-R Autism';
 
@@ -68,7 +69,9 @@ class PdfExportService {
               decoration: pw.BoxDecoration(
                 color: isHighRisk ? PdfColors.red50 : PdfColors.green50,
                 borderRadius: pw.BorderRadius.circular(8),
-                border: pw.Border.all(color: isHighRisk ? PdfColors.red400 : PdfColors.green400),
+                border: pw.Border.all(
+                  color: isHighRisk ? PdfColors.red400 : PdfColors.green400,
+                ),
               ),
               child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -81,7 +84,10 @@ class PdfExportService {
                           'Uri ng Screening: $screeningLabel',
                           'Screening type: $screeningLabel',
                         ),
-                        style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
+                        style: pw.TextStyle(
+                          fontSize: 12,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
                       ),
                       pw.SizedBox(height: 4),
                       pw.Text(
@@ -92,14 +98,19 @@ class PdfExportService {
                         style: pw.TextStyle(
                           fontSize: 14,
                           fontWeight: pw.FontWeight.bold,
-                          color: isHighRisk ? PdfColors.red800 : PdfColors.green800,
+                          color: isHighRisk
+                              ? PdfColors.red800
+                              : PdfColors.green800,
                         ),
                       ),
                     ],
                   ),
                   pw.Text(
                     tr('Puntos: ${result.score}', 'Score: ${result.score}'),
-                    style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+                    style: pw.TextStyle(
+                      fontSize: 18,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -192,7 +203,8 @@ class PdfExportService {
     final topTriggers = triggerCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
-    final sorted = [...logs]..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    final sorted = [...logs]
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     pdf.addPage(
       pw.MultiPage(
@@ -234,7 +246,10 @@ class PdfExportService {
                       'Kabuuang naitalang insidente: ${logs.length}',
                       'Total recorded incidents: ${logs.length}',
                     ),
-                    style: pw.TextStyle(fontSize: 13, fontWeight: pw.FontWeight.bold),
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
                   pw.SizedBox(height: 10),
                   pw.Text(
@@ -255,7 +270,10 @@ class PdfExportService {
                         'Walang naitalang sensory tag.',
                         'No sensory tags recorded.',
                       ),
-                      style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+                      style: const pw.TextStyle(
+                        fontSize: 10,
+                        color: PdfColors.grey700,
+                      ),
                     )
                   else
                     ...topTriggers
@@ -343,8 +361,9 @@ class PdfExportService {
 
     final nameText = _nameOr(childName);
     final birthDateText = birthDate == null ? _unknown : _formatDate(birthDate);
-    final ageText =
-        birthDate == null ? _unknown : _formatAge(birthDate, result.timestamp);
+    final ageText = birthDate == null
+        ? _unknown
+        : _formatAge(birthDate, result.timestamp);
 
     pdf.addPage(
       pw.MultiPage(
@@ -389,7 +408,10 @@ class PdfExportService {
                   pw.SizedBox(height: 4),
                   pw.Text(
                     result.primaryProfile,
-                    style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold),
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
                   pw.SizedBox(height: 12),
                   _profileRow(

@@ -14,7 +14,9 @@ class VanderbiltScoring {
   static const int riskThreshold = 6;
 
   static Future<List<ADHDQuestion>> loadQuestions() async {
-    final List<dynamic> data = json.decode(await rootBundle.loadString(assetPath));
+    final List<dynamic> data = json.decode(
+      await rootBundle.loadString(assetPath),
+    );
     return data
         .map((item) => ADHDQuestion.fromJson(item as Map<String, dynamic>))
         .toList();

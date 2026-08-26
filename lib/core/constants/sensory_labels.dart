@@ -50,8 +50,7 @@ class SensoryLabels {
 
   static const Map<String, String> _profilesEnglish = {
     'Typical / Balanced Processing': 'Balanced senses',
-    'Mixed Profile (Seeking & Sensitive)':
-        'Mixed - seeks some, avoids others',
+    'Mixed Profile (Seeking & Sensitive)': 'Mixed - seeks some, avoids others',
     'Sensory Seeking (High Movement / Input Need)':
         'Seeking - enjoys moving and touching',
     'Sensory Avoiding (Hyper-sensitive / Sensitive)':

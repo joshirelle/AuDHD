@@ -13,9 +13,7 @@ class StarBurstOverlay {
     final renderBox = context.findRenderObject() as RenderBox?;
     if (overlay == null || renderBox == null || !renderBox.attached) return;
 
-    final origin = renderBox.localToGlobal(
-      renderBox.size.center(Offset.zero),
-    );
+    final origin = renderBox.localToGlobal(renderBox.size.center(Offset.zero));
 
     var isRemoved = false;
     late final OverlayEntry entry;
@@ -110,13 +108,9 @@ class _StarBurstState extends State<_StarBurst>
 
   Widget _buildLabel(double t) {
     // Pop muna, lumulutang, tapos kumukupas sa huling bahagi.
-    final scale = t < 0.18
-        ? Curves.easeOutBack.transform(t / 0.18)
-        : 1.0;
+    final scale = t < 0.18 ? Curves.easeOutBack.transform(t / 0.18) : 1.0;
     final rise = Curves.easeOut.transform(t) * 76;
-    final opacity = t < 0.55
-        ? 1.0
-        : (1 - (t - 0.55) / 0.45).clamp(0.0, 1.0);
+    final opacity = t < 0.55 ? 1.0 : (1 - (t - 0.55) / 0.45).clamp(0.0, 1.0);
 
     return Transform.translate(
       offset: Offset(0, -rise),

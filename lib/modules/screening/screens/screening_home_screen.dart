@@ -40,92 +40,90 @@ class ScreeningHomeScreen extends StatelessWidget {
         children: [
           const ScreeningDisclaimer(),
           const SizedBox(height: 20),
-            // 1. M-CHAT-R Screening Card (dadaan muna sa Age Check)
-            _buildOptionCard(
-              context,
-              title: 'M-CHAT-R Autism Screening',
-              subtitle: 'Para sa mga batang 16–30 buwang gulang',
-              icon: Icons.child_care_rounded,
-              color: AppColors.logoGreen,
-              onTap: () async {
-                if (!await _ensureChildProfile(context)) return;
-                if (!context.mounted) return;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScreeningAgeGate(
-                      instrumentName: 'M-CHAT-R',
-                      rangeDescription:
-                          'Ang M-CHAT-R/F ay idinisenyo para sa mga batang 16 '
-                          'hanggang 30 buwang gulang (1.3 hanggang 2.5 taon).',
-                      minMonths: 16,
-                      maxMonths: 30,
-                      belowRangeAdvice:
-                          'Masyado pang bata para sa M-CHAT. Inirerekomendang '
-                          'sumubok ulit kapag 16 buwan na.',
-                      aboveRangeAdvice:
-                          'Lagpas na sa 30 buwan. Maaari pa rin itong gamitin, '
-                          'pero mas mabuti ang direktang konsulta sa '
-                          'Developmental Pediatrician.',
-                      screeningBuilder: (context) =>
-                          const MChatScreeningScreen(),
-                    ),
+          // 1. M-CHAT-R Screening Card (dadaan muna sa Age Check)
+          _buildOptionCard(
+            context,
+            title: 'M-CHAT-R Autism Screening',
+            subtitle: 'Para sa mga batang 16–30 buwang gulang',
+            icon: Icons.child_care_rounded,
+            color: AppColors.logoGreen,
+            onTap: () async {
+              if (!await _ensureChildProfile(context)) return;
+              if (!context.mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScreeningAgeGate(
+                    instrumentName: 'M-CHAT-R',
+                    rangeDescription:
+                        'Ang M-CHAT-R/F ay idinisenyo para sa mga batang 16 '
+                        'hanggang 30 buwang gulang (1.3 hanggang 2.5 taon).',
+                    minMonths: 16,
+                    maxMonths: 30,
+                    belowRangeAdvice:
+                        'Masyado pang bata para sa M-CHAT. Inirerekomendang '
+                        'sumubok ulit kapag 16 buwan na.',
+                    aboveRangeAdvice:
+                        'Lagpas na sa 30 buwan. Maaari pa rin itong gamitin, '
+                        'pero mas mabuti ang direktang konsulta sa '
+                        'Developmental Pediatrician.',
+                    screeningBuilder: (context) => const MChatScreeningScreen(),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
 
-            // 2. Vanderbilt ADHD Screening Card
-            _buildOptionCard(
-              context,
-              title: 'Vanderbilt ADHD Screening',
-              subtitle: 'Para sa mga batang 4 na taon pataas',
-              icon: Icons.psychology_rounded,
-              color: AppColors.vanderbiltBlue,
-              onTap: () async {
-                if (!await _ensureChildProfile(context)) return;
-                if (!context.mounted) return;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScreeningAgeGate(
-                      instrumentName: 'Vanderbilt',
-                      rangeDescription:
-                          'Ang NICHQ Vanderbilt ay idinisenyo para sa mga '
-                          'batang 4 na taon pataas (48 buwan pataas).',
-                      minMonths: 48,
-                      maxMonths: null,
-                      belowRangeAdvice:
-                          'Masyado pang bata para sa Vanderbilt. Mahirap '
-                          'tiyakin ang mga sintomas ng ADHD bago mag-4 na '
-                          'taon, kaya maaaring hindi maaasahan ang resulta.',
-                      aboveRangeAdvice: '',
-                      screeningBuilder: (context) =>
-                          const ADHDScreeningScreen(),
-                    ),
+          // 2. Vanderbilt ADHD Screening Card
+          _buildOptionCard(
+            context,
+            title: 'Vanderbilt ADHD Screening',
+            subtitle: 'Para sa mga batang 4 na taon pataas',
+            icon: Icons.psychology_rounded,
+            color: AppColors.vanderbiltBlue,
+            onTap: () async {
+              if (!await _ensureChildProfile(context)) return;
+              if (!context.mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScreeningAgeGate(
+                    instrumentName: 'Vanderbilt',
+                    rangeDescription:
+                        'Ang NICHQ Vanderbilt ay idinisenyo para sa mga '
+                        'batang 4 na taon pataas (48 buwan pataas).',
+                    minMonths: 48,
+                    maxMonths: null,
+                    belowRangeAdvice:
+                        'Masyado pang bata para sa Vanderbilt. Mahirap '
+                        'tiyakin ang mga sintomas ng ADHD bago mag-4 na '
+                        'taon, kaya maaaring hindi maaasahan ang resulta.',
+                    aboveRangeAdvice: '',
+                    screeningBuilder: (context) => const ADHDScreeningScreen(),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
 
-            // 3. Screening History Card
-            _buildOptionCard(
-              context,
-              title: 'Tala ng mga Nakaraang Test',
-              subtitle: 'Tingnan ang nakalipas na M-CHAT scores sa Hive',
-              icon: Icons.history_rounded,
-              color: AppColors.historyPurple,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ScreeningHistoryScreen(),
-                  ),
-                );
-              },
-            ),
+          // 3. Screening History Card
+          _buildOptionCard(
+            context,
+            title: 'Tala ng mga Nakaraang Test',
+            subtitle: 'Tingnan ang nakalipas na M-CHAT scores sa Hive',
+            icon: Icons.history_rounded,
+            color: AppColors.historyPurple,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ScreeningHistoryScreen(),
+                ),
+              );
+            },
+          ),
           const SizedBox(height: 24),
           const ScreeningCopyright(),
         ],
@@ -161,13 +159,28 @@ class ScreeningHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textMuted,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textMuted,
+              ),
             ],
           ),
         ),

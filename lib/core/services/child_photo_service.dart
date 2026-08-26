@@ -15,8 +15,7 @@ class ChildPhotoService {
 
   /// Pangalan lang ang iniimbak sa Hive: nagbabago ang buong path ng container
   /// tuwing nag-a-update ang iOS app, kaya masisira ang naka-save na absolute path.
-  static File fileFor(String fileName) =>
-      File('${_directory!.path}/$fileName');
+  static File fileFor(String fileName) => File('${_directory!.path}/$fileName');
 
   /// `null` kapag kinansela ng magulang ang pagpili.
   static Future<String?> pick(ImageSource source) async {

@@ -51,19 +51,22 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
   @override
   Widget build(BuildContext context) {
     final int totalScore = _calculateScore();
-    
+
     String riskTitle = "LOW RISK";
     Color riskColor = AppColors.success;
-    String message = "Mababa ang panganib ng Autism base sa pamantayan ng M-CHAT-R. Ipagpatuloy ang pag-subaybay sa milestones ni Kiko.";
+    String message =
+        "Mababa ang panganib ng Autism base sa pamantayan ng M-CHAT-R. Ipagpatuloy ang pag-subaybay sa milestones ni Kiko.";
 
     if (totalScore >= 3 && totalScore <= 7) {
       riskTitle = "MEDIUM RISK";
       riskColor = AppColors.warning;
-      message = "Katamtaman ang panganib. Inirerekomenda ang pagkonsulta sa isang Developmental Pediatrician.";
+      message =
+          "Katamtaman ang panganib. Inirerekomenda ang pagkonsulta sa isang Developmental Pediatrician.";
     } else if (totalScore >= 8) {
       riskTitle = "HIGH RISK";
       riskColor = AppColors.danger;
-      message = "Mataas ang panganib. Maiging magpa-appointment agad sa Developmental Pediatrician.";
+      message =
+          "Mataas ang panganib. Maiging magpa-appointment agad sa Developmental Pediatrician.";
     }
 
     return Scaffold(
@@ -86,31 +89,58 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                   children: [
                     Text(
                       'RESULTA NG PAGSUSURI',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textMuted),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textMuted,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       riskTitle,
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: riskColor),
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: riskColor,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Score: $totalScore / 20 Risk Points',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textDark),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textDark,
+                      ),
                     ),
                     const Divider(height: 32),
                     Text(
                       message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14, color: AppColors.textDark, height: 1.4),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textDark,
+                        height: 1.4,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.check_circle_rounded, size: 16, color: AppColors.logoGreen),
+                        Icon(
+                          Icons.check_circle_rounded,
+                          size: 16,
+                          color: AppColors.logoGreen,
+                        ),
                         SizedBox(width: 4),
-                        Text('Na-save na sa local storage', style: TextStyle(fontSize: 12, color: AppColors.logoGreen, fontWeight: FontWeight.bold)),
+                        Text(
+                          'Na-save na sa local storage',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.logoGreen,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -123,10 +153,20 @@ class _MChatResultScreenState extends State<MChatResultScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.logoGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-                child: const Text('Bumalik sa Home', style: TextStyle(color: AppColors.surface, fontSize: 16, fontWeight: FontWeight.bold)),
+                onPressed: () =>
+                    Navigator.popUntil(context, (route) => route.isFirst),
+                child: const Text(
+                  'Bumalik sa Home',
+                  style: TextStyle(
+                    color: AppColors.surface,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               const ScreeningCopyright(text: ScreeningAttribution.mchat),

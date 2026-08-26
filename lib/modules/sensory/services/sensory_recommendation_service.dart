@@ -17,7 +17,9 @@ class SensoryRecommendationService {
   static Future<List<SensoryActivity>> loadAll() async {
     if (_cache != null) return _cache!;
 
-    final List<dynamic> data = json.decode(await rootBundle.loadString(_assetPath));
+    final List<dynamic> data = json.decode(
+      await rootBundle.loadString(_assetPath),
+    );
     _cache = data
         .map((item) => SensoryActivity.fromJson(item as Map<String, dynamic>))
         .toList();

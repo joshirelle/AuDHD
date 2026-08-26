@@ -6,12 +6,24 @@ enum MoodTone { positive, neutral, negative }
 /// larawan. Huwag ideklara ang `assets/moods/` sa pubspec hangga't walang laman
 /// ang folder — bibigo ang build.
 enum MoodType {
-  joyful('Masayang-masaya', 'Super Happy', '\u{1F33B}', MoodTone.positive, 'joyful'),
+  joyful(
+    'Masayang-masaya',
+    'Super Happy',
+    '\u{1F33B}',
+    MoodTone.positive,
+    'joyful',
+  ),
   happy('Masaya', 'Happy', '\u2600\uFE0F', MoodTone.positive, 'happy'),
   amused('Natutuwa', 'Giggly', '\u{1F604}', MoodTone.positive, 'amused'),
   excited('Sabik', 'Excited', '\u{1F389}', MoodTone.positive, 'excited'),
   calm('Payapa', 'Calm', '\u{1F338}', MoodTone.positive, 'calm'),
-  confident('May Tiwala', 'Confident', '\u{1F4AA}', MoodTone.positive, 'confident'),
+  confident(
+    'May Tiwala',
+    'Confident',
+    '\u{1F4AA}',
+    MoodTone.positive,
+    'confident',
+  ),
   inLove('Nagmamahal', 'Loving', '\u{1F496}', MoodTone.positive, 'in_love'),
   proud('Mataas ang Moral', 'Proud', '\u2B50', MoodTone.positive, 'proud'),
   sleepy('Inaantok', 'Sleepy', '\u{1F634}', MoodTone.neutral, 'sleepy'),
@@ -19,9 +31,21 @@ enum MoodType {
   confused('Lito', 'Confused', '\u{1F914}', MoodTone.neutral, 'confused'),
   worried('Nangangamba', 'Worried', '\u{1F61F}', MoodTone.negative, 'worried'),
   sad('Malungkot', 'Sad', '\u2601\uFE0F', MoodTone.negative, 'sad'),
-  frustrated('Inis / Aburido', 'Frustrated', '\u{1F624}', MoodTone.negative, 'frustrated'),
+  frustrated(
+    'Inis / Aburido',
+    'Frustrated',
+    '\u{1F624}',
+    MoodTone.negative,
+    'frustrated',
+  ),
   angry('Galit', 'Angry', '\u{1F525}', MoodTone.negative, 'angry'),
-  disgusted('Nadedismaya', 'Disappointed', '\u{1F922}', MoodTone.negative, 'disgusted');
+  disgusted(
+    'Nadedismaya',
+    'Disappointed',
+    '\u{1F922}',
+    MoodTone.negative,
+    'disgusted',
+  );
 
   const MoodType(this._fil, this._eng, this.emoji, this.tone, this._assetName);
 

@@ -117,7 +117,9 @@ class _ParentTipSheetState extends State<ParentTipSheet> {
                     _bookmarked
                         ? Icons.bookmark_rounded
                         : Icons.bookmark_border_rounded,
-                    color: _bookmarked ? AppColors.starGold : AppColors.textMuted,
+                    color: _bookmarked
+                        ? AppColors.starGold
+                        : AppColors.textMuted,
                     size: 26,
                   ),
                 ),

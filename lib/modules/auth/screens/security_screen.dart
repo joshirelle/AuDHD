@@ -92,12 +92,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
-                  isPinSet
-                      ? Icons.lock_rounded
-                      : Icons.lock_open_rounded,
-                  color: isPinSet
-                      ? AppColors.mintInk
-                      : AppColors.butterInk,
+                  isPinSet ? Icons.lock_rounded : Icons.lock_open_rounded,
+                  color: isPinSet ? AppColors.mintInk : AppColors.butterInk,
                   size: 28,
                 ),
                 const SizedBox(width: 12),

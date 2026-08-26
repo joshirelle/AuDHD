@@ -120,13 +120,18 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(48),
               side: const BorderSide(color: AppColors.logoGreen),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             onPressed: _pickDate,
             icon: const Icon(Icons.cake_rounded, color: AppColors.logoGreen),
             label: Text(
               birthText,
-              style: const TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -169,7 +174,10 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
           onPressed: _save,
           child: Text(
             tr('I-save', 'Save'),
-            style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: AppColors.surface,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],

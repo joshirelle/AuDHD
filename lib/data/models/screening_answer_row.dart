@@ -27,7 +27,9 @@ class ScreeningAnswerRow {
     required this.isAtRisk,
   });
 
-  static Future<List<ScreeningAnswerRow>> buildFor(ScreeningResult result) async {
+  static Future<List<ScreeningAnswerRow>> buildFor(
+    ScreeningResult result,
+  ) async {
     final bool isAdhd = result.type == ScreeningResult.typeADHD;
     final String asset = isAdhd
         ? 'assets/json/vanderbilt_questions.json'
@@ -81,8 +83,7 @@ class ScreeningAnswerRow {
           text: byId[entry.key]?.textTagalog ?? 'Tanong ${entry.key}',
           answerLabel: _adhdLabels[(entry.value as int).clamp(0, 3)],
           // Sa Vanderbilt, "Madalas" (2) pataas lang ang binibilang na sintomas.
-          isAtRisk:
-              (entry.value as int) >= VanderbiltScoring.symptomThreshold,
+          isAtRisk: (entry.value as int) >= VanderbiltScoring.symptomThreshold,
         ),
     ];
   }

@@ -82,10 +82,10 @@ class _BackupCardState extends State<BackupCard> {
           Text(
             tr(
               'Hindi na mababalik ang mga naitala mo kapag nasira, nawala, o '
-              'na-format ang telepono. Gumawa ng kopya paminsan-minsan.',
+                  'na-format ang telepono. Gumawa ng kopya paminsan-minsan.',
               'What you have recorded can no longer be brought back if the '
-              'phone breaks, gets lost, or is formatted. Make a backup once in '
-              'a while.',
+                  'phone breaks, gets lost, or is formatted. Make a backup once in '
+                  'a while.',
             ),
             style: const TextStyle(
               fontSize: 11,
@@ -197,12 +197,12 @@ Future<bool> showRestoreFlow(BuildContext context) async {
         content: Text(
           tr(
             'Papalitan ng laman ng file ang lahat ng nasa app ngayon — '
-            'mga behavior log, sensory history, milestone, at mood.\n\n'
-            'Hindi na maibabalik ang kasalukuyang laman.',
+                'mga behavior log, sensory history, milestone, at mood.\n\n'
+                'Hindi na maibabalik ang kasalukuyang laman.',
             'The contents of the file will replace everything in the app right '
-            'now — the behavior logs, sensory history, milestones, and mood.'
-            '\n\n'
-            'The current contents can no longer be brought back.',
+                'now — the behavior logs, sensory history, milestones, and mood.'
+                '\n\n'
+                'The current contents can no longer be brought back.',
           ),
         ),
         actions: [

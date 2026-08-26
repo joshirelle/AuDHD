@@ -42,7 +42,9 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
       VanderbiltScoring.isHighRisk(inattention, hyperactivity);
 
   Future<void> _saveToDatabase() async {
-    final int inattention = _symptomCount(VanderbiltScoring.categoryInattention);
+    final int inattention = _symptomCount(
+      VanderbiltScoring.categoryInattention,
+    );
     final int hyperactivity = _symptomCount(
       VanderbiltScoring.categoryHyperactivity,
     );
@@ -51,7 +53,9 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
       id: const Uuid().v4(),
       date: DateTime.now(),
       score: inattention + hyperactivity,
-      riskLevel: _isHighRisk(inattention, hyperactivity) ? 'HIGH RISK' : 'LOW RISK',
+      riskLevel: _isHighRisk(inattention, hyperactivity)
+          ? 'HIGH RISK'
+          : 'LOW RISK',
       type: ScreeningResult.typeADHD,
       answers: widget.userAnswers,
     );
@@ -91,30 +95,61 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
                   children: [
                     Text(
                       'RESULTA NG PAGSUSURI',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textMuted),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textMuted,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       riskTitle,
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: riskColor),
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: riskColor,
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    _buildBreakdownRow('Inattention', inattention, _totalIn('Inattention')),
+                    _buildBreakdownRow(
+                      'Inattention',
+                      inattention,
+                      _totalIn('Inattention'),
+                    ),
                     const SizedBox(height: 8),
-                    _buildBreakdownRow('Hyperactivity', hyperactivity, _totalIn('Hyperactivity')),
+                    _buildBreakdownRow(
+                      'Hyperactivity',
+                      hyperactivity,
+                      _totalIn('Hyperactivity'),
+                    ),
                     const Divider(height: 32),
                     Text(
                       message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14, color: AppColors.textDark, height: 1.4),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textDark,
+                        height: 1.4,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.check_circle_rounded, size: 16, color: AppColors.logoGreen),
+                        Icon(
+                          Icons.check_circle_rounded,
+                          size: 16,
+                          color: AppColors.logoGreen,
+                        ),
                         SizedBox(width: 4),
-                        Text('Na-save na sa local storage', style: TextStyle(fontSize: 12, color: AppColors.logoGreen, fontWeight: FontWeight.bold)),
+                        Text(
+                          'Na-save na sa local storage',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.logoGreen,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -127,10 +162,20 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.logoGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-                child: const Text('Bumalik sa Home', style: TextStyle(color: AppColors.surface, fontSize: 16, fontWeight: FontWeight.bold)),
+                onPressed: () =>
+                    Navigator.popUntil(context, (route) => route.isFirst),
+                child: const Text(
+                  'Bumalik sa Home',
+                  style: TextStyle(
+                    color: AppColors.surface,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               const ScreeningCopyright(text: ScreeningAttribution.vanderbilt),
@@ -146,7 +191,10 @@ class _ADHDResultScreenState extends State<ADHDResultScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(fontSize: 14, color: AppColors.textDark)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+        ),
         Text(
           '$count / $total na sintomas',
           style: TextStyle(

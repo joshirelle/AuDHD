@@ -44,8 +44,6 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     if (_isUnlocked) return widget.child;
 
-    return LockScreen(
-      onUnlocked: () => setState(() => _isUnlocked = true),
-    );
+    return LockScreen(onUnlocked: () => setState(() => _isUnlocked = true));
   }
 }

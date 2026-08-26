@@ -18,8 +18,7 @@ class SensoryProgressBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double progress =
-        totalCount == 0 ? 0 : completedCount / totalCount;
+    final double progress = totalCount == 0 ? 0 : completedCount / totalCount;
     final int percent = (progress * 100).round();
 
     return KikoCard(

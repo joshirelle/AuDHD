@@ -67,7 +67,8 @@ class ConfettiPainter extends CustomPainter {
 
     for (final particle in particles) {
       final dx = cos(particle.angle) * particle.speed * travel;
-      final dy = sin(particle.angle) * particle.speed * travel +
+      final dy =
+          sin(particle.angle) * particle.speed * travel +
           gravity * progress * progress;
 
       paint.color = particle.color.withValues(alpha: opacity);

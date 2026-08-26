@@ -61,7 +61,10 @@ class SensoryHistoryScreen extends StatelessWidget {
         icon: const Icon(Icons.add_rounded, color: AppColors.surface),
         label: Text(
           tr('Bagong Checklist', 'New Checklist'),
-          style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            color: AppColors.surface,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ValueListenableBuilder<Box<SensoryProfileResult>>(
@@ -84,7 +87,10 @@ class SensoryHistoryScreen extends StatelessWidget {
                         'Tap "New Checklist" to get started.',
                   ),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textMuted, fontSize: 14),
+                  style: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             );
@@ -141,14 +147,20 @@ class SensoryHistoryScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               tr('Hindi', 'No'),
-              style: const TextStyle(fontFamily: 'Nunito', color: AppColors.textMuted),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.textMuted,
+              ),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               tr('Burahin', 'Delete'),
-              style: const TextStyle(fontFamily: 'Nunito', color: AppColors.danger),
+              style: const TextStyle(
+                fontFamily: 'Nunito',
+                color: AppColors.danger,
+              ),
             ),
           ),
         ],

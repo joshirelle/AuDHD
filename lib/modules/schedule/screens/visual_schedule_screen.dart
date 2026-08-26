@@ -52,32 +52,28 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
 
   void _startTour() {
     if (!mounted) return;
-    HomeTourGuide.showIfNeeded(
-      context,
-      [
-        TourStep(
-          targetKey: _dateStripKey,
-          title: tr('Balikan ang nakaraan', 'Look back at past days'),
-          body: tr(
-            'Pindutin ang ibang araw para makita kung ano ang natapos noon. '
-            'Naka-tala ang bawat araw, hindi lang ang ngayon.',
-            'Tap another day to see what was finished then. Every day is '
-            'saved, not only today.',
-          ),
+    HomeTourGuide.showIfNeeded(context, [
+      TourStep(
+        targetKey: _dateStripKey,
+        title: tr('Balikan ang nakaraan', 'Look back at past days'),
+        body: tr(
+          'Pindutin ang ibang araw para makita kung ano ang natapos noon. '
+              'Naka-tala ang bawat araw, hindi lang ang ngayon.',
+          'Tap another day to see what was finished then. Every day is '
+              'saved, not only today.',
         ),
-        TourStep(
-          targetKey: _arrangeKey,
-          title: tr('Ayusin ang iskedyul', 'Arrange the schedule'),
-          body: tr(
-            'Dito mo mababago ang pagkakasunod-sunod, maitatago ang gawaing '
-            'hindi ninyo ginagawa, at makikita ang oras ng bawat isa.',
-            'Here you can change the order, hide tasks you do not do, and '
-            'see the time of each one.',
-          ),
+      ),
+      TourStep(
+        targetKey: _arrangeKey,
+        title: tr('Ayusin ang iskedyul', 'Arrange the schedule'),
+        body: tr(
+          'Dito mo mababago ang pagkakasunod-sunod, maitatago ang gawaing '
+              'hindi ninyo ginagawa, at makikita ang oras ng bawat isa.',
+          'Here you can change the order, hide tasks you do not do, and '
+              'see the time of each one.',
         ),
-      ],
-      seenKey: HiveService.hasSeenScheduleTourKey,
-    );
+      ),
+    ], seenKey: HiveService.hasSeenScheduleTourKey);
   }
 
   @override
@@ -211,15 +207,15 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
         content: Text(
           tr(
             'Aalisin sa iskedyul ang "${task.title}".'
-            '${history.days == 0 ? '' : '\n\nMay ${history.days} araw na natapos '
-                  'dito. Mababawasan ng ${history.stars} ang bituin '
-                  '${childName == null ? 'ng bata' : 'ni $childName'}.'
-                  '\n\nKung ayaw mong mabawasan, itago na lang ito.'}',
+                '${history.days == 0 ? '' : '\n\nMay ${history.days} araw na natapos '
+                          'dito. Mababawasan ng ${history.stars} ang bituin '
+                          '${childName == null ? 'ng bata' : 'ni $childName'}.'
+                          '\n\nKung ayaw mong mabawasan, itago na lang ito.'}',
             'This will remove "${task.title}" from the schedule.'
-            '${history.days == 0 ? '' : '\n\nFinished days: ${history.days}. This '
-                  'also takes back ${history.stars} of the stars '
-                  '${childName ?? 'the child'} earned.'
-                  '\n\nIf you do not want that, just hide it instead.'}',
+                '${history.days == 0 ? '' : '\n\nFinished days: ${history.days}. This '
+                          'also takes back ${history.stars} of the stars '
+                          '${childName ?? 'the child'} earned.'
+                          '\n\nIf you do not want that, just hide it instead.'}',
           ),
           style: const TextStyle(fontSize: 14, fontFamily: 'Nunito'),
         ),
@@ -333,34 +329,34 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
             steps: [
               tr(
                 'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at '
-                'ang oras ng araw kung kailan ito ginagawa.',
+                    'ang oras ng araw kung kailan ito ginagawa.',
                 'Tap "Task" to add one, with a picture and the time of day '
-                'when it is done.',
+                    'when it is done.',
               ),
               tr(
                 'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
-                'niya kung ano ang susunod na mangyayari.',
+                    'niya kung ano ang susunod na mangyayari.',
                 'Show the schedule to your child at the start of the day so '
-                'they know what happens next.',
+                    'they know what happens next.',
               ),
               tr(
                 'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
-                'hindi ikaw.',
+                    'hindi ikaw.',
                 'Let them tick off what is finished. They should be the one '
-                'tapping, not you.',
+                    'tapping, not you.',
               ),
               tr(
                 'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
-                'baguhin o burahin ito.',
+                    'baguhin o burahin ito.',
                 'Press and hold a task you added yourself to edit or delete '
-                'it.',
+                    'it.',
               ),
             ],
             footnote: tr(
               'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
-              'nananatili ang listahan ng gawain.',
+                  'nananatili ang listahan ng gawain.',
               'The ticks clear on their own each new day, but the list of '
-              'tasks stays.',
+                  'tasks stays.',
             ),
           ),
         ),
@@ -390,13 +386,12 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
           child: GridView.builder(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 96),
             // Nakapirming taas para hindi umapaw ang tile sa makikitid na screen.
-            gridDelegate:
-                const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 128,
-                  mainAxisExtent: 136,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 128,
+              mainAxisExtent: 136,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
             itemCount: visible.length,
             itemBuilder: (context, index) {
               final task = visible[index];

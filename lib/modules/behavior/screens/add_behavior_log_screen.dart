@@ -247,7 +247,9 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: _canProceed ? AppColors.surface : AppColors.textMuted,
+                      color: _canProceed
+                          ? AppColors.surface
+                          : AppColors.textMuted,
                       fontFamily: 'Nunito',
                     ),
                   ),
@@ -281,10 +283,7 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: _buildStepChip(),
-          ),
+          Align(alignment: Alignment.centerLeft, child: _buildStepChip()),
           const SizedBox(height: 18),
           Text(
             _stepQuestions[_currentStep],
@@ -385,7 +384,9 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
             final isSelected = selected == opt;
             return ChoiceChip(
               label: Text(
-                opt == _customOption ? tr(_customOption, 'Other (Custom)') : opt,
+                opt == _customOption
+                    ? tr(_customOption, 'Other (Custom)')
+                    : opt,
                 style: TextStyle(
                   fontSize: 13,
                   color: isSelected ? AppColors.surface : AppColors.textDark,
@@ -488,9 +489,17 @@ class _AddBehaviorLogScreenState extends State<AddBehaviorLogScreen> {
     return DropdownButtonFormField<int>(
       initialValue: _durationMinutes,
       decoration: const InputDecoration(border: OutlineInputBorder()),
-      items: [5, 10, 15, 20, 30, 45, 60, 90, 120]
-          .map((m) => DropdownMenuItem(value: m, child: Text('$m mins')))
-          .toList(),
+      items: [
+        5,
+        10,
+        15,
+        20,
+        30,
+        45,
+        60,
+        90,
+        120,
+      ].map((m) => DropdownMenuItem(value: m, child: Text('$m mins'))).toList(),
       onChanged: (v) => setState(() => _durationMinutes = v ?? 10),
     );
   }

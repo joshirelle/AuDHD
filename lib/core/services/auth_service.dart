@@ -76,8 +76,7 @@ class AuthService {
     return false;
   }
 
-  static int failedAttempts() =>
-      (_box.get(_failedAttemptsKey) as int?) ?? 0;
+  static int failedAttempts() => (_box.get(_failedAttemptsKey) as int?) ?? 0;
 
   static Future<void> _registerFailedAttempt() async {
     final attempts = failedAttempts() + 1;

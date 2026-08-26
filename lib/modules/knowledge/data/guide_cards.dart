@@ -360,8 +360,7 @@ class GuideCards {
     return null;
   }
 
-  static List<GuideCard> inCategory(GuideCategory? category) =>
-      category == null
+  static List<GuideCard> inCategory(GuideCategory? category) => category == null
       ? all
       : all.where((card) => card.category == category).toList();
 }

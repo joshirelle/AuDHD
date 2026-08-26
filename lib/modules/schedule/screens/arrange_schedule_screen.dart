@@ -80,9 +80,9 @@ class _ArrangeScheduleScreenState extends State<ArrangeScheduleScreen> {
             ],
             footnote: tr(
               'Sa loob lang ng bawat bahagi ng araw ang paghila. Kung mali '
-              'ang oras ng isang gawain, burahin ito at gumawa ng bago.',
+                  'ang oras ng isang gawain, burahin ito at gumawa ng bago.',
               'Dragging works only inside each part of the day. If a task is '
-              'in the wrong part, delete it and make a new one.',
+                  'in the wrong part, delete it and make a new one.',
             ),
           ),
           const SizedBox(height: 20),
@@ -212,9 +212,7 @@ class _ArrangeScheduleScreenState extends State<ArrangeScheduleScreen> {
                 : tr('Itago sa iskedyul', 'Hide from the schedule'),
             onPressed: () => _toggleHidden(task),
             icon: Icon(
-              hidden
-                  ? Icons.visibility_off_rounded
-                  : Icons.visibility_rounded,
+              hidden ? Icons.visibility_off_rounded : Icons.visibility_rounded,
               size: 20,
               color: hidden ? AppColors.textMuted : AppColors.logoGreen,
             ),

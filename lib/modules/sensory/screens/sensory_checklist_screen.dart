@@ -25,10 +25,12 @@ class _SensoryChecklistScreenState extends State<SensoryChecklistScreen> {
     if (_answers.length < SensoryConstants.questions.length) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(tr(
-            'Mangyaring sagutan ang lahat ng tanong bago magpatuloy.',
-            'Please answer all the questions before continuing.',
-          )),
+          content: Text(
+            tr(
+              'Mangyaring sagutan ang lahat ng tanong bago magpatuloy.',
+              'Please answer all the questions before continuing.',
+            ),
+          ),
           backgroundColor: AppColors.warning,
         ),
       );

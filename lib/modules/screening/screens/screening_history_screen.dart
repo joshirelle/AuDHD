@@ -48,9 +48,16 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.history_rounded, size: 64, color: AppColors.textMuted),
+                  Icon(
+                    Icons.history_rounded,
+                    size: 64,
+                    color: AppColors.textMuted,
+                  ),
                   const SizedBox(height: 12),
-                  Text('Wala pang nakatalang screening result.', style: TextStyle(color: AppColors.textMuted)),
+                  Text(
+                    'Wala pang nakatalang screening result.',
+                    style: TextStyle(color: AppColors.textMuted),
+                  ),
                 ],
               ),
             )
@@ -60,52 +67,76 @@ class _ScreeningHistoryScreenState extends State<ScreeningHistoryScreen> {
               itemBuilder: (context, index) {
                 final item = _results[index];
                 final color = _getRiskColor(item.riskLevel);
-                final formattedDate = '${item.date.day}/${item.date.month}/${item.date.year}';
+                final formattedDate =
+                    '${item.date.day}/${item.date.month}/${item.date.year}';
                 final isADHD = item.type == ScreeningResult.typeADHD;
-                final testColor = isADHD ? AppColors.vanderbiltBlue : AppColors.logoGreen;
+                final testColor = isADHD
+                    ? AppColors.vanderbiltBlue
+                    : AppColors.logoGreen;
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   elevation: 2,
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     leading: CircleAvatar(
                       backgroundColor: color.withValues(alpha: 0.15),
                       child: Text(
                         '${item.score}',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: color),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: color,
+                        ),
                       ),
                     ),
                     title: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: testColor.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             isADHD ? 'Vanderbilt' : 'M-CHAT-R',
-                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: testColor),
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              color: testColor,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             item.riskLevel,
-                            style: TextStyle(fontWeight: FontWeight.bold, color: color),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: color,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    subtitle: Text('Petsa: $formattedDate • ${item.answers.length} na Tanong'),
+                    subtitle: Text(
+                      'Petsa: $formattedDate • ${item.answers.length} na Tanong',
+                    ),
                     trailing: const Icon(Icons.chevron_right_rounded),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ScreeningDetailScreen(result: item),
+                          builder: (context) =>
+                              ScreeningDetailScreen(result: item),
                         ),
                       );
                     },

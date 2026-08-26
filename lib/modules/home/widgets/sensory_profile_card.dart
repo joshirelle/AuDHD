@@ -17,9 +17,7 @@ class SensoryProfileCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => const SensoryHistoryScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const SensoryHistoryScreen()),
         );
       },
       child: Row(
@@ -55,15 +53,15 @@ class SensoryProfileCard extends StatelessWidget {
                     'Alamin kung naghahanap o umiiwas ang bata sa bawat uri ng pandama.',
                     'Find out if your child seeks or avoids each kind of sensation.',
                   ),
-                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ],
             ),
           ),
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: AppColors.logoGreen,
-          ),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.logoGreen),
         ],
       ),
     );

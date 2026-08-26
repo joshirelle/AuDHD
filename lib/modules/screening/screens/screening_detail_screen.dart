@@ -49,7 +49,8 @@ class _ScreeningDetailScreenState extends State<ScreeningDetailScreen> {
     final formattedDate =
         '${result.date.day}/${result.date.month}/${result.date.year}';
     // Walang slash — ginagamit ito sa filename.
-    final fileDate = '${result.date.year}-${result.date.month}-${result.date.day}';
+    final fileDate =
+        '${result.date.year}-${result.date.month}-${result.date.day}';
 
     return Scaffold(
       appBar: AppBar(

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // --- Base ---
   static const Color background = Color(0xFFFFF7EB);
+
   /// Hindi purong puti: sa `background` na cream, ang puti ay 1.06:1 lang —
   /// walang naidaragdag na hangganan, matingkad lang sa mata.
   static const Color surface = Color(0xFFFFFCF5);
@@ -24,7 +25,7 @@ class AppColors {
   /// Guhit at hindi aktibong palamuti — hindi ito para sa teksto.
   static const Color divider = Color(0xFFDFD9CE);
   static const Color logoGreen = Color(0xFF4F6F52);
-  
+
   // --- Pastel na palaman ---
   static const Color skyBlue = Color(0xFFAEC9C5);
   static const Color skyBlueLight = Color(0xFFDCE8E6);

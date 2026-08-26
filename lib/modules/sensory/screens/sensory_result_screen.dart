@@ -27,7 +27,10 @@ class SensoryResultScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.logoGreen),
+            icon: const Icon(
+              Icons.picture_as_pdf_rounded,
+              color: AppColors.logoGreen,
+            ),
             tooltip: tr('I-export bilang PDF', 'Export as PDF'),
             onPressed: _exportPdf,
           ),
@@ -40,25 +43,37 @@ class SensoryResultScreen extends StatelessWidget {
           // Primary Result Header Card
           Card(
             color: AppColors.mintGreen,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Text(
                     tr('Pangunahing katangian:', 'Main pattern:'),
-                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     SensoryLabels.profile(result.primaryProfile),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.mintInk),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.mintInk,
+                    ),
                   ),
                   if (moodOnDay != null) ...[
                     const SizedBox(height: 10),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.button),
@@ -84,14 +99,27 @@ class SensoryResultScreen extends StatelessWidget {
 
           // Visual Score Comparison (Seeking vs Avoiding)
           Text(
-            tr('Kabuuang puntos (pinakamataas: 15)', 'Total score (highest: 15)'),
+            tr(
+              'Kabuuang puntos (pinakamataas: 15)',
+              'Total score (highest: 15)',
+            ),
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(height: 12),
 
-          _buildScoreBar(tr('Naghahanap ng pandama', 'Seeking sensory input'), result.totalSeekingScore, seekingPct, AppColors.warning),
+          _buildScoreBar(
+            tr('Naghahanap ng pandama', 'Seeking sensory input'),
+            result.totalSeekingScore,
+            seekingPct,
+            AppColors.warning,
+          ),
           const SizedBox(height: 10),
-          _buildScoreBar(tr('Umiiwas sa pandama', 'Avoiding sensory input'), result.totalAvoidingScore, avoidingPct, AppColors.autismPurple),
+          _buildScoreBar(
+            tr('Umiiwas sa pandama', 'Avoiding sensory input'),
+            result.totalAvoidingScore,
+            avoidingPct,
+            AppColors.autismPurple,
+          ),
 
           const SizedBox(height: 24),
           Text(
@@ -105,9 +133,15 @@ class SensoryResultScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
                 dense: true,
-                title: Text(SensoryLabels.domain(e.key), style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  SensoryLabels.domain(e.key),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 trailing: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: _getDomainColor(e.value).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
@@ -139,7 +173,10 @@ class SensoryResultScreen extends StatelessWidget {
     );
 
     // Malayang teksto ang pangalan, kaya sinasala ang mga bawal sa filename.
-    final safeName = (child?.name ?? tr('Bata', 'Child')).replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
+    final safeName = (child?.name ?? tr('Bata', 'Child')).replaceAll(
+      RegExp(r'[^A-Za-z0-9]+'),
+      '_',
+    );
     final d = result.timestamp;
     final fileDate = '${d.year}-${d.month}-${d.day}';
 
@@ -156,8 +193,18 @@ class SensoryResultScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-            Text('$score / 15', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              '$score / 15',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 4),

@@ -53,15 +53,15 @@ class BehaviorLogCard extends StatelessWidget {
                     'Itala ang nangyari bago, ang ginawa ng bata, at ang nangyari pagkatapos.',
                     'Note what happened before, what your child did, and what happened after.',
                   ),
-                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ],
             ),
           ),
-          Icon(
-            Icons.chevron_right_rounded,
-            color: AppColors.butterInk,
-          ),
+          Icon(Icons.chevron_right_rounded, color: AppColors.butterInk),
         ],
       ),
     );

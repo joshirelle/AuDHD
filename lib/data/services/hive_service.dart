@@ -69,8 +69,7 @@ class HiveService {
 
   static Box<String> getPrefsBox() => Hive.box<String>(_prefsBoxName);
 
-  static Box<String> getBackupMetaBox() =>
-      Hive.box<String>(_backupMetaBoxName);
+  static Box<String> getBackupMetaBox() => Hive.box<String>(_backupMetaBoxName);
 
   static Box<bool> getGuideBookmarkBox() =>
       Hive.box<bool>(_guideBookmarkBoxName);
@@ -127,8 +126,7 @@ class HiveService {
   static Box<ScheduleTask> getScheduleBox() =>
       Hive.box<ScheduleTask>(_scheduleBoxName);
 
-  static Box<int> getScheduleOrderBox() =>
-      Hive.box<int>(_scheduleOrderBoxName);
+  static Box<int> getScheduleOrderBox() => Hive.box<int>(_scheduleOrderBoxName);
 
   static Box<bool> getScheduleHiddenBox() =>
       Hive.box<bool>(_scheduleHiddenBoxName);
@@ -357,23 +355,21 @@ class HiveService {
   }
 
   static int countCompletedOn(DateTime date, List<String> activityIds) {
-    return activityIds
-        .where((id) => isActivityCompleted(date, id))
-        .length;
+    return activityIds.where((id) => isActivityCompleted(date, id)).length;
   }
 
   static bool hasAnyCompletionOn(DateTime date) {
     final prefix = '${dateKey(date)}_';
-    return getCompletionBox()
-        .keys
-        .any((key) => key.toString().startsWith(prefix));
+    return getCompletionBox().keys.any(
+      (key) => key.toString().startsWith(prefix),
+    );
   }
 
   static bool hasAnyScheduleDoneOn(DateTime date) {
     final prefix = '${dateKey(date)}_';
-    return getScheduleDoneBox()
-        .keys
-        .any((key) => key.toString().startsWith(prefix));
+    return getScheduleDoneBox().keys.any(
+      (key) => key.toString().startsWith(prefix),
+    );
   }
 
   /// Ilang araw sa saklaw natapos ang bawat gawain. Susi = `taskId`.
@@ -441,7 +437,8 @@ class HiveService {
 
   static List<BehaviorLog> getAllLogs() {
     final box = getBehaviorBox();
-    return box.values.toList()..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    return box.values.toList()
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 
   static Future<void> deleteLog(String id) async {

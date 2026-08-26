@@ -49,9 +49,7 @@ class _MoodLogScreenState extends State<MoodLogScreen> {
     unawaited(HapticFeedback.lightImpact());
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          tr('Naitala: ${mood.label}', 'Logged: ${mood.label}'),
-        ),
+        content: Text(tr('Naitala: ${mood.label}', 'Logged: ${mood.label}')),
         backgroundColor: AppColors.logoGreen,
       ),
     );

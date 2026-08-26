@@ -24,8 +24,7 @@ class ActivityDetailSheet extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) =>
-          ActivityDetailSheet(activity: activity, date: date),
+      builder: (context) => ActivityDetailSheet(activity: activity, date: date),
     );
   }
 

@@ -108,16 +108,13 @@ class BackupService {
       'createdAt': DateTime.now().toIso8601String(),
       'profile': profile?.toMap(),
       'photoBase64': photoBase64,
-      'behaviorLogs': HiveService.getBehaviorBox()
-          .values
+      'behaviorLogs': HiveService.getBehaviorBox().values
           .map((log) => log.toJson())
           .toList(),
-      'sensoryResults': HiveService.getSensoryBox()
-          .values
+      'sensoryResults': HiveService.getSensoryBox().values
           .map((result) => result.toJson())
           .toList(),
-      'scheduleTasks': HiveService.getScheduleBox()
-          .values
+      'scheduleTasks': HiveService.getScheduleBox().values
           .map((task) => task.toJson())
           .toList(),
       'sensoryCompletion': _dump(HiveService.getCompletionBox()),
