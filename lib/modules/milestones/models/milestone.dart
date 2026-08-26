@@ -1,10 +1,12 @@
 import '../../../core/i18n/language_controller.dart';
 
+/// Ang apat na pangkat ng CDC, hindi hinati at hindi pinagsama. Bahagi ng
+/// hiniram na nilalaman ang pagkakagrupo, kaya hindi ito dapat baguhin.
 enum MilestoneDomain {
-  grossMotor('Malalaking Galaw', 'Big Movements'),
-  fineMotor('Maliliit na Galaw', 'Small Movements'),
-  speechLanguage('Pagsasalita', 'Talking'),
-  socialEmotional('Pakikisalamuha', 'Getting Along');
+  socialEmotional('Sosyal/Emosyonal', 'Social/Emotional'),
+  language('Wika/Komunikasyon', 'Language/Communication'),
+  cognitive('Pag-unawa', 'Cognitive'),
+  movement('Paggalaw/Pisikal', 'Movement/Physical');
 
   const MilestoneDomain(this._labelFil, this._labelEng);
 
@@ -21,6 +23,7 @@ class Milestone {
   final String _titleEng;
   final MilestoneDomain domain;
   final int targetAgeMonths;
+  final String? _noteFil;
 
   const Milestone({
     required this.id,
@@ -28,11 +31,21 @@ class Milestone {
     required String titleEng,
     required this.domain,
     required this.targetAgeMonths,
+    String? noteFil,
   }) : _titleFil = titleFil,
-       _titleEng = titleEng;
+       _titleEng = titleEng,
+       _noteFil = noteFil;
 
   String get title => tr(_titleFil, _titleEng);
 
-  String get targetAgeLabel =>
-      tr('Bago mag-$targetAgeMonths buwan', 'Before $targetAgeMonths months');
+  /// Para sa salitang walang katumbas sa Filipino: iniiwan ang Ingles at
+  /// ipinapaliwanag, imbes na pilitin ang salin na lilituhin lang ang
+  /// magulang. Wala itong silbi sa Ingles kaya doon ay tinatago.
+  String? get note => LanguageController.isEnglish ? null : _noteFil;
+
+  /// Taon kapag eksaktong nahahati sa 12; kung hindi, buwan. Ganito rin ang
+  /// pagbibilang ng CDC — may banda silang 30 buwan.
+  String get ageLabel => targetAgeMonths % 12 == 0
+      ? tr('${targetAgeMonths ~/ 12} taon', '${targetAgeMonths ~/ 12} years')
+      : tr('$targetAgeMonths buwan', '$targetAgeMonths months');
 }

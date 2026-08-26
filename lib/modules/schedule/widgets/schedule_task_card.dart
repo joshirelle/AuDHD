@@ -71,15 +71,15 @@ class ScheduleTaskCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 52,
-                    height: 52,
+                    width: 58,
+                    height: 58,
                     decoration: const BoxDecoration(
                       color: AppColors.surface,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       ScheduleIcons.of(task.iconKey),
-                      size: 27,
+                      size: 29,
                       color: accent,
                     ),
                   ),
@@ -87,10 +87,13 @@ class ScheduleTaskCard extends StatelessWidget {
                   Text(
                     task.title,
                     textAlign: TextAlign.center,
-                    maxLines: 2,
+                    // Tatlo at hindi dalawa: sa tatlong hanay, mga 78dp lang
+                    // ang teksto — mga walong letra kada linya.
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 12.5,
+                      fontSize: 13,
+                      height: 1.2,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito',
                       color: AppColors.textDark,
@@ -99,7 +102,8 @@ class ScheduleTaskCard extends StatelessWidget {
                           : TextDecoration.none,
                     ),
                   ),
-                  if (task.timeLabel.isNotEmpty)
+                  if (task.timeLabel.isNotEmpty) ...[
+                    const SizedBox(height: 3),
                     Text(
                       task.timeLabel,
                       textAlign: TextAlign.center,
@@ -112,6 +116,7 @@ class ScheduleTaskCard extends StatelessWidget {
                         color: AppColors.textMuted,
                       ),
                     ),
+                  ],
                 ],
               ),
               Positioned(
@@ -122,14 +127,14 @@ class ScheduleTaskCard extends StatelessWidget {
                   curve: Curves.easeOutBack,
                   scale: isDone ? 1 : 0,
                   child: Container(
-                    padding: const EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
                       color: AppColors.logoGreen,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.check_rounded,
-                      size: 15,
+                      size: 16,
                       color: AppColors.surface,
                     ),
                   ),

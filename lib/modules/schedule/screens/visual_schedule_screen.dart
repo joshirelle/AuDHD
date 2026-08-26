@@ -320,80 +320,92 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
       visible.map((task) => task.id).toList(),
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-          child: HowToCard(
-            steps: [
-              tr(
-                'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at '
-                    'ang oras ng araw kung kailan ito ginagawa.',
-                'Tap "Task" to add one, with a picture and the time of day '
-                    'when it is done.',
+    // Iisang scroll ang buong screen. Sa `Column` + `Expanded`, nananatiling
+    // nakapirmi ang pang-itaas at maliit na bintana lang ang natitira para sa
+    // mga gawain — kahit mahaba pa ang telepono.
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: HowToCard(
+                  steps: [
+                    tr(
+                      'Pindutin ang "Gawain" para magdagdag, kasama ang larawan at '
+                          'ang oras ng araw kung kailan ito ginagawa.',
+                      'Tap "Task" to add one, with a picture and the time of day '
+                          'when it is done.',
+                    ),
+                    tr(
+                      'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
+                          'niya kung ano ang susunod na mangyayari.',
+                      'Show the schedule to your child at the start of the day so '
+                          'they know what happens next.',
+                    ),
+                    tr(
+                      'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
+                          'hindi ikaw.',
+                      'Let them tick off what is finished. They should be the one '
+                          'tapping, not you.',
+                    ),
+                    tr(
+                      'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
+                          'baguhin o burahin ito.',
+                      'Press and hold a task you added yourself to edit or delete '
+                          'it.',
+                    ),
+                  ],
+                  footnote: tr(
+                    'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
+                        'nananatili ang listahan ng gawain.',
+                    'The ticks clear on their own each new day, but the list of '
+                        'tasks stays.',
+                  ),
+                ),
               ),
-              tr(
-                'Ipakita ang iskedyul sa bata sa umpisa ng araw para malaman '
-                    'niya kung ano ang susunod na mangyayari.',
-                'Show the schedule to your child at the start of the day so '
-                    'they know what happens next.',
+              Padding(
+                key: _dateStripKey,
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: WeeklyDateStrip(
+                  selectedDate: _selectedDate,
+                  onDateSelected: (date) =>
+                      setState(() => _selectedDate = date),
+                  progressSource: HiveService.getScheduleDoneBox().listenable(),
+                  hasProgress: HiveService.hasAnyScheduleDoneOn,
+                ),
               ),
-              tr(
-                'Hayaan siyang mag-tsek ng natapos. Siya ang dapat pumindot, '
-                    'hindi ikaw.',
-                'Let them tick off what is finished. They should be the one '
-                    'tapping, not you.',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: _buildNextUp(visible, doneCount),
               ),
-              tr(
-                'Pindutin nang matagal ang gawaing ikaw ang nagdagdag para '
-                    'baguhin o burahin ito.',
-                'Press and hold a task you added yourself to edit or delete '
-                    'it.',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                child: _buildFilters(),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
+                child: _buildProgress(doneCount, visible.length),
               ),
             ],
-            footnote: tr(
-              'Kusang nagre-reset ang tsek tuwing bagong araw, pero '
-                  'nananatili ang listahan ng gawain.',
-              'The ticks clear on their own each new day, but the list of '
-                  'tasks stays.',
-            ),
           ),
         ),
-        Padding(
-          key: _dateStripKey,
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-          child: WeeklyDateStrip(
-            selectedDate: _selectedDate,
-            onDateSelected: (date) => setState(() => _selectedDate = date),
-            progressSource: HiveService.getScheduleDoneBox().listenable(),
-            hasProgress: HiveService.hasAnyScheduleDoneOn,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-          child: _buildNextUp(visible, doneCount),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-          child: _buildFilters(),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
-          child: _buildProgress(doneCount, visible.length),
-        ),
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 96),
-            // Nakapirming taas para hindi umapaw ang tile sa makikitid na screen.
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 96),
+          sliver: SliverGrid(
+            // 132 at hindi 98: sa `MaxCrossAxisExtent`, hindi lapad ang
+            // itinatakda kundi ang hangganan bago magdagdag ng hanay. Sa 132,
+            // tatlong hanay sa lahat ng teleponong 340–430dp — hindi apat sa
+            // mas malaki.
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 128,
-              mainAxisExtent: 136,
+              maxCrossAxisExtent: 132,
+              mainAxisExtent: 162,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
-            itemCount: visible.length,
-            itemBuilder: (context, index) {
+            delegate: SliverChildBuilderDelegate((context, index) {
               final task = visible[index];
               return ScheduleTaskCard(
                 task: task,
@@ -404,7 +416,7 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
                     ? () => _showTaskOptions(task)
                     : null,
               );
-            },
+            }, childCount: visible.length),
           ),
         ),
       ],

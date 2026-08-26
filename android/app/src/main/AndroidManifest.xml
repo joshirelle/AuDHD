@@ -48,5 +48,18 @@
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="https"/>
         </intent>
+        <!-- DIAL at hindi CALL: bumubukas lang ang dialer na may nakalagay
+             nang numero. Ang magulang pa rin ang pipindot ng tawag, kaya
+             hindi kailangan ng CALL_PHONE permission. -->
+        <intent>
+            <action android:name="android.intent.action.DIAL"/>
+            <data android:scheme="tel"/>
+        </intent>
+        <!-- Para sa address: diretso sa maps app. Kapag walang maps app,
+             ang https na nasa itaas ang gagamitin. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="geo"/>
+        </intent>
     </queries>
 </manifest>

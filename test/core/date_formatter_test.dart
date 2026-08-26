@@ -44,4 +44,19 @@ void main() {
       );
     });
   });
+
+  group('monthYear', () {
+    test('reads the YYYY-MM stored in the centers asset', () {
+      expect(DateFormatter.monthYear('2026-08'), 'Agosto 2026');
+      expect(DateFormatter.monthYear('2026-01'), 'Enero 2026');
+      expect(DateFormatter.monthYear('2026-12'), 'Disyembre 2026');
+    });
+
+    test('shows the raw value rather than dropping a bad date', () {
+      expect(DateFormatter.monthYear('Agosto 2026'), 'Agosto 2026');
+      expect(DateFormatter.monthYear('2026-13'), '2026-13');
+      expect(DateFormatter.monthYear('2026-00'), '2026-00');
+      expect(DateFormatter.monthYear('2026'), '2026');
+    });
+  });
 }

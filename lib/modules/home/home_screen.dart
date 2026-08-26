@@ -8,10 +8,12 @@ import '../../core/utils/date_formatter.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
+import '../../widgets/medical_disclaimer_sheet.dart';
 import '../mood/screens/mood_log_screen.dart';
 import '../profile/profile_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
+import 'widgets/consultation_card.dart';
 import 'widgets/doctor_report_card.dart';
 import 'widgets/home_activities_card.dart';
 import 'widgets/home_tour_guide.dart';
@@ -184,6 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // 9. Progress Report Full-Width Card
               const DoctorReportCard(),
+              const SizedBox(height: 16),
+
+              // Kasunod ng ulat: doon ito dadalhin.
+              const ConsultationCard(),
               const SizedBox(height: 20),
             ],
           ),
@@ -200,31 +206,60 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Umuurong sa halip na mag-overflow sa makikitid na screen.
-        const Flexible(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Text(
-                  'AuDHD',
-                  style: TextStyle(
-                    color: AppColors.logoGreen,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Fredoka',
+        Flexible(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Umuurong sa halip na mag-overflow sa makikitid na screen.
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Text(
+                        'AuDHD',
+                        style: TextStyle(
+                          color: AppColors.logoGreen,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Fredoka',
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      AppPhoneticBadge(),
+                    ],
                   ),
                 ),
-                SizedBox(width: 8),
-                AppPhoneticBadge(),
-              ],
-            ),
+              ),
+              // Nasa labas ng `FittedBox`: kung nasa loob, lumiliit din ang
+              // tapak nito sa makikitid na screen at hindi na matatamaan.
+              _buildDisclaimerButton(),
+            ],
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         StarBadgeWidget(key: _starKey),
       ],
+    );
+  }
+
+  /// Icon at hindi card: kailangan itong laging maabot, pero hindi ito ang
+  /// dahilan kung bakit binubuksan ng magulang ang app.
+  Widget _buildDisclaimerButton() {
+    return Semantics(
+      button: true,
+      label: MedicalDisclaimerSheet.title,
+      child: IconButton(
+        onPressed: () => MedicalDisclaimerSheet.show(context),
+        icon: const Icon(Icons.info_outline_rounded),
+        color: AppColors.warning,
+        iconSize: 22,
+        tooltip: MedicalDisclaimerSheet.title,
+        visualDensity: VisualDensity.compact,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+      ),
     );
   }
 

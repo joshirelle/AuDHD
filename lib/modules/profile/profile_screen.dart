@@ -46,20 +46,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         content: Text(
           tr(
             'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
-            'Ang mga naitalang behavior log, sensory history, '
-            'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
-            'pangalan at edad sa mga PDF report.'
-            // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
-            '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
-                'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
-                'nabura na ang mga ito.'}',
+                'Ang mga naitalang behavior log, sensory history, '
+                'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
+                'pangalan at edad sa mga PDF report.'
+                // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
+                '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
+                          'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
+                          'nabura na ang mga ito.'}',
             'The name and birthday of ${child.name} will be deleted.\n\n'
-            'The behavior logs, sensory history, milestones, and mood you '
-            'recorded will STAY on the device. Only the name and age will be '
-            'gone from the PDF reports.'
-            '${BackupService.hasBackup ? '' : '\n\nYou do not have a backup of '
-                'your data yet. The name, birthday, and photo can no longer be '
-                'brought back once they are deleted.'}',
+                'The behavior logs, sensory history, milestones, and mood you '
+                'recorded will STAY on the device. Only the name and age will be '
+                'gone from the PDF reports.'
+                '${BackupService.hasBackup ? '' : '\n\nYou do not have a backup of '
+                          'your data yet. The name, birthday, and photo can no longer be '
+                          'brought back once they are deleted.'}',
           ),
         ),
         actions: [
@@ -202,7 +202,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          if (child == null) _buildEmptyState() else _buildProfileSection(child),
+          if (child == null)
+            _buildEmptyState()
+          else
+            _buildProfileSection(child),
           const SizedBox(height: 28),
           _buildSecurityCard(),
           const SizedBox(height: 20),
@@ -228,7 +231,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 12),
           Text(
             tr('Wala pang naitalang bata.', 'No child added yet.'),
-            style: TextStyle(color: AppColors.textMuted, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -237,20 +243,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'The name and birthday will show up in the PDF report, and will be used to work out the age.',
             ),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: AppColors.textMuted, height: 1.3),
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.textMuted,
+              height: 1.3,
+            ),
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.logoGreen,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () => _openEditor(),
             icon: const Icon(Icons.add_rounded, color: AppColors.surface),
             label: Text(
               tr('Itala ang Bata', 'Add Your Child'),
-              style: const TextStyle(color: AppColors.surface, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.surface,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -271,7 +286,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 14),
               Text(
                 child.displayName,
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
               ),
               if (child.gender != null) ...[
                 const SizedBox(height: 8),
@@ -303,13 +322,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(50),
             side: const BorderSide(color: AppColors.logoGreen),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
           ),
           onPressed: () => _openEditor(existing: child),
           icon: const Icon(Icons.edit_rounded, color: AppColors.logoGreen),
           label: Text(
             tr('Baguhin ang Detalye', 'Edit Details'),
-            style: const TextStyle(color: AppColors.logoGreen, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: AppColors.logoGreen,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],

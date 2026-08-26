@@ -1,0 +1,186 @@
+[
+  {
+    "id": "potentials_qc",
+    "name": "Potentials Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Bago Bantay",
+    "notes": "OT, Speech, PT, SPED, at CBT. Nakasaad na PRC-licensed ang mga therapist.",
+    "notesEn": "OT, speech, PT, SPED, and CBT. They state that their therapists are PRC-licensed."
+  },
+  {
+    "id": "diversabilities_qc",
+    "name": "Diversabilities Therapy and Learning Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Timog Avenue",
+    "notes": "OT, Speech, at SPED. May harapang sesyon, telecoaching, at programa sa bahay.",
+    "notesEn": "OT, speech, and SPED. Face-to-face sessions, telecoaching, and home programs."
+  },
+  {
+    "id": "kidswecare_qc",
+    "name": "KidsWeCare Pediatric Therapy",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Project 8",
+    "notes": "OT, Speech, SPED tutorial, playgroup, at tulong sa pagkain.",
+    "notesEn": "OT, speech, SPED tutorial, playgroup, and feeding support."
+  },
+  {
+    "id": "kindle_qc",
+    "name": "Kindle Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Novaliches",
+    "notes": "OT, Speech, at SPED tutorial.",
+    "notesEn": "OT, speech, and SPED tutorial."
+  },
+  {
+    "id": "littlesparks_qc",
+    "name": "Little Sparks Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Unit 404 Hemady Square Mall, 86 Dona Hemady St. cor. E. Rodriguez Sr. Ave., 1112",
+    "contactNumber": "0917 163 1436",
+    "schedule": "Lunes hanggang Sabado, 8:30 AM - 5:30 PM",
+    "scheduleEn": "Monday to Saturday, 8:30 AM - 5:30 PM",
+    "closedOn": "Sarado tuwing Linggo",
+    "closedOnEn": "Closed on Sundays",
+    "facebookUrl": "https://www.facebook.com/littlesparkstherapymnl",
+    "notes": "Speech therapy, Oral Placement Therapy, PROMPT, AAC, feeding therapy, sensory integration, sensory gym, group therapy, playgroup, playschool, SPED tutorial, at academic tutoring para sa Grade 1 hanggang 6.",
+    "notesEn": "Speech therapy, Oral Placement Therapy, PROMPT, AAC, feeding therapy, sensory integration, sensory gym, group therapy, playgroup, playschool, SPED tutorial, and academic tutoring for Grades 1 to 6.",
+    "verifiedOn": "2026-08"
+  },
+  {
+    "id": "peachesandpies_qc",
+    "name": "Peaches & Pies Learning Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Cubao",
+    "notes": "Speech at sensory integration.",
+    "notesEn": "Speech and sensory integration."
+  },
+  {
+    "id": "ccsn_qc",
+    "name": "Center for Children with Special Needs (GTD CDIS-CCSN)",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "Lot 3 Burney St., Fairmont Subd., North Fairview",
+    "notes": "OT, PT, speech therapy, at ABA. May SPED din. Nasa listahan ng NCDA.",
+    "notesEn": "OT, PT, speech therapy, and ABA. They also have SPED. Listed with the NCDA."
+  },
+  {
+    "id": "perfectsoul_qc",
+    "name": "Perfect Soul Center for Education and Healing, Inc.",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Quezon City",
+    "address": "30 Matiwasay Street, UP Village",
+    "notes": "OT, programa sa wika at komunikasyon, playgroup, at social skills. Nasa listahan ng NCDA.",
+    "notesEn": "OT, language and communication programs, playgroup, and social skills. Listed with the NCDA."
+  },
+  {
+    "id": "sprouts_pasig",
+    "name": "Sprouts Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Pasig",
+    "address": "Emerald Mansion",
+    "contactNumber": "0954 374 4820",
+    "schedule": "Lunes hanggang Sabado, 9:00 AM - 5:00 PM",
+    "scheduleEn": "Monday to Saturday, 9:00 AM - 5:00 PM",
+    "closedOn": "Sarado tuwing Linggo",
+    "closedOnEn": "Closed on Sundays",
+    "facebookUrl": "https://www.facebook.com/sproutstcph",
+    "notes": "OT, PT, at speech therapy. May evaluation, regular na sesyon, at specialized na sesyon.",
+    "notesEn": "OT, PT, and speech therapy. They offer evaluation, regular sessions, and specialized sessions.",
+    "verifiedOn": "2026-08"
+  },
+  {
+    "id": "cognicare_pasig",
+    "name": "Cognicare Pediatric Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Pasig",
+    "address": "C. Raymundo Avenue, Maybunga",
+    "notes": "OT para sa maagang interbensyon.",
+    "notesEn": "OT for early intervention."
+  },
+  {
+    "id": "littlewanderer_makati",
+    "name": "Little Wanderer Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Makati",
+    "address": "San Antonio",
+    "notes": "Programa ng interbensyon na nakabatay sa laro.",
+    "notesEn": "Play-based intervention programs."
+  },
+  {
+    "id": "techniks_makati",
+    "name": "Techniks That Work Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Makati",
+    "address": "P&L II Building, 5598 Osmena Highway, Palanan",
+    "notes": "OT at speech. Malaki ang bahagi ng magulang sa programa.",
+    "notesEn": "OT and speech. Parents take a large part in the program."
+  },
+  {
+    "id": "goodkids_pasay",
+    "name": "Good Kids Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Pasay",
+    "address": "Sorosa Bldg., 2035 F.B. Harrison St. cor. Sen. Gil Puyat Ave.",
+    "notes": "OT, PT, speech, at gross motor.",
+    "notesEn": "OT, PT, speech, and gross motor."
+  },
+  {
+    "id": "contour_muntinlupa",
+    "name": "Contour Rehabilitation & Wellness Inc.",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Muntinlupa",
+    "address": "Don Gesu Building, Don Jesus Blvd., Alabang Hills",
+    "notes": "OT, PT, at speech-language pathology. Tumatanggap ng bata at matanda.",
+    "notesEn": "OT, PT, and speech-language pathology. They accept both children and adults."
+  },
+  {
+    "id": "specialminds_valenzuela",
+    "name": "Special Minds Developmental Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Valenzuela",
+    "address": "Gen. T. de Leon",
+    "notes": "OT, speech at wika, ABA, playgroup, at SPED.",
+    "notesEn": "OT, speech and language, ABA, playgroup, and SPED."
+  },
+  {
+    "id": "found_malabon",
+    "name": "FOUND Pediatric Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Malabon",
+    "address": "Gov. Pascual Avenue",
+    "notes": "Pagsusuri at therapy para sa batang may speech delay.",
+    "notesEn": "Assessment and therapy for children with speech delay."
+  },
+  {
+    "id": "endeavour_laspinas",
+    "name": "Endeavour Therapy Center",
+    "kind": "therapy",
+    "type": "private",
+    "region": "Las Pinas",
+    "address": "Las Pinas City",
+    "notes": "Self-care at life skills para sa batang may autism at ADHD.",
+    "notesEn": "Self-care and life skills for children with autism and ADHD."
+  }
+]

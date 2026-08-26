@@ -37,6 +37,19 @@ class DateFormatter {
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 
+  /// Buwan at taon lang, mula sa `YYYY-MM`. Nakaimbak nang ganito sa asset
+  /// para hindi na kailangang isulat nang dalawang beses sa bawat entry.
+  /// Ibinabalik ang mismong `raw` kapag hindi mabasa — mas mabuting makita
+  /// ang mali kaysa mawala ang petsa.
+  static String monthYear(String raw) {
+    final parts = raw.split('-');
+    final month = parts.length == 2 ? int.tryParse(parts[1]) : null;
+    if (month == null || month < 1 || month > 12) return raw;
+
+    final months = LanguageController.isEnglish ? _monthsEng : _monthsFil;
+    return '${months[month - 1]} ${parts[0]}';
+  }
+
   /// Bati ayon sa oras. Ang gabi ay umaabot hanggang madaling-araw dahil
   /// karaniwang gising pa ang magulang sa mga oras na iyon.
   static String timeGreeting(DateTime now) {

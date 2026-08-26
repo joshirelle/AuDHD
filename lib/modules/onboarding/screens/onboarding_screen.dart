@@ -3,6 +3,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/app_branding_header.dart';
 import '../../../widgets/community_link.dart';
+import '../../../widgets/medical_disclaimer_sheet.dart';
 import '../../home/widgets/thank_you_sheet.dart';
 import '../../home/widgets/whats_new_sheet.dart';
 
@@ -112,6 +113,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _currentIndex = 0;
 
+  /// Ang paalalang pangkalusugan ang huling pahina, kaya isa itong dagdag sa
+  /// bilang ng slide.
+  int get _pageCount => _slides.length + 1;
+
+  bool get _isDisclaimerPage => _currentIndex == _pageCount - 1;
+
   @override
   void dispose() {
     _controller.dispose();
@@ -120,6 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _finish() async {
     await HiveService.markSeen(HiveService.hasSeenOnboardingKey);
+    await HiveService.markSeen(MedicalDisclaimerSheet.seenKey);
     // Bago sa kanya ang lahat, kaya walang saysay ang "ano ang bago" at ang
     // pasasalamat sa matagal nang gumagamit. Ang tour lang ang makikita niya.
     await HiveService.markSeen(WhatsNewSheet.seenKey);
@@ -127,8 +135,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     widget.onFinished();
   }
 
+  /// Nilalaktawan ang paglilibot sa mga tampok, hindi ang paalala.
+  void _skipToDisclaimer() {
+    _controller.animateToPage(
+      _pageCount - 1,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOut,
+    );
+  }
+
   void _next() {
-    if (_currentIndex == _slides.length - 1) {
+    if (_isDisclaimerPage) {
       _finish();
       return;
     }
@@ -140,7 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLast = _currentIndex == _slides.length - 1;
+    final isLast = _isDisclaimerPage;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -162,7 +179,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 duration: const Duration(milliseconds: 200),
                 opacity: isLast ? 0 : 1,
                 child: TextButton(
-                  onPressed: isLast ? null : _finish,
+                  onPressed: isLast ? null : _skipToDisclaimer,
                   child: const Text(
                     'Laktawan',
                     style: TextStyle(
@@ -177,12 +194,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _controller,
-                itemCount: _slides.length,
+                itemCount: _pageCount,
                 onPageChanged: (index) => setState(() => _currentIndex = index),
-                itemBuilder: (context, index) => _buildSlide(
-                  _slides[index],
-                  isLast: index == _slides.length - 1,
-                ),
+                itemBuilder: (context, index) => index == _slides.length
+                    ? _buildDisclaimerPage()
+                    : _buildSlide(
+                        _slides[index],
+                        // Huling slide ng tampok, hindi ang huling pahina —
+                        // dito pa rin dapat lumabas ang imbitasyon sa grupo.
+                        isLast: index == _slides.length - 1,
+                      ),
               ),
             ),
             const SizedBox(height: 12),
@@ -203,7 +224,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   child: Text(
-                    isLast ? 'Magsimula Na' : 'Susunod',
+                    isLast
+                        ? MedicalDisclaimerSheet.acknowledgeLabel
+                        : 'Susunod',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -360,11 +383,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  Widget _buildDisclaimerPage() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [MedicalDisclaimerBody()],
+      ),
+    );
+  }
+
   Widget _buildIndicators() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for (var i = 0; i < _slides.length; i++)
+        for (var i = 0; i < _pageCount; i++)
           AnimatedContainer(
             duration: const Duration(milliseconds: 240),
             margin: const EdgeInsets.symmetric(horizontal: 4),

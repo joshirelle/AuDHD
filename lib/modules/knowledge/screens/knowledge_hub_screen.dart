@@ -8,6 +8,7 @@ import '../../../data/services/hive_service.dart';
 import '../../../widgets/kiko_card.dart';
 import '../data/guide_cards.dart';
 import '../widgets/parent_tip_sheet.dart';
+import 'observation_areas_screen.dart';
 
 class KnowledgeHubScreen extends StatefulWidget {
   const KnowledgeHubScreen({super.key});
@@ -56,6 +57,8 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
             children: [
               const SizedBox(height: 16),
               _buildNotice(),
+              const SizedBox(height: 12),
+              _buildObservationEntry(),
               const SizedBox(height: 16),
               _buildFilters(),
               const SizedBox(height: 8),
@@ -79,6 +82,62 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildObservationEntry() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: KikoCard(
+        backgroundColor: AppColors.tintGold,
+        padding: const EdgeInsets.all(16),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ObservationAreasScreen(),
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.visibility_outlined,
+              color: AppColors.warning,
+              size: 22,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tr('Mga Maaari Mong Mapansin', 'What You Might Notice'),
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                      fontFamily: 'Nunito',
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    tr(
+                      'Magkakaibang anyo ng pakikisama, pokus, at pandama.',
+                      'Different shapes of getting along, focus, and senses.',
+                    ),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      height: 1.35,
+                      color: AppColors.textDark,
+                      fontFamily: 'Nunito',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded, color: AppColors.textDark),
+          ],
+        ),
       ),
     );
   }
@@ -262,11 +321,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                             color: AppColors.surface,
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            card.icon,
-                            size: 20,
-                            color: category.ink,
-                          ),
+                          child: Icon(card.icon, size: 20, color: category.ink),
                         ),
                         const Spacer(),
                         if (bookmarked)
@@ -310,10 +365,7 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
             ),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               color: AppColors.surface.withValues(alpha: 0.55),
               child: Text(
                 '"${card.quote}"',
