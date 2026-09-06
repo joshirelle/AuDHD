@@ -355,7 +355,7 @@ class MilestoneConstants {
       id: 'cdc_36_lc_2',
       titleFil:
           'Nagtatanong ng "sino," "ano," "saan," o "bakit", tulad ng "Nasaan '
-          'si mommy o daddy?"',
+          'si mommy/daddy?"',
       titleEng:
           'Asks "who," "what," "where," or "why" questions, like "Where is '
           'mommy/daddy?"',
