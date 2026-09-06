@@ -31,6 +31,7 @@ void main() {
     Hive.registerAdapter(ScheduleTaskAdapter());
     Hive.registerAdapter(ScheduleTimeOfDayAdapter());
     doneBox = await Hive.openBox<int>('schedule_completion');
+    await Hive.openBox<String>('app_prefs');
   });
 
   tearDownAll(() async {

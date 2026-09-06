@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../core/models/reward.dart';
 import '../core/services/reward_service.dart';
 import '../core/services/star_service.dart';

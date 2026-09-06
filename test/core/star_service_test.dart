@@ -25,6 +25,9 @@ void main() {
     completionBox = await Hive.openBox<bool>('sensory_completion_box');
     milestoneBox = await Hive.openBox<int>('milestone_progress');
     scheduleDoneBox = await Hive.openBox<int>('schedule_completion');
+    // Dito nakatira ang `active_child_id`, at bawat naka-scope na box ay
+    // tinatanong ito kung kaninong bata ang binabasa.
+    await Hive.openBox<String>('app_prefs');
   });
 
   tearDownAll(() async {

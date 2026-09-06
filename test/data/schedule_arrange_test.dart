@@ -17,6 +17,7 @@ void main() {
     await Hive.openBox<int>('schedule_order');
     await Hive.openBox<bool>('schedule_hidden');
     await Hive.openBox<int>('schedule_completion');
+    await Hive.openBox<String>('app_prefs');
   });
 
   tearDownAll(() async {

@@ -5,6 +5,7 @@ void main() {
   group('gender round trip', () {
     test('a chosen gender survives save and load', () {
       final profile = ChildProfile(
+        id: 'c1',
         name: 'Juan',
         birthDate: DateTime(2024, 1, 15),
         gender: Gender.male,
@@ -15,6 +16,7 @@ void main() {
 
     test('leaving it unset stays unset', () {
       final profile = ChildProfile(
+        id: 'c1',
         name: 'Juan',
         birthDate: DateTime(2024, 1, 15),
       );
@@ -31,7 +33,7 @@ void main() {
         'birthDate': DateTime(2024, 1, 15).toIso8601String(),
       };
 
-      final profile = ChildProfile.fromMap(stored);
+      final profile = ChildProfile.fromMap(stored, idIfMissing: 'c1');
 
       expect(profile.name, 'Juan');
       expect(profile.gender, isNull);
@@ -44,7 +46,7 @@ void main() {
         'gender': 'other',
       };
 
-      expect(ChildProfile.fromMap(stored).gender, isNull);
+      expect(ChildProfile.fromMap(stored, idIfMissing: 'c1').gender, isNull);
     });
   });
 }

@@ -9,7 +9,7 @@ class RewardService {
     final box = HiveService.getRewardBox();
     return <Reward>[
       for (final key in box.keys)
-        Reward(label: key as String, stars: box.get(key)!, isCustom: true),
+        Reward(label: key, stars: box.get(key)!, isCustom: true),
     ]..sort((a, b) => a.stars.compareTo(b.stars));
   }
 

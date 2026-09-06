@@ -24,6 +24,7 @@ void main() {
     Hive.registerAdapter(ScheduleTimeOfDayAdapter());
 
     await Hive.openBox('child_profile');
+    await Hive.openBox('child_profiles');
     await Hive.openBox<BehaviorLog>('behavior_logs');
     await Hive.openBox<SensoryProfileResult>('sensory_profiles');
     await Hive.openBox<bool>('sensory_completion_box');
@@ -47,6 +48,7 @@ void main() {
   });
 
   final profile = ChildProfile(
+    id: 'child_1',
     name: 'Alex Santos',
     birthDate: DateTime(2021, 3, 14),
     gender: Gender.male,
@@ -102,7 +104,7 @@ void main() {
   }
 
   Future<void> wipe() async {
-    await HiveService.deleteChildProfile();
+    await HiveService.getProfilesBox().clear();
     await HiveService.getBehaviorBox().clear();
     await HiveService.getSensoryBox().clear();
     await HiveService.getScheduleBox().clear();
@@ -130,8 +132,7 @@ void main() {
     // Dumadaan sa tunay na encode/decode: doon lumalabas ang mga tipong
     // hindi kayang isulat ng JSON, tulad ng DateTime.
     final payload = await BackupService.buildPayload();
-    final reloaded =
-        jsonDecode(jsonEncode(payload)) as Map<String, dynamic>;
+    final reloaded = jsonDecode(jsonEncode(payload)) as Map<String, dynamic>;
 
     await wipe();
     await BackupService.restorePayload(reloaded);
@@ -206,16 +207,18 @@ void main() {
     expect(HiveService.getBehaviorBox().length, 1);
   });
 
-  test('a payload with missing sections empties the app instead of crashing',
-      () async {
-    await seed();
+  test(
+    'a payload with missing sections empties the app instead of crashing',
+    () async {
+      await seed();
 
-    await BackupService.restorePayload({'format': 1, 'app': 'AuDHD'});
+      await BackupService.restorePayload({'format': 1, 'app': 'AuDHD'});
 
-    expect(HiveService.getChildProfile(), isNull);
-    expect(HiveService.getBehaviorBox().isEmpty, isTrue);
-    expect(HiveService.getMoodBox().isEmpty, isTrue);
-  });
+      expect(HiveService.getChildProfile(), isNull);
+      expect(HiveService.getBehaviorBox().isEmpty, isTrue);
+      expect(HiveService.getMoodBox().isEmpty, isTrue);
+    },
+  );
 
   test('restoring on a wiped phone marks that a backup exists', () async {
     await seed();
@@ -233,5 +236,116 @@ void main() {
       BackupService.lastBackupAt(),
       DateTime.parse(payload['createdAt'] as String),
     );
+  });
+
+  group('many children', () {
+    Future<void> seedThree() async {
+      for (final entry in {
+        'a': 'Andres',
+        'b': 'Miguel',
+        'c': 'Sofia',
+      }.entries) {
+        await HiveService.saveChild(
+          ChildProfile(
+            id: entry.key,
+            name: entry.value,
+            birthDate: DateTime(2021, 1, 1),
+            supportFocus: const [SupportFocus.adhd],
+          ),
+        );
+      }
+      await HiveService.setActiveChild('b');
+    }
+
+    Future<Map<String, dynamic>> roundTrip() async {
+      final payload = await BackupService.buildPayload();
+      return jsonDecode(jsonEncode(payload)) as Map<String, dynamic>;
+    }
+
+    test('every child survives the round trip', () async {
+      await seedThree();
+      final reloaded = await roundTrip();
+
+      await wipe();
+      await BackupService.restorePayload(reloaded);
+
+      expect(HiveService.getChildProfiles().map((c) => c.name), [
+        'Andres',
+        'Miguel',
+        'Sofia',
+      ]);
+    });
+
+    test('the tags come back with the child', () async {
+      await seedThree();
+      final reloaded = await roundTrip();
+
+      await wipe();
+      await BackupService.restorePayload(reloaded);
+
+      expect(HiveService.getChildProfiles().first.supportFocus, [
+        SupportFocus.adhd,
+      ]);
+    });
+
+    test('the child who was active stays active', () async {
+      await seedThree();
+      final reloaded = await roundTrip();
+
+      await wipe();
+      await BackupService.restorePayload(reloaded);
+
+      expect(HiveService.getActiveChildId(), 'b');
+    });
+
+    test('an active id pointing at nobody falls back to the first', () async {
+      await seedThree();
+      final reloaded = await roundTrip();
+      reloaded['activeChildId'] = 'wala_na_ito';
+
+      await wipe();
+      await BackupService.restorePayload(reloaded);
+
+      expect(HiveService.getActiveChild()!.name, 'Andres');
+    });
+  });
+
+  group('reading a file written by v6', () {
+    /// Eksaktong hugis ng `format: 1`: iisang `profile` na walang id, at
+    /// walang `children` o `activeChildId`.
+    Map<String, dynamic> v6Payload() => {
+      'format': 1,
+      'app': 'AuDHD',
+      'createdAt': DateTime(2026, 8, 1).toIso8601String(),
+      'profile': {
+        'name': 'Miguel',
+        'birthDate': DateTime(2021, 5, 2).toIso8601String(),
+        'gender': 'male',
+        'nickname': 'Migs',
+      },
+      'photoBase64': null,
+    };
+
+    test('the single child comes back and becomes active', () async {
+      await wipe();
+
+      await BackupService.restorePayload(v6Payload());
+
+      final children = HiveService.getChildProfiles();
+      expect(children, hasLength(1));
+      expect(children.single.name, 'Miguel');
+      expect(children.single.nickname, 'Migs');
+      expect(children.single.gender, Gender.male);
+      expect(HiveService.getActiveChildId(), children.single.id);
+    });
+
+    test('a file with no child at all leaves nobody active', () async {
+      await wipe();
+
+      await BackupService.restorePayload({...v6Payload(), 'profile': null});
+
+      expect(HiveService.getChildProfiles(), isEmpty);
+      expect(HiveService.getActiveChildId(), isNull);
+    });
   });
 }

@@ -3,11 +3,13 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../data/models/behavior_log.dart';
 import '../../data/models/child_profile.dart';
 import '../../data/models/sensory_profile_result.dart';
 import '../../data/services/hive_service.dart';
+import '../../data/services/scoped_box.dart';
 import '../i18n/language_controller.dart';
 import '../models/schedule_task.dart';
 import 'child_photo_service.dart';
@@ -33,7 +35,9 @@ class BackupResult {
 /// sa iba (email, chat), kaya hindi dapat may kredensyal sa loob nito.
 class BackupService {
   /// Taasan lang kapag hindi na kayang basahin ang lumang file.
-  static const int _formatVersion = 1;
+  ///
+  /// 2 — maraming bata sa `children`; ang 1 ay may iisang `profile`.
+  static const int _formatVersion = 2;
 
   static const String _lastBackupKey = 'last_backup_at';
 
@@ -91,42 +95,44 @@ class BackupService {
   /// Buong laman ng backup. Hiwalay sa pagsulat ng file para masuri ito
   /// nang walang file picker.
   static Future<Map<String, dynamic>> buildPayload() async {
-    final profile = HiveService.getChildProfile();
-
-    String? photoBase64;
-    final photoFileName = profile?.photoFileName;
-    if (photoFileName != null) {
-      final file = ChildPhotoService.fileFor(photoFileName);
-      if (file.existsSync()) {
-        photoBase64 = base64Encode(await file.readAsBytes());
-      }
+    final children = <Map<String, dynamic>>[];
+    for (final child in HiveService.getChildProfiles()) {
+      children.add({
+        'profile': child.toMap(),
+        'photoBase64': await _photoBase64(child.photoFileName),
+      });
     }
 
     return {
       'format': _formatVersion,
       'app': 'AuDHD',
       'createdAt': DateTime.now().toIso8601String(),
-      'profile': profile?.toMap(),
-      'photoBase64': photoBase64,
-      'behaviorLogs': HiveService.getBehaviorBox().values
-          .map((log) => log.toJson())
-          .toList(),
-      'sensoryResults': HiveService.getSensoryBox().values
-          .map((result) => result.toJson())
-          .toList(),
-      'scheduleTasks': HiveService.getScheduleBox().values
-          .map((task) => task.toJson())
-          .toList(),
-      'sensoryCompletion': _dump(HiveService.getCompletionBox()),
-      'mood': _dump(HiveService.getMoodBox()),
-      'milestones': _dump(HiveService.getMilestoneBox()),
+      'children': children,
+      'activeChildId': HiveService.getActiveChildId(),
+      // Naka-Map at hindi listahan: nasa susi ang kung kaninong bata ito, at
+      // ang `id` ng bagay ay walang alam tungkol doon.
+      'behaviorLogs': _dumpJson(
+        HiveService.getBehaviorRawBox(),
+        (log) => log.toJson(),
+      ),
+      'sensoryResults': _dumpJson(
+        HiveService.getSensoryRawBox(),
+        (result) => result.toJson(),
+      ),
+      'scheduleTasks': _dumpJson(
+        HiveService.getScheduleRawBox(),
+        (task) => task.toJson(),
+      ),
+      'sensoryCompletion': _dump(HiveService.getCompletionRawBox()),
+      'mood': _dump(HiveService.getMoodRawBox()),
+      'milestones': _dump(HiveService.getMilestoneRawBox()),
       'settings': _dump(HiveService.getSettingsBox()),
-      'scheduleCompletion': _dump(HiveService.getScheduleDoneBox()),
-      'rewards': _dump(HiveService.getRewardBox()),
+      'scheduleCompletion': _dump(HiveService.getScheduleDoneRawBox()),
+      'rewards': _dump(HiveService.getRewardRawBox()),
       'guideBookmarks': _dump(HiveService.getGuideBookmarkBox()),
       'guideTips': _dump(HiveService.getGuideTipBox()),
-      'scheduleOrder': _dump(HiveService.getScheduleOrderBox()),
-      'scheduleHidden': _dump(HiveService.getScheduleHiddenBox()),
+      'scheduleOrder': _dump(HiveService.getScheduleOrderRawBox()),
+      'scheduleHidden': _dump(HiveService.getScheduleHiddenRawBox()),
       'prefs': _dump(HiveService.getPrefsBox()),
     };
   }
@@ -137,6 +143,131 @@ class BackupService {
       result[key.toString()] = box.get(key);
     }
     return result;
+  }
+
+  static Map<String, dynamic> _dumpJson<T>(
+    Box<T> box,
+    Map<String, dynamic> Function(T) toJson,
+  ) {
+    final result = <String, dynamic>{};
+    for (final key in box.keys) {
+      final value = box.get(key);
+      if (value != null) result[key.toString()] = toJson(value);
+    }
+    return result;
+  }
+
+  /// Ang `format: 1` ay walang prefix sa susi. Idinidikit ito sa nag-iisang
+  /// bata ng file; kung wala, walang naibabalik.
+  static String? _legacyScopeOf(
+    Map<String, dynamic> data,
+    List<(ChildProfile, String?)> entries,
+  ) => data['children'] is List ? null : entries.firstOrNull?.$1.id;
+
+  static String _scopedKey(Object key, String? scope) =>
+      scope == null ? key.toString() : '$scope${ScopedBox.separator}$key';
+
+  /// Ang tatlong box na may buong bagay sa loob.
+  ///
+  /// Naka-Map ang `format: 2`, kaya ang susi mismo ang dala ng kung kaninong
+  /// bata. Listahan ang `format: 1`, kaya doon lang ginagamit ang `id` ng
+  /// bagay — at idinidikit sa nag-iisang bata ng file.
+  static Future<void> _restoreObjects<T>(
+    Box<T> box,
+    dynamic raw,
+    String? scope,
+    T Function(Map<String, dynamic>) fromJson,
+    String Function(T) idOf,
+  ) async {
+    await box.clear();
+
+    if (raw is Map) {
+      for (final entry in raw.entries) {
+        final value = entry.value;
+        if (value is Map) {
+          await box.put(
+            entry.key.toString(),
+            fromJson(Map<String, dynamic>.from(value)),
+          );
+        }
+      }
+      return;
+    }
+
+    for (final json in _listOf(raw)) {
+      final value = fromJson(json);
+      await box.put(_scopedKey(idOf(value), scope), value);
+    }
+  }
+
+  static Future<String?> _photoBase64(String? fileName) async {
+    if (fileName == null) return null;
+    final file = ChildPhotoService.fileFor(fileName);
+    if (!file.existsSync()) return null;
+    return base64Encode(await file.readAsBytes());
+  }
+
+  /// Ang mga bata at ang litrato nila.
+  static Future<void> _restoreChildren(
+    Map<String, dynamic> data,
+    List<(ChildProfile, String?)> entries,
+  ) async {
+    final box = HiveService.getProfilesBox();
+    await box.clear();
+
+    for (final (profile, photoBase64) in entries) {
+      await box.put(profile.id, profile.toMap());
+
+      final fileName = profile.photoFileName;
+      if (photoBase64 != null && fileName != null) {
+        await ChildPhotoService.fileFor(
+          fileName,
+        ).writeAsBytes(base64Decode(photoBase64));
+      }
+    }
+
+    final saved = data['activeChildId'];
+    final activeId = saved is String && box.containsKey(saved)
+        ? saved
+        : entries.firstOrNull?.$1.id;
+
+    if (activeId == null) {
+      await HiveService.clearActiveChild();
+    } else {
+      await HiveService.setActiveChild(activeId);
+    }
+  }
+
+  /// Ang `format: 1` ay may iisang `profile` na walang id, kaya binibigyan
+  /// dito. Ang bagong id ay hindi mahalaga: bawat restore ay nililinis muna
+  /// ang box, kaya walang lumang susing maiiwang nakaturo sa wala.
+  static List<(ChildProfile, String?)> _childEntriesFrom(
+    Map<String, dynamic> data,
+  ) {
+    final children = data['children'];
+    if (children is List) {
+      return children
+          .whereType<Map>()
+          .map((raw) {
+            final profile = raw['profile'];
+            if (profile is! Map) return null;
+            return (
+              ChildProfile.fromMap(profile, idIfMissing: const Uuid().v4()),
+              raw['photoBase64'] as String?,
+            );
+          })
+          .nonNulls
+          .toList();
+    }
+
+    final profile = data['profile'];
+    if (profile is! Map) return const [];
+    return [
+      (
+        ChildProfile.fromMap(profile, idIfMissing: const Uuid().v4()),
+        data['photoBase64'] as String?,
+      ),
+    ];
   }
 
   // ---------------------------------------------------------------- import
@@ -192,57 +323,72 @@ class BackupService {
 
   /// Pinapalitan ang laman ng bawat box ng laman ng payload.
   static Future<void> restorePayload(Map<String, dynamic> data) async {
-    final profileMap = data['profile'];
-    if (profileMap is Map) {
-      final profile = ChildProfile.fromMap(profileMap);
-      await HiveService.saveChildProfile(profile);
+    final entries = _childEntriesFrom(data);
+    final scope = _legacyScopeOf(data, entries);
 
-      final photoBase64 = data['photoBase64'];
-      final photoFileName = profile.photoFileName;
-      if (photoBase64 is String && photoFileName != null) {
-        await ChildPhotoService.fileFor(
-          photoFileName,
-        ).writeAsBytes(base64Decode(photoBase64));
-      }
-    } else {
-      await HiveService.deleteChildProfile();
-    }
+    await _restoreObjects<BehaviorLog>(
+      HiveService.getBehaviorRawBox(),
+      data['behaviorLogs'],
+      scope,
+      BehaviorLog.fromJson,
+      (log) => log.id,
+    );
+    await _restoreObjects<SensoryProfileResult>(
+      HiveService.getSensoryRawBox(),
+      data['sensoryResults'],
+      scope,
+      SensoryProfileResult.fromJson,
+      (result) => result.id,
+    );
+    await _restoreObjects<ScheduleTask>(
+      HiveService.getScheduleRawBox(),
+      data['scheduleTasks'],
+      scope,
+      ScheduleTask.fromJson,
+      (task) => task.id,
+    );
 
-    final behaviorBox = HiveService.getBehaviorBox();
-    await behaviorBox.clear();
-    for (final raw in _listOf(data['behaviorLogs'])) {
-      final log = BehaviorLog.fromJson(raw);
-      await behaviorBox.put(log.id, log);
-    }
-
-    final sensoryBox = HiveService.getSensoryBox();
-    await sensoryBox.clear();
-    for (final raw in _listOf(data['sensoryResults'])) {
-      final result = SensoryProfileResult.fromJson(raw);
-      await sensoryBox.put(result.id, result);
-    }
-
-    final scheduleBox = HiveService.getScheduleBox();
-    await scheduleBox.clear();
-    for (final raw in _listOf(data['scheduleTasks'])) {
-      final task = ScheduleTask.fromJson(raw);
-      await scheduleBox.put(task.id, task);
-    }
-
-    await _restore(HiveService.getCompletionBox(), data['sensoryCompletion']);
-    await _restore(HiveService.getMoodBox(), data['mood']);
-    await _restore(HiveService.getMilestoneBox(), data['milestones']);
+    await _restore(
+      HiveService.getCompletionRawBox(),
+      data['sensoryCompletion'],
+      scope: scope,
+    );
+    await _restore(HiveService.getMoodRawBox(), data['mood'], scope: scope);
+    await _restore(
+      HiveService.getMilestoneRawBox(),
+      data['milestones'],
+      scope: scope,
+    );
+    // Pang-app at hindi pang-bata, kaya walang prefix.
     await _restore(HiveService.getSettingsBox(), data['settings']);
     await _restore(
-      HiveService.getScheduleDoneBox(),
+      HiveService.getScheduleDoneRawBox(),
       data['scheduleCompletion'],
+      scope: scope,
     );
-    await _restore(HiveService.getRewardBox(), data['rewards']);
+    await _restore(
+      HiveService.getRewardRawBox(),
+      data['rewards'],
+      scope: scope,
+    );
     await _restore(HiveService.getGuideBookmarkBox(), data['guideBookmarks']);
     await _restore(HiveService.getGuideTipBox(), data['guideTips']);
-    await _restore(HiveService.getScheduleOrderBox(), data['scheduleOrder']);
-    await _restore(HiveService.getScheduleHiddenBox(), data['scheduleHidden']);
+    await _restore(
+      HiveService.getScheduleOrderRawBox(),
+      data['scheduleOrder'],
+      scope: scope,
+    );
+    await _restore(
+      HiveService.getScheduleHiddenRawBox(),
+      data['scheduleHidden'],
+      scope: scope,
+    );
     await _restore(HiveService.getPrefsBox(), data['prefs']);
+
+    // Pagkatapos ng `prefs`: nasa box na iyon ang `active_child_id`, at
+    // nililinis ito ng `_restore` bago magsulat. Kung mauuna ang mga bata,
+    // mabubura ang aktibo — at sa `format: 1` ay wala itong ibabalik.
+    await _restoreChildren(data, entries);
 
     // Nasa Hive na ang naibalik na wika pero luma pa ang hawak sa memorya.
     LanguageController.refreshFromStorage();
@@ -261,12 +407,16 @@ class BackupService {
     return raw.whereType<Map<String, dynamic>>().toList();
   }
 
-  static Future<void> _restore<T>(Box<T> box, dynamic raw) async {
+  static Future<void> _restore<T>(
+    Box<T> box,
+    dynamic raw, {
+    String? scope,
+  }) async {
     await box.clear();
     if (raw is! Map) return;
     final entries = <String, T>{};
     raw.forEach((key, value) {
-      if (value is T) entries[key.toString()] = value;
+      if (value is T) entries[_scopedKey(key as Object, scope)] = value;
     });
     await box.putAll(entries);
   }

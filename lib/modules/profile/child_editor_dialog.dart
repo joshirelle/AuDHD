@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../core/i18n/language_controller.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_formatter.dart';
@@ -68,6 +69,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
 
     final nickname = _nicknameController.text.trim();
     final profile = ChildProfile(
+      id: widget.existing?.id ?? const Uuid().v4(),
       name: name,
       birthDate: _birthDate!,
       gender: _gender,
@@ -75,6 +77,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       // Wala nito sa form; kung hindi dadalhin, mabubura ang litrato tuwing
       // babaguhin ang pangalan.
       photoFileName: widget.existing?.photoFileName,
+      supportFocus: widget.existing?.supportFocus ?? const [],
     );
     await HiveService.saveChildProfile(profile);
 

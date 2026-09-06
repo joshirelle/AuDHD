@@ -124,11 +124,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await ChildPhotoService.delete(child.photoFileName);
     await HiveService.saveChildProfile(
       ChildProfile(
+        id: child.id,
         name: child.name,
         birthDate: child.birthDate,
         gender: child.gender,
         nickname: child.nickname,
         photoFileName: fileName,
+        supportFocus: child.supportFocus,
       ),
     );
     if (mounted) _load();

@@ -1,4 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
+
+import 'scoped_box.dart';
 import '../../core/models/schedule_task.dart';
 import '../models/child_profile.dart';
 import '../models/screening_result.dart';
@@ -7,8 +10,16 @@ import '../models/sensory_profile_result.dart';
 
 class HiveService {
   static const String _screeningBoxName = 'screening_results';
+
+  /// Ang nag-iisang bata bago ang multi-child. Iniiwan nang buo kahit
+  /// nalipat na sa `child_profiles`: kopya ang migration, hindi paglilipat,
+  /// para may mababalikan kung may masira.
   static const String _profileBoxName = 'child_profile';
   static const String _profileKey = 'child';
+
+  /// Lahat ng bata, naka-susi sa `ChildProfile.id`.
+  static const String _profilesBoxName = 'child_profiles';
+
   static const String _behaviorBoxName = 'behavior_logs';
   static const String _sensoryBoxName = 'sensory_profiles';
   static const String _completionBoxName = 'sensory_completion_box';
@@ -34,6 +45,14 @@ class HiveService {
   /// Pangkalahatang kagustuhan ng magulang — kasalukuyang piniling wika.
   static const String _prefsBoxName = 'app_prefs';
 
+  /// Nasa `app_prefs` at hindi sa `app_settings`: `Box<bool>` ang huli, at
+  /// id ang itatago rito.
+  static const String _activeChildKey = 'active_child_id';
+
+  /// Hiwalay sa laman ng `child_profiles`: kapag binura ang lahat ng bata,
+  /// hindi dapat mabuhay muli ang luma sa susunod na pagbukas.
+  static const String _multiProfileMigrationKey = 'migrated_to_multi_profile';
+
   static const String hasSeenOnboardingKey = 'has_seen_onboarding';
   static const String hasSeenHomeTourKey = 'has_seen_home_tour_v5';
   static const String hasSeenScheduleTourKey = 'has_seen_schedule_tour_v4';
@@ -49,6 +68,7 @@ class HiveService {
 
     await Hive.openBox(_screeningBoxName);
     await Hive.openBox(_profileBoxName);
+    await Hive.openBox(_profilesBoxName);
     // Open Boxes
     await Hive.openBox<BehaviorLog>(_behaviorBoxName);
     await Hive.openBox<SensoryProfileResult>(_sensoryBoxName);
@@ -65,6 +85,9 @@ class HiveService {
     await Hive.openBox<int>(_scheduleOrderBoxName);
     await Hive.openBox<bool>(_scheduleHiddenBoxName);
     await Hive.openBox<String>(_prefsBoxName);
+
+    await assignIdToLegacyProfile();
+    await migrateToMultiProfile();
   }
 
   static Box<String> getPrefsBox() => Hive.box<String>(_prefsBoxName);
@@ -112,7 +135,9 @@ class HiveService {
 
   /// Susi = pangalan ng pabuya, halaga = bilang ng bituing kailangan.
   /// Mga dagdag ng magulang lang ang laman; nasa code ang mga default.
-  static Box<int> getRewardBox() => Hive.box<int>(_rewardBoxName);
+  static Box<int> getRewardRawBox() => Hive.box<int>(_rewardBoxName);
+
+  static ScopedBox<int> getRewardBox() => ScopedBox(getRewardRawBox(), _scope);
 
   static Future<void> addCustomReward(String reward, int stars) async {
     await getRewardBox().put(reward.trim(), stars);
@@ -123,13 +148,23 @@ class HiveService {
   }
 
   /// Mga custom na routine lang ang laman; nasa code ang mga default.
-  static Box<ScheduleTask> getScheduleBox() =>
+  static Box<ScheduleTask> getScheduleRawBox() =>
       Hive.box<ScheduleTask>(_scheduleBoxName);
 
-  static Box<int> getScheduleOrderBox() => Hive.box<int>(_scheduleOrderBoxName);
+  static ScopedBox<ScheduleTask> getScheduleBox() =>
+      ScopedBox(getScheduleRawBox(), _scope);
 
-  static Box<bool> getScheduleHiddenBox() =>
+  static Box<int> getScheduleOrderRawBox() =>
+      Hive.box<int>(_scheduleOrderBoxName);
+
+  static ScopedBox<int> getScheduleOrderBox() =>
+      ScopedBox(getScheduleOrderRawBox(), _scope);
+
+  static Box<bool> getScheduleHiddenRawBox() =>
       Hive.box<bool>(_scheduleHiddenBoxName);
+
+  static ScopedBox<bool> getScheduleHiddenBox() =>
+      ScopedBox(getScheduleHiddenRawBox(), _scope);
 
   /// Lahat ng gawain kasama ang nakatago — para sa screen ng pag-aayos.
   static List<ScheduleTask> getAllScheduleTasks() {
@@ -226,7 +261,11 @@ class HiveService {
   /// Hiwalay sa `_completionBoxName` dahil binibilang ng `StarService` ang haba
   /// ng bawat box — magkakamali ang sensory stars kung pagsasabayin dito.
   /// Ang halaga ay bilang ng bituing naipagkaloob, hindi `true`.
-  static Box<int> getScheduleDoneBox() => Hive.box<int>(_scheduleDoneBoxName);
+  static Box<int> getScheduleDoneRawBox() =>
+      Hive.box<int>(_scheduleDoneBoxName);
+
+  static ScopedBox<int> getScheduleDoneBox() =>
+      ScopedBox(getScheduleDoneRawBox(), _scope);
 
   static String scheduleKey(DateTime date, String taskId) =>
       '${dateKey(date)}_$taskId';
@@ -260,7 +299,10 @@ class HiveService {
   }
 
   /// Iniimbak ang petsa ng pag-abot; ang pagkakaroon ng key ang ibig sabihin ng naabot.
-  static Box<int> getMilestoneBox() => Hive.box<int>(_milestoneBoxName);
+  static Box<int> getMilestoneRawBox() => Hive.box<int>(_milestoneBoxName);
+
+  static ScopedBox<int> getMilestoneBox() =>
+      ScopedBox(getMilestoneRawBox(), _scope);
 
   static String milestoneKey(String milestoneId) => '${milestoneId}_achieved';
 
@@ -285,7 +327,9 @@ class HiveService {
     }
   }
 
-  static Box<String> getMoodBox() => Hive.box<String>(_moodBoxName);
+  static Box<String> getMoodRawBox() => Hive.box<String>(_moodBoxName);
+
+  static ScopedBox<String> getMoodBox() => ScopedBox(getMoodRawBox(), _scope);
 
   static String moodKey(DateTime date) => 'mood_${dateKey(date)}';
 
@@ -324,7 +368,10 @@ class HiveService {
     return moods;
   }
 
-  static Box<bool> getCompletionBox() => Hive.box<bool>(_completionBoxName);
+  static Box<bool> getCompletionRawBox() => Hive.box<bool>(_completionBoxName);
+
+  static ScopedBox<bool> getCompletionBox() =>
+      ScopedBox(getCompletionRawBox(), _scope);
 
   /// Halimbawa: '2026-08-15'
   static String dateKey(DateTime date) {
@@ -411,8 +458,11 @@ class HiveService {
     return days.length;
   }
 
-  static Box<SensoryProfileResult> getSensoryBox() =>
+  static Box<SensoryProfileResult> getSensoryRawBox() =>
       Hive.box<SensoryProfileResult>(_sensoryBoxName);
+
+  static ScopedBox<SensoryProfileResult> getSensoryBox() =>
+      ScopedBox(getSensoryRawBox(), _scope);
 
   static Future<void> addSensoryResult(SensoryProfileResult result) async {
     await getSensoryBox().put(result.id, result);
@@ -427,8 +477,11 @@ class HiveService {
     await getSensoryBox().delete(id);
   }
 
-  static Box<BehaviorLog> getBehaviorBox() =>
+  static Box<BehaviorLog> getBehaviorRawBox() =>
       Hive.box<BehaviorLog>(_behaviorBoxName);
+
+  static ScopedBox<BehaviorLog> getBehaviorBox() =>
+      ScopedBox(getBehaviorRawBox(), _scope);
 
   static Future<void> addLog(BehaviorLog log) async {
     final box = getBehaviorBox();
@@ -462,18 +515,174 @@ class HiveService {
     return results;
   }
 
-  static Future<void> saveChildProfile(ChildProfile profile) async {
-    await Hive.box(_profileBoxName).put(_profileKey, profile.toMap());
+  static Box getProfilesBox() => Hive.box(_profilesBoxName);
+
+  /// Lahat ng bata, sunod sa pangalan para hindi magpalit-palit ng pwesto ang
+  /// switcher tuwing may idadagdag.
+  static List<ChildProfile> getChildProfiles() {
+    final children = getProfilesBox().values
+        .whereType<Map>()
+        .map(ChildProfile.fromMap)
+        .toList();
+    children.sort(
+      (a, b) =>
+          a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()),
+    );
+    return children;
   }
+
+  static String? getActiveChildId() => getPrefsBox().get(_activeChildKey);
+
+  static Future<void> setActiveChild(String id) async {
+    await getPrefsBox().put(_activeChildKey, id);
+  }
+
+  static Future<void> clearActiveChild() async {
+    await getPrefsBox().delete(_activeChildKey);
+  }
+
+  /// Prefix ng bawat naka-scope na box.
+  ///
+  /// Kapag walang bata, may sariling sulok ang datos na hindi nakikita
+  /// kahit saan. Mas mabuti iyon kaysa sa `null` na kailangang bantayan ng
+  /// bawat isa sa apatnapu't tatlong tumatawag.
+  static String get _scope => getActiveChildId() ?? '__none';
+
+  /// Kapag nabura ang aktibo o wala pang naitatakda, ang una ang hahalili.
+  /// Hindi ito nagsusulat: walang getter na dapat magbago ng naka-imbak.
+  static ChildProfile? getActiveChild() {
+    final box = getProfilesBox();
+    if (box.isEmpty) return null;
+
+    final raw = box.get(getActiveChildId());
+    if (raw is Map) return ChildProfile.fromMap(raw);
+
+    return getChildProfiles().firstOrNull;
+  }
+
+  static Future<void> saveChild(ChildProfile profile) async {
+    await getProfilesBox().put(profile.id, profile.toMap());
+    if (getActiveChildId() == null) await setActiveChild(profile.id);
+  }
+
+  /// Ang datos ng bata ay tatanggalin ng `deleteChildData`, hindi rito.
+  static Future<void> removeChild(String id) async {
+    await getProfilesBox().delete(id);
+    if (getActiveChildId() != id) return;
+
+    final next = getChildProfiles().firstOrNull;
+    if (next == null) {
+      await clearActiveChild();
+    } else {
+      await setActiveChild(next.id);
+    }
+  }
+
+  /// Bawat box na hinahati ayon sa bata.
+  static List<Box> get _scopedRawBoxes => [
+    getMoodRawBox(),
+    getMilestoneRawBox(),
+    getBehaviorRawBox(),
+    getSensoryRawBox(),
+    getCompletionRawBox(),
+    getScheduleRawBox(),
+    getScheduleDoneRawBox(),
+    getScheduleOrderRawBox(),
+    getScheduleHiddenRawBox(),
+    getRewardRawBox(),
+  ];
+
+  /// Bilang ng naitala para sa isang bata.
+  ///
+  /// Para sa babala bago mabura: ang malabong "lahat ng datos" ay pinipindot
+  /// nang hindi binabasa, ang "18 milestone" ay hindi.
+  static Map<String, int> childDataCounts(String childId) {
+    final prefix = '$childId${ScopedBox.separator}';
+    int countIn(Box box, [String startsWith = '']) => box.keys
+        .whereType<String>()
+        .where((key) => key.startsWith('$prefix$startsWith'))
+        .length;
+
+    return {
+      'milestones': countIn(getMilestoneRawBox()),
+      'behavior': countIn(getBehaviorRawBox()),
+      'schedule': countIn(getScheduleRawBox()),
+      'mood': countIn(getMoodRawBox(), 'mood_'),
+    };
+  }
+
+  /// Walang bakas: lahat ng susi ng bata sa bawat naka-scope na box.
+  ///
+  /// Ang litrato ay hindi rito — nasa disk iyon, hindi sa Hive, at ang
+  /// tumatawag ang may hawak ng `ChildPhotoService`.
+  static Future<void> deleteChildData(String childId) async {
+    final prefix = '$childId${ScopedBox.separator}';
+    for (final box in _scopedRawBoxes) {
+      final own = box.keys
+          .whereType<String>()
+          .where((key) => key.startsWith(prefix))
+          .toList();
+      await box.deleteAll(own);
+    }
+  }
+
+  /// Kinokopya ang datos na walang prefix papunta sa unang bata.
+  ///
+  /// Kopya at hindi paglilipat. Kung mahinto ito sa gitna, buo pa rin ang
+  /// datos ng v6 at ligtas na maulit — ang mga susing walang prefix ay hindi
+  /// nakikita ng `ScopedBox`, kaya walang doble sa mata ng magulang.
+  static Future<void> _scopeLegacyDataTo(String childId) async {
+    for (final box in _scopedRawBoxes) {
+      final legacy = box.keys
+          .whereType<String>()
+          .where((key) => !key.contains(ScopedBox.separator))
+          .toList();
+      for (final key in legacy) {
+        await box.put('$childId${ScopedBox.separator}$key', box.get(key));
+      }
+    }
+  }
+
+  static Future<void> saveChildProfile(ChildProfile profile) =>
+      saveChild(profile);
 
   static Box getProfileBox() => Hive.box(_profileBoxName);
 
   static Future<void> deleteChildProfile() async {
-    await Hive.box(_profileBoxName).delete(_profileKey);
+    final id = getActiveChild()?.id;
+    if (id != null) await removeChild(id);
   }
 
-  static ChildProfile? getChildProfile() {
-    final raw = Hive.box(_profileBoxName).get(_profileKey);
-    return raw == null ? null : ChildProfile.fromMap(raw as Map);
+  static ChildProfile? getChildProfile() => getActiveChild();
+
+  /// Binibigyan ng id ang profile na na-save bago ang multi-child.
+  ///
+  /// Isinusulat agad pabalik: kung sa pagbasa lang ito gagawin, iba ang id sa
+  /// bawat pagbukas ng app at hindi na mahahanap ang datos ng bata.
+  static Future<void> assignIdToLegacyProfile() async {
+    final box = Hive.box(_profileBoxName);
+    final raw = box.get(_profileKey);
+    if (raw is! Map || raw['id'] is String) return;
+
+    final profile = ChildProfile.fromMap(raw, idIfMissing: const Uuid().v4());
+    await box.put(_profileKey, profile.toMap());
+  }
+
+  /// Inililipat ang nag-iisang bata papasok sa `child_profiles`.
+  ///
+  /// Ang bantay ay ang flag at hindi ang laman ng box: kung laman ang susukatin,
+  /// mabubuhay muli ang binurang bata sa susunod na pagbukas ng app.
+  static Future<void> migrateToMultiProfile() async {
+    if (hasSeen(_multiProfileMigrationKey)) return;
+
+    final legacy = Hive.box(_profileBoxName).get(_profileKey);
+    if (legacy is Map) {
+      final child = ChildProfile.fromMap(legacy);
+      await getProfilesBox().put(child.id, child.toMap());
+      await setActiveChild(child.id);
+      await _scopeLegacyDataTo(child.id);
+    }
+
+    await markSeen(_multiProfileMigrationKey);
   }
 }
