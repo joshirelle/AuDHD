@@ -54,3 +54,6 @@ app.*.map.json
 # bata. Public ang repo na ito.
 /store/screenshots/
 /store/screenshots-play/
+
+# Pansariling buod ng may-ari. Hindi bahagi ng repo.
+/docs/BUOD-NG-APP.md
