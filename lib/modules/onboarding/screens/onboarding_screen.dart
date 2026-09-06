@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/app_branding_header.dart';
@@ -11,20 +12,38 @@ class OnboardingSlide {
   final IconData icon;
   final Color background;
   final Color iconColor;
-  final String title;
-  final String body;
+  final String _titleFil;
+  final String _titleEng;
+  final String _bodyFil;
+  final String _bodyEng;
 
   /// Kongkretong magagawa — dito nakikita agad ng magulang ang laman ng app.
-  final List<String> highlights;
+  final List<String> _highlightsFil;
+  final List<String> _highlightsEng;
 
   const OnboardingSlide({
     required this.icon,
     required this.background,
     required this.iconColor,
-    required this.title,
-    required this.body,
-    required this.highlights,
-  });
+    required String titleFil,
+    required String titleEng,
+    required String bodyFil,
+    required String bodyEng,
+    required List<String> highlightsFil,
+    required List<String> highlightsEng,
+  }) : _titleFil = titleFil,
+       _titleEng = titleEng,
+       _bodyFil = bodyFil,
+       _bodyEng = bodyEng,
+       _highlightsFil = highlightsFil,
+       _highlightsEng = highlightsEng;
+
+  String get title => tr(_titleFil, _titleEng);
+
+  String get body => tr(_bodyFil, _bodyEng);
+
+  List<String> get highlights =>
+      LanguageController.isEnglish ? _highlightsEng : _highlightsFil;
 }
 
 class OnboardingScreen extends StatefulWidget {
@@ -42,70 +61,114 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       icon: Icons.volunteer_activism_rounded,
       background: AppColors.mintGreen,
       iconColor: AppColors.logoGreen,
-      title: 'Gabay sa\nBahay',
-      body:
+      titleFil: 'Gabay sa\nBahay',
+      titleEng: 'Support at\nHome',
+      bodyFil:
           'Para sa magulang na gustong gabayan ang anak araw-araw, kahit malayo '
           'o mahal ang therapy center.',
-      highlights: [
+      bodyEng:
+          'For parents who want to guide their child every day, even when a '
+          'therapy center is far away or costly.',
+      highlightsFil: [
         'Buo ang gamit kahit walang internet',
         'May paliwanag sa bawat bahagi kung ano ang gagawin',
         'Tulong sa pag-obserba, hindi paraan ng pag-diagnose',
+      ],
+      highlightsEng: [
+        'Everything works without internet',
+        'Every section explains what to do',
+        'A way to observe, not a way to diagnose',
       ],
     ),
     OnboardingSlide(
       icon: Icons.checklist_rounded,
       background: AppColors.butterYellow,
       iconColor: AppColors.butterInk,
-      title: 'Iskedyul at\nDamdamin',
-      body:
+      titleFil: 'Iskedyul at\nDamdamin',
+      titleEng: 'Schedule and\nFeelings',
+      bodyFil:
           'Ipaalam sa bata kung ano ang susunod, at itala kung ano ang '
           'nararamdaman niya ngayong araw.',
-      highlights: [
+      bodyEng:
+          'Show your child what comes next, and record how they feel today.',
+      highlightsFil: [
         'Visual schedule ng pang-araw-araw na gawain',
         'Magdagdag ka ng sarili mong routine',
         '16 na damdamin, isang tapik lang',
+      ],
+      highlightsEng: [
+        'A visual schedule for daily routines',
+        'Add your own routines',
+        '16 feelings, one tap away',
       ],
     ),
     OnboardingSlide(
       icon: Icons.psychology_rounded,
       background: AppColors.skyBlue,
       iconColor: AppColors.skyInk,
-      title: 'Sensory at\nUgali',
-      body:
+      titleFil: 'Sensory at\nUgali',
+      titleEng: 'Sensory and\nBehavior',
+      bodyFil:
           'Alamin kung ano ang nag-uudyok ng meltdown, at kung anong laro ang '
           'nakakatulong sa bata.',
-      highlights: [
+      bodyEng:
+          'Find out what sets off a meltdown, and which activities help your '
+          'child.',
+      highlightsFil: [
         'Sensory profile sa 5 uri ng pandama',
         'Mga larong pambahay na may timer',
         'Tala ng insidente gamit ang ABC model',
+      ],
+      highlightsEng: [
+        'A sensory profile across 5 senses',
+        'Home activities with a timer',
+        'Incident notes using the ABC model',
       ],
     ),
     OnboardingSlide(
       icon: Icons.emoji_events_rounded,
       background: AppColors.coralPeach,
       iconColor: AppColors.coralInk,
-      title: 'Milestones\nat Bituin',
-      body:
+      titleFil: 'Milestones\nat Bituin',
+      titleEng: 'Milestones\nand Stars',
+      bodyFil:
           'Subaybayan ang paglaki, at gawing pabuya sa totoong buhay ang bawat '
           'tagumpay.',
-      highlights: [
+      bodyEng:
+          'Track how your child grows, and turn each win into a real-life '
+          'reward.',
+      highlightsFil: [
         'Milestones sa 4 na bahagi ng paglaki',
         'Bituin kada natapos na gawain',
         'Ikaw ang magtatakda ng mga pabuya',
+      ],
+      highlightsEng: [
+        'Milestones across 4 areas of development',
+        'A star for every finished task',
+        'You decide the rewards',
       ],
     ),
     OnboardingSlide(
       icon: Icons.verified_user_rounded,
       background: AppColors.lavender,
       iconColor: AppColors.autismPurple,
-      title: 'Ulat at\nPrivacy',
-      body:
+      titleFil: 'Ulat at\nPrivacy',
+      titleEng: 'Reports and\nPrivacy',
+      bodyFil:
           'Isang PDF na dala mo sa konsulta — at datos na hindi umaalis sa '
           'telepono mo.',
-      highlights: [
+      bodyEng:
+          'One PDF to bring to the consultation — and data that never leaves '
+          'your phone.',
+      highlightsFil: [
         'Kumpletong ulat para sa Developmental Pediatrician',
         'Walang account at walang internet na kailangan',
         'Protektado ng PIN o fingerprint',
+      ],
+      highlightsEng: [
+        'A complete report for the Developmental Pediatrician',
+        'No account and no internet needed',
+        'Protected by PIN or fingerprint',
       ],
     ),
   ];
@@ -180,9 +243,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 opacity: isLast ? 0 : 1,
                 child: TextButton(
                   onPressed: isLast ? null : _skipToDisclaimer,
-                  child: const Text(
-                    'Laktawan',
-                    style: TextStyle(
+                  child: Text(
+                    tr('Laktawan', 'Skip'),
+                    style: const TextStyle(
                       color: AppColors.textMuted,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito',
@@ -226,7 +289,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Text(
                     isLast
                         ? MedicalDisclaimerSheet.acknowledgeLabel
-                        : 'Susunod',
+                        : tr('Susunod', 'Next'),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -316,8 +379,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Hindi ka nag-iisa — may grupo ng mga magulang na dumaraan '
-                  'din dito.',
+                  tr(
+                    'Hindi ka nag-iisa — may grupo ng mga magulang na dumaraan '
+                        'din dito.',
+                    'You are not alone — there is a group of parents going '
+                        'through this too.',
+                  ),
                   style: const TextStyle(
                     fontSize: 12.5,
                     height: 1.4,
@@ -338,9 +405,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: EdgeInsets.zero,
               ),
               icon: const Icon(Icons.open_in_new_rounded, size: 15),
-              label: const Text(
-                'Tingnan ang grupo',
-                style: TextStyle(
+              label: Text(
+                tr('Tingnan ang grupo', 'Visit the group'),
+                style: const TextStyle(
                   fontSize: 12.5,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Nunito',
