@@ -9,21 +9,20 @@ import '../../data/services/hive_service.dart';
 import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
 import '../../widgets/medical_disclaimer_sheet.dart';
+import '../milestones/screens/milestones_screen.dart';
 import '../mood/screens/mood_log_screen.dart';
 import '../profile/profile_screen.dart';
+import '../schedule/screens/visual_schedule_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
 import 'widgets/consultation_card.dart';
 import 'widgets/doctor_report_card.dart';
-import 'widgets/home_activities_card.dart';
 import 'widgets/home_tour_guide.dart';
 import 'widgets/knowledge_card.dart';
-import 'widgets/milestones_card.dart';
 import 'widgets/quick_links_row.dart';
 import 'widgets/sensory_profile_card.dart';
 import 'widgets/star_badge_widget.dart';
 import 'widgets/thank_you_sheet.dart';
-import 'widgets/visual_schedule_card.dart';
 import 'widgets/whats_new_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,7 +35,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey _starKey = GlobalKey();
   final GlobalKey _quickLinksKey = GlobalKey();
-  final GlobalKey _activitiesKey = GlobalKey();
   final GlobalKey _navKey = GlobalKey();
 
   int _selectedNavIndex = 0;
@@ -103,23 +101,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       TourStep(
-        targetKey: _activitiesKey,
-        title: tr('Mga gawain sa bahay', 'Home activities'),
-        body: tr(
-          'Dito ang mga larong pansensory na kayang gawin araw-araw. May '
-              'timer ang bawat isa at may paliwanag kung paano ito ginagawa.',
-          'Sensory activities you can do at home every day. Each one has a '
-              'timer and step-by-step instructions.',
-        ),
-      ),
-      TourStep(
         targetKey: _navKey,
-        title: tr('Tatlong pangunahing bahagi', 'Three main sections'),
+        title: tr('Limang pangunahing bahagi', 'Five main sections'),
         body: tr(
-          'Bahay para sa buod, Laro para sa mga gawain sa bahay, at Profile '
-              'para sa detalye ng bata at sa PIN lock.',
-          'Home for the summary, Activities for things to do at home, and '
-              'Profile for your child\'s details and the PIN lock.',
+          'Bahay para sa buod, Iskedyul para sa araw ng bata, Laro para sa '
+              'gawain sa bahay, Milestones para sa paglaki, at Profile para sa '
+              'detalye at PIN.',
+          'Home for the summary, Schedule for your child\'s day, Play for '
+              'things to do at home, Milestones for growth, and Profile for '
+              'details and the PIN.',
         ),
       ),
     ]);
@@ -147,9 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildGreetingBanner(),
               const SizedBox(height: 24),
 
-              // 4. Section Title
+              // 4. Ang nasa bottom nav ay wala rito — isang daan lang bawat
+              // destinasyon.
               Text(
-                tr('PANGUNAHING MGA GAWAIN', 'MAIN SECTIONS'),
+                tr('IBA PANG GAMIT', 'MORE TOOLS'),
                 style: TextStyle(
                   color: AppColors.textDark,
                   fontSize: 15,
@@ -160,29 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 14),
 
-              // 4. Two-Column Grid Cards (Home Activities & Milestones)
-              // Pinapantay ang taas ng dalawang card para walang puwang sa gilid.
-              IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(child: HomeActivitiesCard(key: _activitiesKey)),
-                    const SizedBox(width: 14),
-                    const Expanded(child: MilestonesCard()),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
               // 5. Gabay sa Pag-unawa Full-Width Card
               const KnowledgeCard(),
               const SizedBox(height: 16),
 
-              // 6. Visual Schedule Full-Width Card
-              const VisualScheduleCard(),
-              const SizedBox(height: 16),
-
-              // 7. Behavior Log Full-Width Card
+              // 6. Behavior Log Full-Width Card
               const BehaviorLogCard(),
               const SizedBox(height: 16),
 
@@ -419,11 +392,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          // `Expanded` at hindi `spaceAround`: sa lima, ang mahabang salita ay
+          // aagaw ng puwang sa katabi nito.
           _buildNavItem(0, Icons.home_rounded, tr('Bahay', 'Home')),
-          _buildNavItem(1, Icons.sports_esports_rounded, tr('Laro', 'Play')),
-          _buildNavItem(2, Icons.person_rounded, tr('Profile', 'Profile')),
+          _buildNavItem(1, Icons.route_rounded, tr('Iskedyul', 'Schedule')),
+          _buildNavItem(2, Icons.sports_esports_rounded, tr('Laro', 'Play')),
+          _buildNavItem(
+            3,
+            Icons.stairs_rounded,
+            tr('Milestones', 'Milestones'),
+          ),
+          _buildNavItem(4, Icons.person_rounded, tr('Profile', 'Profile')),
         ],
       ),
     );
@@ -435,41 +415,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) =>
-            index == 1 ? const HomeActivitiesScreen() : const ProfileScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => _screenFor(index)),
     );
 
     // Nasa Bahay ang user pagkabalik, kaya doon dapat bumalik ang highlight.
     if (mounted) setState(() => _selectedNavIndex = 0);
   }
 
+  Widget _screenFor(int index) {
+    switch (index) {
+      case 1:
+        return const VisualScheduleScreen();
+      case 2:
+        return const HomeActivitiesScreen();
+      case 3:
+        return const MilestonesScreen();
+      default:
+        return const ProfileScreen();
+    }
+  }
+
   Widget _buildNavItem(int index, IconData icon, String label) {
     final bool isActive = _selectedNavIndex == index;
     const Color activeColor = AppColors.accentBlue;
 
-    return GestureDetector(
-      onTap: () => _onNavTap(index),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? activeColor : AppColors.textMuted,
-            size: 26,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+    return Expanded(
+      child: GestureDetector(
+        // Kasama ang puwang sa paligid ng titik sa matatapik na bahagi.
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _onNavTap(index),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
               color: isActive ? activeColor : AppColors.textMuted,
-              fontFamily: 'Nunito',
+              size: 26,
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                color: isActive ? activeColor : AppColors.textMuted,
+                fontFamily: 'Nunito',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
