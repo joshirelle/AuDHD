@@ -18,6 +18,12 @@ class MedicalDisclaimerSheet {
   static String get title =>
       tr('Mahalagang Paalala sa Kalusugan', 'An Important Health Note');
 
+  /// Ang buong mensahe sa isang sulyap, para sa hindi magbabasa ng talata.
+  static String get headline => tr(
+    'Hindi ito pamalit sa diagnosis.',
+    'This is not a replacement for a diagnosis.',
+  );
+
   static String get body => tr(
     'Ang AuDHD app ay gabay sa pagsuporta sa tahanan at HINDI pamalit sa '
         'opisyal na diagnosis ng Developmental Pediatrician. Maaaring may '
@@ -128,72 +134,119 @@ class MedicalDisclaimerSheet {
 /// Ang mismong laman ng paalala, walang pindutan.
 ///
 /// Hiwalay para magamit ng onboarding slide nang hindi bumubukas ng sheet.
-/// `warning` sa `tintGold` ay 4.32:1 — pasado sa WCAG 1.4.11 para sa icon na
-/// may kahulugan.
+///
+/// Lahat ng teksto ay `textDark`: ang `warning` sa `tintGold` ay 4.32:1, sapat
+/// para sa icon pero bagsak para sa titik. Sukat at bigat ang hierarchy, hindi
+/// kulay — maliban sa banda, kung saan puti sa `warning` ay 5.01:1.
 class MedicalDisclaimerBody extends StatelessWidget {
   const MedicalDisclaimerBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      // Para masundan ng solidong banda ang kurba ng kard.
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: AppColors.tintGold,
         borderRadius: BorderRadius.circular(AppRadius.card),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.button),
-            ),
-            child: const Icon(
-              Icons.info_outline_rounded,
-              size: 30,
-              color: AppColors.warning,
+          _buildBanner(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  MedicalDisclaimerSheet.headline,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                    height: 1.3,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 14),
+                const Divider(height: 1, color: AppColors.divider),
+                const SizedBox(height: 14),
+                Text(
+                  MedicalDisclaimerSheet.body,
+                  style: const TextStyle(
+                    fontSize: 14.5,
+                    height: 1.55,
+                    color: AppColors.textDark,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildScope(),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            MedicalDisclaimerSheet.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-              height: 1.25,
-              fontFamily: 'Nunito',
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBanner() {
+    return Container(
+      width: double.infinity,
+      color: AppColors.warning,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.priority_high_rounded,
+            size: 18,
+            color: AppColors.surface,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              MedicalDisclaimerSheet.title.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.6,
+                color: AppColors.surface,
+                fontFamily: 'Nunito',
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            MedicalDisclaimerSheet.body,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 14,
-              height: 1.5,
-              color: AppColors.textDark,
-              fontFamily: 'Nunito',
-            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScope() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.button),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(
+            Icons.favorite_rounded,
+            size: 16,
+            color: AppColors.warning,
           ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.button),
-            ),
+          const SizedBox(width: 10),
+          Expanded(
             child: Text(
               MedicalDisclaimerSheet.scope,
-              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 12.5,
                 height: 1.45,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: AppColors.textDark,
                 fontFamily: 'Nunito',
               ),
