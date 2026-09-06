@@ -10,6 +10,7 @@ import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/child_avatar.dart';
 import '../../widgets/kiko_card.dart';
+import '../../widgets/language_chips.dart';
 import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
 import 'widgets/backup_card.dart';
@@ -496,48 +497,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           tr('Wika', 'Language'),
           style: const TextStyle(fontSize: 13, color: AppColors.textDark),
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final lang in AppLanguage.values) ...[
-              if (lang != AppLanguage.values.first) const SizedBox(width: 8),
-              _languageChip(lang),
-            ],
-          ],
-        ),
+        const LanguageChips(),
       ],
-    );
-  }
-
-  Widget _languageChip(AppLanguage lang) {
-    final isActive = LanguageController.current == lang;
-    final label = lang == AppLanguage.filipino ? 'Filipino' : 'English';
-
-    return Semantics(
-      selected: isActive,
-      button: true,
-      child: GestureDetector(
-        onTap: () async {
-          await LanguageController.set(lang);
-          if (mounted) setState(() {});
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: isActive ? AppColors.logoGreen : AppColors.surface,
-            borderRadius: BorderRadius.circular(AppRadius.button),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: isActive ? AppColors.surface : AppColors.textMuted,
-              fontFamily: 'Nunito',
-            ),
-          ),
-        ),
-      ),
     );
   }
 

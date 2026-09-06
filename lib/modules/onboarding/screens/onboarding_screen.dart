@@ -4,6 +4,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/app_branding_header.dart';
 import '../../../widgets/community_link.dart';
+import '../../../widgets/language_chips.dart';
 import '../../../widgets/medical_disclaimer_sheet.dart';
 import '../../home/widgets/thank_you_sheet.dart';
 import '../../home/widgets/whats_new_sheet.dart';
@@ -235,23 +236,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: AppBrandingHeader(),
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              // Nananatili ang puwang para hindi tumalon ang layout sa dulo.
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
-                opacity: isLast ? 0 : 1,
-                child: TextButton(
-                  onPressed: isLast ? null : _skipToDisclaimer,
-                  child: Text(
-                    tr('Laktawan', 'Skip'),
-                    style: const TextStyle(
-                      color: AppColors.textMuted,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Nunito',
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Hindi kumukupas sa dulo tulad ng "Laktawan": ang huling
+                  // pahina ay ang paalalang pangkalusugan, at iyon ang
+                  // pinakadapat mabasa sa sariling wika.
+                  const LanguageChips(),
+                  // Nananatili ang puwang para hindi tumalon ang layout sa
+                  // dulo.
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: isLast ? 0 : 1,
+                    child: TextButton(
+                      onPressed: isLast ? null : _skipToDisclaimer,
+                      child: Text(
+                        tr('Laktawan', 'Skip'),
+                        style: const TextStyle(
+                          color: AppColors.textMuted,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Nunito',
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             Expanded(
