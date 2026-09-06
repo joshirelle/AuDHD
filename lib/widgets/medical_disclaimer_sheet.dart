@@ -47,6 +47,19 @@ class MedicalDisclaimerSheet {
 
   static Future<void> acknowledge() => HiveService.markSeen(seenKey);
 
+  /// Para sa magulang na may naka-install na bago pa ito naidagdag — sa
+  /// onboarding kinikilala ito ng bagong user, at doon lang.
+  ///
+  /// Minamarkahan kahit paano isinara. Ang paalalang umuulit tuwing bubuksan
+  /// ang app ay hindi na paalala kundi istorbo, at ang katapusan niyon ay
+  /// hindi na ito binabasa.
+  static Future<void> showIfNeeded(BuildContext context) async {
+    if (!HiveService.hasSeen(HiveService.hasSeenOnboardingKey)) return;
+    if (hasAcknowledged) return;
+    await show(context);
+    await acknowledge();
+  }
+
   /// Mababasa anumang oras mula sa Profile. Ang paalalang minsan lang nakita
   /// ay hindi paalala.
   static Future<void> show(BuildContext context) {

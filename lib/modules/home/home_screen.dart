@@ -58,6 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
   /// at hindi humaharang gaya ng dialog.
   Future<void> _startIntro() async {
     if (!mounted) return;
+    // Nauuna sa tour at sa "ano ang bago": ito ang nagsasabing hindi panukat
+    // na medikal ang app, at dapat iyon ang unang mabasa.
+    await MedicalDisclaimerSheet.showIfNeeded(context);
+
+    await Future.delayed(_modalGap);
+    if (!mounted) return;
     await _startTour();
 
     await Future.delayed(_modalGap);
