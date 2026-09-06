@@ -12,6 +12,7 @@ import '../../widgets/medical_disclaimer_sheet.dart';
 import '../milestones/screens/milestones_screen.dart';
 import '../mood/screens/mood_log_screen.dart';
 import '../profile/profile_screen.dart';
+import '../profile/widgets/child_switcher.dart';
 import '../schedule/screens/visual_schedule_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
 import 'widgets/behavior_log_card.dart';
@@ -132,6 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
               // 2. Tatlong maiikling pindutan sa ilalim ng bituin
               QuickLinksRow(key: _quickLinksKey),
               const SizedBox(height: 20),
+
+              // Nagtatago kapag iisa ang bata. Ang pagdagdag ay nasa Profile:
+              // dito ay paglipat lang.
+              ChildSwitcher(
+                hideWhenAlone: true,
+                onSwitched: () => setState(() {
+                  // Naka-scope na ito sa bata, kaya luma ang hawak matapos
+                  // lumipat kung hindi babasahin muli.
+                  _selectedMood = HiveService.getMood(DateTime.now());
+                }),
+              ),
 
               // 3. Greeting Banner Card (Soft Sky Blue)
               _buildGreetingBanner(),

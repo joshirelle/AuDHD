@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../core/services/child_photo_service.dart';
 import '../core/theme/app_theme.dart';
+import '../data/models/child_profile.dart';
 import '../data/services/hive_service.dart';
 
 /// Iisang mukha ng bata sa home header at sa profile screen.
 class ChildAvatar extends StatelessWidget {
   final double size;
 
-  const ChildAvatar({super.key, this.size = 42});
+  /// Kapag wala, ang aktibong bata. Ibinibigay ito ng switcher, na kailangang
+  /// magpakita ng magkakaibang mukha nang sabay-sabay.
+  final ChildProfile? child;
+
+  const ChildAvatar({super.key, this.size = 42, this.child});
 
   /// Nakabatay sa pangalan, hindi random, para hindi magbago ang kulay tuwing
   /// bubuksan ang app. Lahat ng pares ay pasado sa 4.5:1.
@@ -23,10 +28,11 @@ class ChildAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
-      // Kung hindi ito nakikinig, luma ang mukha pagkatapos magpalit ng litrato.
-      valueListenable: HiveService.getProfileBox().listenable(),
+      // Kung hindi ito nakikinig, luma ang mukha pagkatapos magpalit ng
+      // litrato o pagkatapos lumipat ng bata.
+      valueListenable: HiveService.getProfilesBox().listenable(),
       builder: (context, box, _) {
-        final profile = HiveService.getChildProfile();
+        final profile = child ?? HiveService.getActiveChild();
         final initial = _initialOf(profile?.displayName);
         final tone = _toneFor(initial);
 

@@ -14,6 +14,7 @@ import '../../widgets/language_chips.dart';
 import '../auth/screens/security_screen.dart';
 import 'child_editor_dialog.dart';
 import 'widgets/backup_card.dart';
+import 'widgets/child_switcher.dart';
 import 'widgets/developer_feedback_card.dart';
 
 enum _PhotoAction { camera, gallery, remove }
@@ -39,34 +40,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _confirmDelete(ChildProfile child) async {
+    final counts = HiveService.childDataCounts(child.id);
+    final lines = <String>[
+      if (counts['milestones']! > 0)
+        tr(
+          '${counts['milestones']} milestone na naabot',
+          '${counts['milestones']} milestones reached',
+        ),
+      if (counts['behavior']! > 0)
+        tr(
+          '${counts['behavior']} tala ng ugali',
+          '${counts['behavior']} behaviour logs',
+        ),
+      if (counts['schedule']! > 0)
+        tr(
+          '${counts['schedule']} gawain sa iskedyul',
+          '${counts['schedule']} schedule tasks',
+        ),
+      if (counts['mood']! > 0)
+        tr(
+          '${counts['mood']} naitalang damdamin',
+          '${counts['mood']} recorded feelings',
+        ),
+      if (child.photoFileName != null) tr('1 litrato', '1 photo'),
+    ];
+
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(tr('Burahin ang profile?', 'Delete profile?')),
-        content: Text(
+        title: Text(
           tr(
-            'Mababura ang pangalan at kaarawan ni ${child.name}.\n\n'
-                'Ang mga naitalang behavior log, sensory history, '
-                'milestones, at mood ay MANANATILI sa device. Mawawala lang ang '
-                'pangalan at edad sa mga PDF report.'
-                // Huling pagkakataon niyang malaman ito bago mawala ang litrato.
-                '${BackupService.hasBackup ? '' : '\n\nWala ka pang kopya ng datos. '
-                          'Hindi na maibabalik ang pangalan, kaarawan, at litrato kapag '
-                          'nabura na ang mga ito.'}',
-            'The name and birthday of ${child.name} will be deleted.\n\n'
-                'The behavior logs, sensory history, milestones, and mood you '
-                'recorded will STAY on the device. Only the name and age will be '
-                'gone from the PDF reports.'
-                '${BackupService.hasBackup ? '' : '\n\nYou do not have a backup of '
-                          'your data yet. The name, birthday, and photo can no longer be '
-                          'brought back once they are deleted.'}',
+            'Burahin si ${child.displayName}?',
+            'Delete ${child.displayName}?',
           ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              lines.isEmpty
+                  ? tr(
+                      'Wala pang naitala para sa kanya.',
+                      'Nothing has been recorded for them yet.',
+                    )
+                  : tr(
+                      'Hindi na ito maibabalik. Mawawala:',
+                      'This cannot be undone. These will be gone:',
+                    ),
+              style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+            ),
+            if (lines.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              for (final line in lines)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text(
+                    line,
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                ),
+            ],
+            if (!BackupService.hasBackup) ...[
+              const SizedBox(height: 14),
+              Text(
+                tr(
+                  'Wala ka pang kopya ng datos.',
+                  'You do not have a backup yet.',
+                ),
+                style: const TextStyle(
+                  fontSize: 12.5,
+                  color: AppColors.danger,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(tr('Kanselahin', 'Cancel')),
+            child: Text(tr('Huwag ituloy', 'Keep them')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -83,9 +142,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (ok == true) {
-      // Kung hindi ito buburahin, mananatili sa device ang litrato ng bata.
+      // Nasa disk ang litrato, hindi sa Hive, kaya hiwalay itong binubura.
       await ChildPhotoService.delete(child.photoFileName);
-      await HiveService.deleteChildProfile();
+      await HiveService.deleteChildData(child.id);
+      await HiveService.removeChild(child.id);
       _load();
     }
   }
@@ -205,6 +265,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
+          // Dito pinamamahalaan ang mga bata, kaya laging nandito — pati kapag
+          // iisa pa lang, dahil dito rin ang pagdagdag.
+          ChildSwitcher(onAdd: _openEditor, onSwitched: _load),
+          const SizedBox(height: 16),
           if (child == null)
             _buildEmptyState()
           else

@@ -21,6 +21,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
   late final TextEditingController _nicknameController;
   DateTime? _birthDate;
   Gender? _gender;
+  final Set<SupportFocus> _focus = {};
   String? _error;
 
   @override
@@ -32,6 +33,7 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
     );
     _birthDate = widget.existing?.birthDate;
     _gender = widget.existing?.gender;
+    _focus.addAll(widget.existing?.supportFocus ?? const []);
   }
 
   @override
@@ -77,7 +79,9 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
       // Wala nito sa form; kung hindi dadalhin, mabubura ang litrato tuwing
       // babaguhin ang pangalan.
       photoFileName: widget.existing?.photoFileName,
-      supportFocus: widget.existing?.supportFocus ?? const [],
+      supportFocus: SupportFocus.values
+          .where(_focus.contains)
+          .toList(growable: false),
     );
     await HiveService.saveChildProfile(profile);
 
@@ -158,6 +162,8 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          _buildFocusSection(),
           if (_error != null) ...[
             const SizedBox(height: 10),
             Text(
@@ -184,6 +190,81 @@ class _ChildEditorDialogState extends State<ChildEditorDialog> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildFocusSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(height: 1, color: AppColors.divider),
+        const SizedBox(height: 14),
+        Text(
+          tr('Pokus ng suporta (opsyonal)', 'Support focus (optional)'),
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textDark,
+            fontFamily: 'Nunito',
+          ),
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final focus in SupportFocus.values) _buildFocusChip(focus),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          tr(
+            'Ang mga tag na ito ay para lamang sa pag-aayos ng gabay sa app '
+                'at hindi opisyal na diagnosis.',
+            'These tags only help the app organise its guidance. They are '
+                'not a diagnosis.',
+          ),
+          style: const TextStyle(
+            fontSize: 11.5,
+            height: 1.4,
+            color: AppColors.textMuted,
+            fontFamily: 'Nunito',
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFocusChip(SupportFocus focus) {
+    final isSelected = _focus.contains(focus);
+
+    return Semantics(
+      selected: isSelected,
+      button: true,
+      child: GestureDetector(
+        onTap: () => setState(() {
+          isSelected ? _focus.remove(focus) : _focus.add(focus);
+        }),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.logoGreen : AppColors.background,
+            borderRadius: BorderRadius.circular(AppRadius.button),
+            border: Border.all(
+              color: isSelected ? AppColors.logoGreen : AppColors.divider,
+            ),
+          ),
+          child: Text(
+            focus.label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? AppColors.surface : AppColors.textDark,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
+      ),
     );
   }
 
