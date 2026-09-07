@@ -34,6 +34,7 @@ void main() {
     await Hive.openBox<ScheduleTask>('schedule_box');
     await Hive.openBox<int>('schedule_completion');
     await Hive.openBox<int>('custom_rewards');
+    await Hive.openBox<String>('reward_icons');
     await Hive.openBox<String>('backup_meta');
     await Hive.openBox<bool>('guide_bookmarks');
     await Hive.openBox<bool>('guide_tips');
@@ -97,6 +98,7 @@ void main() {
     await HiveService.getSettingsBox().put('has_seen_onboarding', true);
     await HiveService.getScheduleDoneBox().put('2026-08-16_custom_1', 2);
     await HiveService.getRewardBox().put('Ice cream', 10);
+    await HiveService.setRewardIcon('Ice cream', 'icecream');
     await HiveService.setGuideBookmarked('ingay', true);
     await HiveService.setGuideTipDone('ingay', 2, true);
     await HiveService.setDswdRequirementReady('medical_abstract', true);
@@ -116,6 +118,7 @@ void main() {
     await HiveService.getSettingsBox().clear();
     await HiveService.getScheduleDoneBox().clear();
     await HiveService.getRewardBox().clear();
+    await HiveService.getRewardIconBox().clear();
     await HiveService.getGuideBookmarkBox().clear();
     await HiveService.getGuideTipBox().clear();
     await HiveService.getDswdChecklistBox().clear();
@@ -171,6 +174,7 @@ void main() {
     expect(HiveService.getSettingsBox().get('has_seen_onboarding'), true);
     expect(HiveService.getScheduleDoneBox().get('2026-08-16_custom_1'), 2);
     expect(HiveService.getRewardBox().get('Ice cream'), 10);
+    expect(HiveService.getRewardIcon('Ice cream'), 'icecream');
     expect(HiveService.isGuideBookmarked('ingay'), isTrue);
     expect(HiveService.isGuideTipDone('ingay', 2), isTrue);
     expect(HiveService.isDswdRequirementReady('medical_abstract'), isTrue);

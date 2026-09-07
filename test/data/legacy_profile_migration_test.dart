@@ -37,6 +37,7 @@ void main() {
     await Hive.openBox<int>('schedule_order');
     await Hive.openBox<bool>('schedule_hidden');
     await Hive.openBox<int>('custom_rewards');
+    await Hive.openBox<String>('reward_icons');
     await Hive.openBox<bool>('dswd_checklist_box');
   });
 

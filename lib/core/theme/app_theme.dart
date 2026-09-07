@@ -124,5 +124,40 @@ class AppTheme {
         ),
       ),
     ),
+    // Kung wala ito, parisukat ang kanto at abo ang hangganan ng bawat
+    // `TextField` — mukha itong Material form sa gitna ng app na hindi.
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColors.surface,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      hintStyle: const TextStyle(
+        fontFamily: 'Nunito',
+        fontSize: 13.5,
+        color: AppColors.textMuted,
+      ),
+      labelStyle: const TextStyle(
+        fontFamily: 'Nunito',
+        fontSize: 13.5,
+        color: AppColors.textMuted,
+      ),
+      // `textDark` at hindi `danger`: nababasa ang paliwanag ng pagkakamali,
+      // at ang pulang hangganan na ang nagsasabing may mali.
+      errorStyle: const TextStyle(
+        fontFamily: 'Nunito',
+        fontSize: 11.5,
+        color: AppColors.danger,
+      ),
+      border: _inputBorder(AppColors.divider),
+      enabledBorder: _inputBorder(AppColors.divider),
+      focusedBorder: _inputBorder(AppColors.logoGreen, width: 2),
+      errorBorder: _inputBorder(AppColors.danger),
+      focusedErrorBorder: _inputBorder(AppColors.danger, width: 2),
+    ),
   );
+
+  static OutlineInputBorder _inputBorder(Color color, {double width = 1.5}) =>
+      OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: color, width: width),
+      );
 }

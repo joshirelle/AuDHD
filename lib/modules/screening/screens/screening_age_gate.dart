@@ -46,10 +46,7 @@ class _ScreeningAgeGateState extends State<ScreeningAgeGate> {
   }
 
   Future<void> _editProfile(ChildProfile child) async {
-    final saved = await showDialog<bool>(
-      context: context,
-      builder: (context) => ChildEditorDialog(existing: child),
-    );
+    final saved = await ChildEditorDialog.show(context, existing: child);
     if (saved == true) {
       setState(() => _child = HiveService.getChildProfile());
     }

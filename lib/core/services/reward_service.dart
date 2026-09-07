@@ -9,7 +9,12 @@ class RewardService {
     final box = HiveService.getRewardBox();
     return <Reward>[
       for (final key in box.keys)
-        Reward(label: key, stars: box.get(key)!, isCustom: true),
+        Reward(
+          label: key,
+          stars: box.get(key)!,
+          isCustom: true,
+          iconKey: HiveService.getRewardIcon(key),
+        ),
     ]..sort((a, b) => a.stars.compareTo(b.stars));
   }
 
@@ -28,8 +33,13 @@ class RewardService {
       )
       .toList();
 
-  static Future<void> addCustom(String label, int stars) async {
+  static Future<void> addCustom(
+    String label,
+    int stars, {
+    String? iconKey,
+  }) async {
     await HiveService.addCustomReward(label, stars);
+    await HiveService.setRewardIcon(label, iconKey);
     // Walang bagong tagumpay kung naabot na ang bituin bago pa ito idagdag,
     // kaya tahimik na markahan sa halip na sumabog agad ang confetti.
     if (StarService.totalStars() >= stars) {

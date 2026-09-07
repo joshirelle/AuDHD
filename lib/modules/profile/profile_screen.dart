@@ -243,10 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _openEditor({ChildProfile? existing}) async {
-    final saved = await showDialog<bool>(
-      context: context,
-      builder: (context) => ChildEditorDialog(existing: existing),
-    );
+    final saved = await ChildEditorDialog.show(context, existing: existing);
     if (saved == true) _load();
   }
 

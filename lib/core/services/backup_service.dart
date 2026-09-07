@@ -129,6 +129,7 @@ class BackupService {
       'settings': _dump(HiveService.getSettingsBox()),
       'scheduleCompletion': _dump(HiveService.getScheduleDoneRawBox()),
       'rewards': _dump(HiveService.getRewardRawBox()),
+      'rewardIcons': _dump(HiveService.getRewardIconRawBox()),
       'guideBookmarks': _dump(HiveService.getGuideBookmarkBox()),
       'guideTips': _dump(HiveService.getGuideTipBox()),
       'dswdChecklist': _dump(HiveService.getDswdChecklistRawBox()),
@@ -370,6 +371,11 @@ class BackupService {
     await _restore(
       HiveService.getRewardRawBox(),
       data['rewards'],
+      scope: scope,
+    );
+    await _restore(
+      HiveService.getRewardIconRawBox(),
+      data['rewardIcons'],
       scope: scope,
     );
     await _restore(HiveService.getGuideBookmarkBox(), data['guideBookmarks']);

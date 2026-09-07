@@ -16,10 +16,7 @@ class ScreeningHomeScreen extends StatelessWidget {
   Future<bool> _ensureChildProfile(BuildContext context) async {
     if (HiveService.getChildProfile() != null) return true;
 
-    final added = await showDialog<bool>(
-      context: context,
-      builder: (context) => const ChildEditorDialog(),
-    );
+    final added = await ChildEditorDialog.show(context);
     return added == true;
   }
 

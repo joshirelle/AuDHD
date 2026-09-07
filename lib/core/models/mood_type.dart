@@ -1,65 +1,106 @@
+import 'package:flutter/material.dart';
+
 import '../i18n/language_controller.dart';
+import '../theme/app_theme.dart';
 
-enum MoodTone { positive, neutral, negative }
+enum MoodTone {
+  positive(AppColors.mintGreen, AppColors.mintInk),
+  neutral(AppColors.skyBlueLight, AppColors.skyInk),
+  negative(AppColors.coralPeach, AppColors.coralInk);
 
-/// Ang emoji ang palaging ipinapakita; asset lang kapag may naidagdag na
-/// larawan. Huwag ideklara ang `assets/moods/` sa pubspec hangga't walang laman
-/// ang folder — bibigo ang build.
+  const MoodTone(this.fill, this.ink);
+
+  final Color fill;
+
+  /// Sapat ang kaibahan nito sa `fill` at sa `surface`.
+  final Color ink;
+
+  String get label => switch (this) {
+    MoodTone.positive => tr('Masaya', 'Good'),
+    MoodTone.neutral => tr('Karaniwan', 'In between'),
+    MoodTone.negative => tr('Mahirap', 'Hard'),
+  };
+}
+
+/// `IconData` at hindi emoji o asset.
+///
+/// Ang emoji ay dumadaan sa font fallback ng system — hindi tugma sa buong
+/// app na `IconData` ang gamit, at nagbabago ang hitsura kada telepono. Ang
+/// asset naman ay hindi umiiral: walang `assets/moods/`, kaya ang `errorBuilder`
+/// ang naging normal na landas at labing-anim na palyadong lookup kada guhit.
 enum MoodType {
   joyful(
     'Masayang-masaya',
     'Super Happy',
-    '\u{1F33B}',
+    Icons.sentiment_very_satisfied_rounded,
     MoodTone.positive,
-    'joyful',
   ),
-  happy('Masaya', 'Happy', '\u2600\uFE0F', MoodTone.positive, 'happy'),
-  amused('Natutuwa', 'Giggly', '\u{1F604}', MoodTone.positive, 'amused'),
-  excited('Sabik', 'Excited', '\u{1F389}', MoodTone.positive, 'excited'),
-  calm('Payapa', 'Calm', '\u{1F338}', MoodTone.positive, 'calm'),
+  happy(
+    'Masaya',
+    'Happy',
+    Icons.sentiment_satisfied_rounded,
+    MoodTone.positive,
+  ),
+  amused('Natutuwa', 'Giggly', Icons.emoji_emotions_rounded, MoodTone.positive),
+  excited('Sabik', 'Excited', Icons.celebration_rounded, MoodTone.positive),
+  calm('Payapa', 'Calm', Icons.spa_rounded, MoodTone.positive),
   confident(
     'May Tiwala',
     'Confident',
-    '\u{1F4AA}',
+    Icons.thumb_up_rounded,
     MoodTone.positive,
-    'confident',
   ),
-  inLove('Nagmamahal', 'Loving', '\u{1F496}', MoodTone.positive, 'in_love'),
-  proud('Mataas ang Moral', 'Proud', '\u2B50', MoodTone.positive, 'proud'),
-  sleepy('Inaantok', 'Sleepy', '\u{1F634}', MoodTone.neutral, 'sleepy'),
-  bored('Nababagot', 'Bored', '\u{1F971}', MoodTone.neutral, 'bored'),
-  confused('Lito', 'Confused', '\u{1F914}', MoodTone.neutral, 'confused'),
-  worried('Nangangamba', 'Worried', '\u{1F61F}', MoodTone.negative, 'worried'),
-  sad('Malungkot', 'Sad', '\u2601\uFE0F', MoodTone.negative, 'sad'),
+  inLove('Nagmamahal', 'Loving', Icons.favorite_rounded, MoodTone.positive),
+  proud('Mataas ang Moral', 'Proud', Icons.star_rounded, MoodTone.positive),
+  sleepy('Inaantok', 'Sleepy', Icons.bedtime_rounded, MoodTone.neutral),
+  bored(
+    'Nababagot',
+    'Bored',
+    Icons.sentiment_neutral_rounded,
+    MoodTone.neutral,
+  ),
+  confused('Lito', 'Confused', Icons.psychology_alt_rounded, MoodTone.neutral),
+  worried(
+    'Nangangamba',
+    'Worried',
+    Icons.sentiment_dissatisfied_rounded,
+    MoodTone.negative,
+  ),
+  sad(
+    'Malungkot',
+    'Sad',
+    Icons.sentiment_very_dissatisfied_rounded,
+    MoodTone.negative,
+  ),
   frustrated(
     'Inis / Aburido',
     'Frustrated',
-    '\u{1F624}',
+    Icons.mood_bad_rounded,
     MoodTone.negative,
-    'frustrated',
   ),
-  angry('Galit', 'Angry', '\u{1F525}', MoodTone.negative, 'angry'),
+  angry(
+    'Galit',
+    'Angry',
+    Icons.local_fire_department_rounded,
+    MoodTone.negative,
+  ),
   disgusted(
     'Nadedismaya',
     'Disappointed',
-    '\u{1F922}',
+    Icons.heart_broken_rounded,
     MoodTone.negative,
-    'disgusted',
   );
 
-  const MoodType(this._fil, this._eng, this.emoji, this.tone, this._assetName);
+  const MoodType(this._fil, this._eng, this.icon, this.tone);
 
   final String _fil;
   final String _eng;
-  final String emoji;
+  final IconData icon;
   final MoodTone tone;
-  final String _assetName;
 
   /// Nakaimbak ang mood sa pangalan ng enum, hindi sa label, kaya ligtas
   /// isalin ito.
   String get label => tr(_fil, _eng);
-
-  String get assetPath => 'assets/moods/$_assetName.png';
 
   /// `null` kapag hindi kilala — kabilang ang tatlong lumang halaga
   /// (`Kalmado`, `Masigla`, `Pagod`) na naitala bago ang enum na ito.
@@ -74,7 +115,12 @@ enum MoodType {
   /// Ipinapakita ang lumang naitala nang buo sa halip na itapon.
   static String labelFor(String stored) => fromName(stored)?.label ?? stored;
 
-  static String? emojiFor(String stored) => fromName(stored)?.emoji;
+  static IconData iconFor(String? stored) =>
+      fromName(stored)?.icon ?? Icons.edit_note_rounded;
+
+  static List<MoodType> inTone(MoodTone? tone) => tone == null
+      ? values
+      : values.where((mood) => mood.tone == tone).toList();
 
   static MoodType? fromLabel(String label) {
     for (final mood in MoodType.values) {

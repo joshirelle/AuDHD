@@ -8,6 +8,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/child_avatar.dart';
 import 'add_reward_dialog.dart';
+import 'reward_icons.dart';
 
 class StarRewardDialog extends StatelessWidget {
   const StarRewardDialog({super.key});
@@ -22,7 +23,11 @@ class StarRewardDialog extends StatelessWidget {
   Future<void> _addReward(BuildContext context) async {
     final reward = await AddRewardDialog.show(context);
     if (reward == null) return;
-    await RewardService.addCustom(reward.label, reward.stars);
+    await RewardService.addCustom(
+      reward.label,
+      reward.stars,
+      iconKey: reward.iconKey,
+    );
   }
 
   @override
@@ -196,6 +201,7 @@ class StarRewardDialog extends StatelessWidget {
 
   Widget _buildRewardRow(Reward reward, bool isUnlocked) {
     final color = isUnlocked ? AppColors.starGold : AppColors.textMuted;
+    final stars = reward.stars;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -205,37 +211,68 @@ class StarRewardDialog extends StatelessWidget {
         border: Border.all(color: isUnlocked ? color : AppColors.divider),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.star_rounded, size: 18, color: color),
-          const SizedBox(width: 4),
-          SizedBox(
-            width: 26,
-            child: Text(
-              '${reward.stars}',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: isUnlocked ? AppColors.textDark : AppColors.textMuted,
-                fontFamily: 'Nunito',
-              ),
+          // Larawan muna: hindi pa nakakabasa ang marami sa mga batang ito,
+          // kaya ito ang tanging bahagi ng hanay na para sa kanila.
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: isUnlocked ? AppColors.surface : AppColors.background,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              RewardIcons.of(reward.iconKey),
+              size: 21,
+              color: isUnlocked
+                  ? RewardIcons.inkOf(reward.iconKey)
+                  : AppColors.textMuted,
             ),
           ),
+          const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              reward.label,
-              style: TextStyle(
-                fontSize: 12,
-                color: isUnlocked ? AppColors.textDark : AppColors.textMuted,
-                height: 1.3,
-                fontFamily: 'Nunito',
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  reward.label,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: isUnlocked
+                        ? AppColors.textDark
+                        : AppColors.textMuted,
+                    height: 1.3,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    Icon(Icons.star_rounded, size: 15, color: color),
+                    const SizedBox(width: 4),
+                    Text(
+                      isUnlocked
+                          ? tr('$stars · Kaya na!', '$stars · Ready!')
+                          : '$stars',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.bold,
+                        color: isUnlocked
+                            ? AppColors.textDark
+                            : AppColors.textMuted,
+                        fontFamily: 'Nunito',
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           if (isUnlocked)
             const Icon(
               Icons.check_circle_rounded,
-              size: 18,
+              size: 20,
               color: AppColors.logoGreen,
             ),
           if (reward.isCustom)
@@ -246,7 +283,7 @@ class StarRewardDialog extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8),
                 child: Icon(
                   Icons.close_rounded,
-                  size: 16,
+                  size: 18,
                   color: AppColors.danger,
                 ),
               ),

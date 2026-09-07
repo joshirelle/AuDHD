@@ -354,11 +354,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Row(
           children: [
-            Text(
-              mood?.emoji ?? '\u{1F4DD}',
-              style: const TextStyle(fontSize: 18),
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                color: mood?.tone.fill ?? AppColors.tintGold,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                MoodType.iconFor(stored),
+                size: 17,
+                color: mood?.tone.ink ?? AppColors.warning,
+              ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
               child: Text(
                 stored == null

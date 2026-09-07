@@ -30,6 +30,10 @@ class HiveService {
   static const String _scheduleDoneBoxName = 'schedule_completion';
   static const String _rewardBoxName = 'custom_rewards';
 
+  /// Larawan ng pabuya. Hiwalay na box at hindi bagong uri ng `custom_rewards`:
+  /// ang pagpapalit ng uri ay pagbura ng bawat pabuyang naitala na ngayon.
+  static const String _rewardIconBoxName = 'reward_icons';
+
   /// Petsa lang ng huling kopya ng datos — hiwalay sa profile para hindi
   /// mabura kasama nito.
   static const String _backupMetaBoxName = 'backup_meta';
@@ -84,6 +88,7 @@ class HiveService {
     await Hive.openBox<ScheduleTask>(_scheduleBoxName);
     await Hive.openBox<int>(_scheduleDoneBoxName);
     await Hive.openBox<int>(_rewardBoxName);
+    await Hive.openBox<String>(_rewardIconBoxName);
     await Hive.openBox<String>(_backupMetaBoxName);
     await Hive.openBox<bool>(_guideBookmarkBoxName);
     await Hive.openBox<bool>(_guideTipBoxName);
@@ -151,6 +156,26 @@ class HiveService {
 
   static Future<void> deleteCustomReward(String reward) async {
     await getRewardBox().delete(reward);
+    await getRewardIconBox().delete(reward);
+  }
+
+  /// Susi = pangalan ng pabuya, halaga = susi sa `RewardIcons`.
+  static Box<String> getRewardIconRawBox() =>
+      Hive.box<String>(_rewardIconBoxName);
+
+  static ScopedBox<String> getRewardIconBox() =>
+      ScopedBox(getRewardIconRawBox(), _scope);
+
+  static String? getRewardIcon(String reward) =>
+      getRewardIconBox().get(reward.trim());
+
+  static Future<void> setRewardIcon(String reward, String? iconKey) async {
+    final box = getRewardIconBox();
+    if (iconKey == null) {
+      await box.delete(reward.trim());
+    } else {
+      await box.put(reward.trim(), iconKey);
+    }
   }
 
   /// Susi = `DswdRequirement.id`. Ang nakatsek lang ang naisusulat.
@@ -616,6 +641,7 @@ class HiveService {
     getScheduleOrderRawBox(),
     getScheduleHiddenRawBox(),
     getRewardRawBox(),
+    getRewardIconRawBox(),
     getDswdChecklistRawBox(),
   ];
 
