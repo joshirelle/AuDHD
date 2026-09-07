@@ -26,11 +26,11 @@ class _DeveloperFeedbackCardState extends State<DeveloperFeedbackCard> {
   }
 
   Future<void> _loadVersion() async {
-    // Mula sa build, hindi hardcoded: hindi masusundan ng nakasulat na bilang
-    // ang pagtaas ng bersyon sa pubspec.
+    // Kasama ang buildNumber: ang `version` lang ay 1.0.0 sa bawat labas, kaya
+    // hindi masasabi ng magulang kung alin ang hawak niya kapag nag-report.
     final info = await PackageInfo.fromPlatform();
     if (!mounted) return;
-    setState(() => _version = 'v${info.version}');
+    setState(() => _version = 'v${info.version}+${info.buildNumber}');
   }
 
   Future<void> _openMessenger() async {
