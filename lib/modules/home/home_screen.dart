@@ -5,6 +5,7 @@ import '../../core/models/mood_type.dart';
 import '../../core/services/update_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_formatter.dart';
+import '../../data/models/child_profile.dart';
 import '../../data/services/hive_service.dart';
 import '../../widgets/app_branding_header.dart';
 import '../../widgets/kiko_card.dart';
@@ -15,6 +16,7 @@ import '../profile/profile_screen.dart';
 import '../profile/widgets/child_switcher.dart';
 import '../schedule/screens/visual_schedule_screen.dart';
 import '../sensory/screens/home_activities_screen.dart';
+import 'data/parent_tips.dart';
 import 'widgets/behavior_log_card.dart';
 import 'widgets/consultation_card.dart';
 import 'widgets/doctor_report_card.dart';
@@ -260,59 +262,76 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(18),
       child: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Nakikinig sa box para agad magbago kapag naitala o pinalitan ang bata.
-              ValueListenableBuilder<Box>(
-                valueListenable: HiveService.getProfileBox().listenable(),
-                builder: (context, box, child) {
-                  final name = HiveService.getChildProfile()?.displayName
-                      .trim();
-                  final hasName = name != null && name.isNotEmpty;
-                  final greeting = DateFormatter.timeGreeting(DateTime.now());
+          // Nakikinig sa `child_profiles`, hindi sa lumang `child_profile`:
+          // walang sumusulat doon pagkatapos ng multi-child migration, kaya
+          // hindi na kailanman pumuputok ang lumang listener.
+          ValueListenableBuilder<Box>(
+            valueListenable: HiveService.getProfilesBox().listenable(),
+            builder: (context, box, _) {
+              final child = HiveService.getActiveChild();
+              final name = child?.displayName.trim();
+              final hasName = name != null && name.isNotEmpty;
+              final now = DateTime.now();
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tr(
-                          '$greeting!\nNarito ulit tayo\n'
-                              '${hasName ? 'para kay $name.' : 'para sa inyo.'}',
-                          '$greeting!\nWe are here\n'
-                              '${hasName ? 'for $name.' : 'for you.'}',
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Padding sa kanan sa itaas lang: doon nakapatong ang
+                  // mascot. Sa ibaba, buo ang lapad ng card.
+                  Padding(
+                    padding: const EdgeInsets.only(right: 96),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${DateFormatter.timeGreeting(now)}!',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                            fontFamily: 'Nunito',
+                            height: 1.2,
+                          ),
                         ),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textDark,
-                          fontFamily: 'Nunito',
-                          height: 1.2,
+                        const SizedBox(height: 4),
+                        Text(
+                          hasName
+                              ? tr(
+                                  'Narito ulit tayo para kay $name.',
+                                  'We are here again for $name.',
+                                )
+                              : tr(
+                                  'Narito ulit tayo para sa inyo.',
+                                  'We are here again for you.',
+                                ),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColors.textDark,
+                            fontFamily: 'Nunito',
+                            height: 1.35,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        tr(
-                          'Kumusta ang pakiramdam\n'
-                              '${hasName ? 'ni $name' : 'ng iyong anak'} ngayon?',
-                          'How is ${hasName ? name : 'your child'}\n'
-                              'feeling today?',
+                        const SizedBox(height: 6),
+                        Text(
+                          DateFormatter.weekdayAndDay(now),
+                          style: const TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.skyInk,
+                            fontFamily: 'Nunito',
+                          ),
                         ),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textDark,
-                          fontFamily: 'Nunito',
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildMoodRow(),
-            ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildParentTip(child),
+                  const SizedBox(height: 12),
+                  _buildMoodRow(),
+                ],
+              );
+            },
           ),
-          // Positioned Kiko Image on the top right
           Positioned(
             right: -10,
             top: -10,
@@ -323,6 +342,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 'assets/images/kiko_waving.png',
                 fit: BoxFit.contain,
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Para sa magulang, hindi sa bata. Ang tag ng bata ay nagdaragdag lang sa
+  /// mapagpipilian — opsyonal ito, kaya hindi puwedeng ito ang batayan.
+  Widget _buildParentTip(ChildProfile? child) {
+    final tip = ParentTips.forDay(
+      DateTime.now(),
+      child?.supportFocus ?? const [],
+    );
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.button),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.wb_twilight_rounded,
+                size: 15,
+                color: AppColors.skyInk,
+              ),
+              const SizedBox(width: 7),
+              Text(
+                tr('PARA SA IYO NGAYON', 'FOR YOU TODAY'),
+                style: const TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.6,
+                  color: AppColors.skyInk,
+                  fontFamily: 'Nunito',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            tip.text,
+            style: const TextStyle(
+              fontSize: 13,
+              height: 1.45,
+              color: AppColors.textDark,
+              fontFamily: 'Nunito',
             ),
           ),
         ],

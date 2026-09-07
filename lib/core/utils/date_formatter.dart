@@ -37,6 +37,35 @@ class DateFormatter {
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 
+  static const List<String> _weekdaysFil = [
+    'Lunes',
+    'Martes',
+    'Miyerkules',
+    'Huwebes',
+    'Biyernes',
+    'Sabado',
+    'Linggo',
+  ];
+
+  static const List<String> _weekdaysEng = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  /// Halimbawa: `Lunes, Setyembre 7`. Walang taon — araw-araw itong nakikita,
+  /// at ang taon ay ingay doon.
+  static String weekdayAndDay(DateTime date) {
+    final weekdays = LanguageController.isEnglish ? _weekdaysEng : _weekdaysFil;
+    final months = LanguageController.isEnglish ? _monthsEng : _monthsFil;
+    return '${weekdays[date.weekday - 1]}, '
+        '${months[date.month - 1]} ${date.day}';
+  }
+
   /// Buwan at taon lang, mula sa `YYYY-MM`. Nakaimbak nang ganito sa asset
   /// para hindi na kailangang isulat nang dalawang beses sa bawat entry.
   /// Ibinabalik ang mismong `raw` kapag hindi mabasa — mas mabuting makita
