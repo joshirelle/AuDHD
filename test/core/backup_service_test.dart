@@ -37,6 +37,7 @@ void main() {
     await Hive.openBox<String>('backup_meta');
     await Hive.openBox<bool>('guide_bookmarks');
     await Hive.openBox<bool>('guide_tips');
+    await Hive.openBox<bool>('dswd_checklist_box');
     await Hive.openBox<int>('schedule_order');
     await Hive.openBox<bool>('schedule_hidden');
     await Hive.openBox<String>('app_prefs');
@@ -98,6 +99,7 @@ void main() {
     await HiveService.getRewardBox().put('Ice cream', 10);
     await HiveService.setGuideBookmarked('ingay', true);
     await HiveService.setGuideTipDone('ingay', 2, true);
+    await HiveService.setDswdRequirementReady('medical_abstract', true);
     await HiveService.setScheduleTaskHidden('default_aaral', true);
     await HiveService.getScheduleOrderBox().put('default_almusal', 3);
     await HiveService.getPrefsBox().put('selected_language', 'eng');
@@ -116,6 +118,7 @@ void main() {
     await HiveService.getRewardBox().clear();
     await HiveService.getGuideBookmarkBox().clear();
     await HiveService.getGuideTipBox().clear();
+    await HiveService.getDswdChecklistBox().clear();
     await HiveService.getScheduleOrderBox().clear();
     await HiveService.getScheduleHiddenBox().clear();
     await HiveService.getPrefsBox().clear();
@@ -170,6 +173,7 @@ void main() {
     expect(HiveService.getRewardBox().get('Ice cream'), 10);
     expect(HiveService.isGuideBookmarked('ingay'), isTrue);
     expect(HiveService.isGuideTipDone('ingay', 2), isTrue);
+    expect(HiveService.isDswdRequirementReady('medical_abstract'), isTrue);
     expect(HiveService.isScheduleTaskHidden('default_aaral'), isTrue);
     expect(HiveService.getScheduleOrderBox().get('default_almusal'), 3);
     expect(HiveService.getPrefsBox().get('selected_language'), 'eng');
@@ -307,6 +311,27 @@ void main() {
       await BackupService.restorePayload(reloaded);
 
       expect(HiveService.getActiveChild()!.name, 'Andres');
+    });
+
+    test('the DSWD checklist stays with the child it belongs to', () async {
+      await seedThree();
+
+      await HiveService.setActiveChild('a');
+      await HiveService.setDswdRequirementReady('medical_abstract', true);
+      await HiveService.setActiveChild('b');
+      await HiveService.setDswdRequirementReady('barangay_indigency', true);
+
+      final reloaded = await roundTrip();
+      await wipe();
+      await BackupService.restorePayload(reloaded);
+
+      await HiveService.setActiveChild('a');
+      expect(HiveService.isDswdRequirementReady('medical_abstract'), isTrue);
+      expect(HiveService.isDswdRequirementReady('barangay_indigency'), isFalse);
+
+      await HiveService.setActiveChild('b');
+      expect(HiveService.isDswdRequirementReady('medical_abstract'), isFalse);
+      expect(HiveService.isDswdRequirementReady('barangay_indigency'), isTrue);
     });
   });
 

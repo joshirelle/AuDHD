@@ -37,6 +37,11 @@ class HiveService {
   static const String _guideBookmarkBoxName = 'guide_bookmarks';
   static const String _guideTipBoxName = 'guide_tips';
 
+  /// Tsek ng magulang sa mga papeles para sa DSWD Guarantee Letter.
+  /// Naka-scope sa bata: nakapangalan sa isang bata ang medical abstract at
+  /// ang quotation, kaya hiwalay ang aplikasyon kada anak.
+  static const String _dswdChecklistBoxName = 'dswd_checklist_box';
+
   /// Sariling ayos at itinagong gawain ng magulang. Hiwalay sa `schedule_box`
   /// para manatili sa code ang mga default at maabot pa rin sila ng update.
   static const String _scheduleOrderBoxName = 'schedule_order';
@@ -82,6 +87,7 @@ class HiveService {
     await Hive.openBox<String>(_backupMetaBoxName);
     await Hive.openBox<bool>(_guideBookmarkBoxName);
     await Hive.openBox<bool>(_guideTipBoxName);
+    await Hive.openBox<bool>(_dswdChecklistBoxName);
     await Hive.openBox<int>(_scheduleOrderBoxName);
     await Hive.openBox<bool>(_scheduleHiddenBoxName);
     await Hive.openBox<String>(_prefsBoxName);
@@ -145,6 +151,26 @@ class HiveService {
 
   static Future<void> deleteCustomReward(String reward) async {
     await getRewardBox().delete(reward);
+  }
+
+  /// Susi = `DswdRequirement.id`. Ang nakatsek lang ang naisusulat.
+  static Box<bool> getDswdChecklistRawBox() =>
+      Hive.box<bool>(_dswdChecklistBoxName);
+
+  static ScopedBox<bool> getDswdChecklistBox() =>
+      ScopedBox(getDswdChecklistRawBox(), _scope);
+
+  static bool isDswdRequirementReady(String id) =>
+      getDswdChecklistBox().get(id) ?? false;
+
+  /// Binubura imbes na isulat na `false`: mas maliit ang box at ang backup.
+  static Future<void> setDswdRequirementReady(String id, bool value) async {
+    final box = getDswdChecklistBox();
+    if (value) {
+      await box.put(id, true);
+    } else {
+      await box.delete(id);
+    }
   }
 
   /// Mga custom na routine lang ang laman; nasa code ang mga default.
@@ -590,6 +616,7 @@ class HiveService {
     getScheduleOrderRawBox(),
     getScheduleHiddenRawBox(),
     getRewardRawBox(),
+    getDswdChecklistRawBox(),
   ];
 
   /// Bilang ng naitala para sa isang bata.

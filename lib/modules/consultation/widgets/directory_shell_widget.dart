@@ -4,13 +4,16 @@ import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_formatter.dart';
 import '../../../core/utils/link_launcher.dart';
+import '../../../widgets/contact_rows.dart';
 import '../../../widgets/kiko_card.dart';
 import '../models/consultation_center.dart';
 
 /// Listahan ng mapagpapatingnan.
 ///
-/// Naghihintay pa ng napatunayang datos. Ang UI ay handa na; ang laman ang
-/// dadagdag sa `assets/data/verified_centers.json` kapag mayroon na.
+/// HINDI ITO PATAY NA CODE. Sinasadyang hindi nakakabit habang v6 — kulang pa
+/// ang datos sa `assets/data/verified_centers.json`: walang numero at magaspang
+/// ang address ng karamihan. Ibabalik ito sa `ConsultationScreen` kapag
+/// kumpleto na. Huwag burahin kasama nito ang asset.
 class DirectoryShellWidget extends StatefulWidget {
   const DirectoryShellWidget({super.key});
 
@@ -567,46 +570,14 @@ class _DirectoryShellWidgetState extends State<DirectoryShellWidget> {
   /// Walang ipinapadala ang app dito — bubukas lang ang Facebook, at ang
   /// magulang ang magpapasya kung susulat siya.
   Widget _buildFacebookLink(String url) {
-    return GestureDetector(
+    return ContactPill(
+      icon: Icons.chat_rounded,
+      label: tr('Buksan ang Facebook page', 'Open their Facebook page'),
       onTap: () => _open(
         Uri.parse(url),
         tr(
           'Hindi mabuksan ang Facebook. Subukan ulit mamaya.',
           'Could not open Facebook. Please try again later.',
-        ),
-      ),
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.tintBlue,
-          borderRadius: BorderRadius.circular(AppRadius.button),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.chat_rounded,
-              size: 15,
-              color: AppColors.accentBlue,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              tr('Buksan ang Facebook page', 'Open their Facebook page'),
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                color: AppColors.accentBlue,
-                fontFamily: 'Nunito',
-              ),
-            ),
-            const SizedBox(width: 6),
-            const Icon(
-              Icons.open_in_new_rounded,
-              size: 12,
-              color: AppColors.accentBlue,
-            ),
-          ],
         ),
       ),
     );
@@ -646,41 +617,19 @@ class _DirectoryShellWidgetState extends State<DirectoryShellWidget> {
   /// Hinahanap ang address sa maps app. Hindi ito nagbibigay ng direksyon
   /// nang kusa — ang magulang pa rin ang pipindot niyon doon.
   Widget _buildAddressRow(ConsultationCenter center) {
-    return GestureDetector(
+    return ContactLinkRow(
+      icon: Icons.place_rounded,
+      text: '${center.address}, ${center.region}',
       onTap: () => _openMap(center),
-      behavior: HitTestBehavior.opaque,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(
-            Icons.place_rounded,
-            size: 15,
-            color: AppColors.accentBlue,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              '${center.address}, ${center.region}',
-              style: const TextStyle(
-                fontSize: 12,
-                height: 1.4,
-                fontWeight: FontWeight.bold,
-                color: AppColors.accentBlue,
-                decoration: TextDecoration.underline,
-                decorationColor: AppColors.accentBlue,
-                fontFamily: 'Nunito',
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
   /// Bumubukas ang dialer na may nakalagay nang numero. Hindi ito tumatawag
   /// nang kusa — ang magulang pa rin ang pipindot.
   Widget _buildPhoneRow(String number) {
-    return GestureDetector(
+    return ContactLinkRow(
+      icon: Icons.call_rounded,
+      text: number,
       onTap: () => _open(
         Uri.parse('tel:${number.replaceAll(RegExp(r'[^0-9+]'), '')}'),
         tr(
@@ -688,49 +637,9 @@ class _DirectoryShellWidgetState extends State<DirectoryShellWidget> {
           'Could not open the dialer. Please copy the number instead.',
         ),
       ),
-      behavior: HitTestBehavior.opaque,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(Icons.call_rounded, size: 15, color: AppColors.accentBlue),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              number,
-              style: const TextStyle(
-                fontSize: 12,
-                height: 1.4,
-                fontWeight: FontWeight.bold,
-                color: AppColors.accentBlue,
-                decoration: TextDecoration.underline,
-                decorationColor: AppColors.accentBlue,
-                fontFamily: 'Nunito',
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
-  Widget _buildRow(IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 15, color: AppColors.textMuted),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 12,
-              height: 1.4,
-              color: AppColors.textDark,
-              fontFamily: 'Nunito',
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  Widget _buildRow(IconData icon, String text) =>
+      ContactInfoRow(icon: icon, text: text);
 }

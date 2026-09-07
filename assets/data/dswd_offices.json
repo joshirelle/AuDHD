@@ -1,0 +1,52 @@
+[
+  {
+    "id": "fo_ncr_cis",
+    "city": "Manila",
+    "officeName": "Crisis Intervention Section (AICS)",
+    "address": "Gastambide, Sampaloc, Manila",
+    "contactNumbers": [
+      {
+        "label": "(02) 8733-0010 to 18, local 118",
+        "dial": "+63287330010"
+      }
+    ],
+    "contactPerson": "Crisis Intervention Section",
+    "notes": "Dito dumadaan ang AICS at ang Guarantee Letter. Hiwalay ang lugar na ito sa pangunahing gusali sa San Rafael \u2014 tanungin muna bago bumiyahe.",
+    "notesEn": "This is where AICS and the guarantee letter are handled. It is a separate place from the main building on San Rafael \u2014 ask first before travelling.",
+    "officialSourceUrl": "https://ncr.dswd.gov.ph/wp-content/uploads/2022/09/Updated-List-of-Offices-of-DSWD-NCR-2022.pdf",
+    "verifiedOn": "2022-09"
+  },
+  {
+    "id": "fo_ncr",
+    "city": "Manila",
+    "officeName": "DSWD Field Office NCR",
+    "address": "389 San Rafael St. corner Legarda St., Sampaloc, Manila 1007",
+    "contactNumbers": [
+      {
+        "label": "(02) 8733-0010 to 18",
+        "dial": "+63287330010"
+      }
+    ],
+    "email": "foncr@dswd.gov.ph",
+    "notes": "Pangunahing gusali. Kung AICS ang kailangan, sa Crisis Intervention Section sa Gastambide dumiretso.",
+    "notesEn": "The main building. If you need AICS, go straight to the Crisis Intervention Section on Gastambide.",
+    "officialSourceUrl": "https://ncr.dswd.gov.ph/wp-content/uploads/2022/09/Updated-List-of-Offices-of-DSWD-NCR-2022.pdf",
+    "verifiedOn": "2022-09"
+  },
+  {
+    "id": "fo_ncr_malasakit",
+    "city": "Manila",
+    "officeName": "Malasakit Center \u2014 DSWD NCR",
+    "address": "Room 102, 389 San Rafael St. corner Legarda St., Sampaloc, Manila 1007",
+    "contactNumbers": [
+      {
+        "label": "(02) 8734-8623",
+        "dial": "+63287348623"
+      }
+    ],
+    "notes": "Tanggapan ito ng DSWD sa pangunahing gusali. Iba ito sa Malasakit Center na nasa loob ng pampublikong ospital.",
+    "notesEn": "This is the DSWD desk in the main building. It is not the same as the Malasakit Center inside a public hospital.",
+    "officialSourceUrl": "https://ncr.dswd.gov.ph/wp-content/uploads/2022/09/Updated-List-of-Offices-of-DSWD-NCR-2022.pdf",
+    "verifiedOn": "2022-09"
+  }
+]

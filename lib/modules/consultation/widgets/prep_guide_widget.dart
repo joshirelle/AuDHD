@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../widgets/kiko_card.dart';
+import '../../dswd_assistant/dswd_assistant_screen.dart';
 
 class PrepStep {
   const PrepStep({required this.icon, required this.title, required this.body});
@@ -151,7 +153,76 @@ class PrepGuideWidget extends StatelessWidget {
           _buildStep(step, AppColors.skyBlueLight, AppColors.skyInk),
           const SizedBox(height: 12),
         ],
+        const SizedBox(height: 12),
+        _buildDswdLink(context),
       ],
+    );
+  }
+
+  /// Ang tanong na kasunod ng "ano ang dalhin" ay madalas "saan kukuha ng
+  /// pambayad". Dito ito sinasagot, hindi sa ibang bahagi ng app.
+  Widget _buildDswdLink(BuildContext context) {
+    return KikoCard(
+      backgroundColor: AppColors.butterYellow,
+      padding: const EdgeInsets.all(16),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const DswdAssistantScreen()),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(9),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(
+              Icons.volunteer_activism_rounded,
+              size: 20,
+              color: AppColors.butterInk,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  tr('Tulong sa gastos (DSWD)', 'Help with the cost (DSWD)'),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.butterInk,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  tr(
+                    'May Guarantee Letter ang DSWD na puwedeng ibawas sa bayad '
+                        'sa pagsusuri at therapy. Tingnan kung ano ang dalhin.',
+                    'The DSWD has a guarantee letter that can be taken off the '
+                        'cost of an assessment and therapy. See what to bring.',
+                  ),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    height: 1.5,
+                    color: AppColors.butterInk,
+                    fontFamily: 'Nunito',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Icon(
+            Icons.chevron_right_rounded,
+            size: 22,
+            color: AppColors.butterInk,
+          ),
+        ],
+      ),
     );
   }
 
