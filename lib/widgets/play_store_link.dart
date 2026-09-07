@@ -13,8 +13,8 @@ import '../core/theme/app_theme.dart';
 const String playStoreUrl =
     'https://play.google.com/store/apps/details?id=com.audhd.app';
 
-/// Punan kapag naibigay na ng App Store Connect ang Apple ID ng app.
-const String appStoreAppId = '';
+/// Apple ID ng app mula sa App Store Connect.
+const String appStoreAppId = '6809516355';
 
 const String _appStoreUrl =
     'https://apps.apple.com/app/id$appStoreAppId?action=write-review';
@@ -26,12 +26,10 @@ Future<void> openPlayStoreListing(BuildContext context) async {
   final isApple = Platform.isIOS || Platform.isMacOS;
   // Hindi dumadaan sa canLaunchUrl: nagbabalik ito ng false sa ilang device
   // kahit kayang buksan ang link.
-  final isLaunched = isApple && appStoreAppId.isEmpty
-      ? false
-      : await launchUrl(
-          Uri.parse(isApple ? _appStoreUrl : playStoreUrl),
-          mode: LaunchMode.externalApplication,
-        );
+  final isLaunched = await launchUrl(
+    Uri.parse(isApple ? _appStoreUrl : playStoreUrl),
+    mode: LaunchMode.externalApplication,
+  );
   if (isLaunched || !context.mounted) return;
 
   ScaffoldMessenger.of(context).showSnackBar(
