@@ -105,6 +105,9 @@ class _VisualScheduleScreenState extends State<VisualScheduleScreen>
     if (task == null) return;
 
     await HiveService.addScheduleTask(task);
+    // Kung itinago ito dati, dapat itong bumalik: ang kadadagdag lang ay
+    // hinahanap agad sa listahan.
+    await HiveService.setScheduleTaskHidden(task.id, false);
     // Kung nakatago ito ng kasalukuyang filter, mukhang walang nangyari.
     if (mounted && _filter != null && _filter != task.timeOfDay) {
       setState(() => _filter = task.timeOfDay);
