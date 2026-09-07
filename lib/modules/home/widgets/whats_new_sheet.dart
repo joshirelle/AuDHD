@@ -4,7 +4,11 @@ import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/community_link.dart';
+import '../../dswd_assistant/dswd_assistant_screen.dart';
+import '../../knowledge/screens/knowledge_hub_screen.dart';
+import '../../milestones/screens/milestones_screen.dart';
 import '../../profile/profile_screen.dart';
+import '../../schedule/screens/visual_schedule_screen.dart';
 import 'star_reward_dialog.dart';
 
 class _NewThing {
@@ -19,10 +23,12 @@ class _NewThing {
   final void Function(BuildContext host)? open;
 }
 
-/// Buod ng mga naidagdag sa bersyon 5.
+/// Buod ng mga naidagdag sa bersyon 6.
 ///
 /// Hindi ito lumalabas sa bagong user: kung katatapos lang niya ng onboarding,
-/// lahat ay bago sa kanya at walang saysay ang "ano ang bago".
+/// lahat ay bago sa kanya at walang saysay ang "ano ang bago". Kaya wala rito
+/// ang mga pagbabago sa onboarding mismo — tapos na iyon sa mga makakabasa
+/// nito.
 class WhatsNewSheet extends StatelessWidget {
   const WhatsNewSheet({super.key, required this.host});
 
@@ -32,7 +38,7 @@ class WhatsNewSheet extends StatelessWidget {
 
   /// Bagong susi kada bersyon. Habang sinusubok, mabubuksan ito anumang oras
   /// mula sa Profile — hindi na kailangang palitan ito.
-  static const String seenKey = 'has_seen_whats_new_v5';
+  static const String seenKey = 'has_seen_whats_new_v6';
 
   static void _go(BuildContext host, Widget screen) {
     Navigator.push(host, MaterialPageRoute(builder: (context) => screen));
@@ -42,65 +48,127 @@ class WhatsNewSheet extends StatelessWidget {
   /// itong muling buuin sa tuwing bubuksan para tumugma sa piniling wika.
   static List<_NewThing> get _things => [
     _NewThing(
-      Icons.translate_rounded,
-      tr('Filipino o Ingles', 'Filipino or English'),
+      Icons.grid_view_rounded,
+      tr('Limang bahagi sa ibaba', 'Five sections at the bottom'),
       tr(
-        'May magulang na nagsabing Ingles lang ang naiintindihan ng anak '
-            'nila. Mapapalitan mo na ang wika ng buong app sa Profile, pati '
-            'ang PDF para sa doktor.',
-        'Some parents told us their child only understands English. You can '
-            'now switch the whole app in Profile, including the PDF for the '
-            'doctor.',
+        'Ang Iskedyul at ang Milestones ay isang pindot na lang mula saanman '
+            'sa app. Inalis na namin ang mga kaparehong card sa Bahay.',
+        'Schedule and Milestones are one tap away from anywhere in the app. We '
+            'removed the cards on Home that did the same thing.',
+      ),
+    ),
+    _NewThing(
+      Icons.people_alt_rounded,
+      tr('Higit sa isang bata', 'More than one child'),
+      tr(
+        'May magulang na dalawa o tatlo ang anak na may pangangailangan, at '
+            'isa lang ang kasya rito dati. Magdagdag na kayo sa Profile \u2014 '
+            'hiwalay ang tala, bituin, at iskedyul ng bawat isa.',
+        'Some parents here are raising two or three children with support '
+            'needs, and only one fitted. You can add them in Profile now \u2014 each '
+            'one keeps their own records, stars, and schedule.',
       ),
       open: (host) => _go(host, const ProfileScreen()),
     ),
     _NewThing(
-      Icons.auto_awesome_rounded,
-      tr('Tatlong pindutan sa Bahay', 'Three buttons on Home'),
+      Icons.volunteer_activism_rounded,
+      tr('Tulong sa gastos mula sa DSWD', 'Help with the cost from the DSWD'),
       tr(
-        'Ang Ano ang Bago, ang grupo ng magulang, at ang pag-rate ay nasa '
-            'itaas na ng Bahay — hindi na kailangang hanapin sa Profile.',
-        'What\'s New, the parent group, and rating the app are now at the top '
-            'of Home — no need to look for them in Profile.',
+        'Bagong gabay sa paghingi ng Guarantee Letter sa ilalim ng AICS: ano '
+            'ang dalhin, ano ang mangyayari sa loob ng opisina, at saan pumunta. '
+            'Puwede itong ibawas sa bayad sa pagsusuri at therapy.',
+        'A new guide to asking for a guarantee letter under AICS: what to '
+            'bring, what happens inside the office, and where to go. It can be '
+            'taken off the cost of an assessment and therapy.',
       ),
+      open: (host) => _go(host, const DswdAssistantScreen()),
+    ),
+    _NewThing(
+      Icons.stairs_rounded,
+      tr('Milestones mula sa CDC', 'Milestones from the CDC'),
+      tr(
+        'Ang listahan ng milestone ay galing na sa CDC, nasa Filipino at '
+            'Ingles. May gabay na rin kung kailan mainam kumonsulta.',
+        'The milestone list now comes from the CDC, in Filipino and English. '
+            'There is also guidance on when it is worth talking to a doctor.',
+      ),
+      open: (host) => _go(host, const MilestonesScreen()),
+    ),
+    _NewThing(
+      Icons.menu_book_rounded,
+      tr('Mas marami sa Gabay sa Pag-unawa', 'More in the Understanding Guide'),
+      tr(
+        'Mula walo, dalawampu\'t lima na ang paksa \u2014 pandama, damdamin, pokus, '
+            'at pakikisama. Dumami rin ang Mga Maaari Mong Mapansin, at may '
+            'bahagi na para sa damdamin.',
+        'From eight to twenty-five topics \u2014 senses, feelings, focus, and '
+            'getting along. What You Might Notice grew too, and now has a '
+            'section on feelings.',
+      ),
+      open: (host) => _go(host, const KnowledgeHubScreen()),
+    ),
+    _NewThing(
+      Icons.local_offer_rounded,
+      tr('Pokus ng suporta', 'Support focus'),
+      tr(
+        'Puwede mong lagyan ng tag ang anak mo sa Profile \u2014 ASD, ADHD, Speech '
+            'Delay, o Sensory. Inuuna nito ang gabay, ang laro, at ang mungkahi '
+            'sa iskedyul na bagay sa kanya.\n\nOpsyonal ito at hindi ito '
+            'diagnosis. Nakikita mo pa rin ang lahat.',
+        'You can tag your child in Profile \u2014 ASD, ADHD, Speech Delay, or '
+            'Sensory. It brings the guidance, the play, and the schedule '
+            'suggestions that suit them to the front.\n\nIt is optional and it '
+            'is not a diagnosis. You still see everything.',
+      ),
+      open: (host) => _go(host, const ProfileScreen()),
+    ),
+    _NewThing(
+      Icons.route_rounded,
+      tr('Mas madaling magdagdag ng gawain', 'Adding a task is easier'),
+      tr(
+        'May dalawampu\'t tatlong handang gawain na may isang linyang '
+            'paliwanag kung bakit ito nakakatulong. May kulay na rin ang mga '
+            'icon, at makikita mo ang card bago mo pa ito i-save.',
+        'There are twenty-three ready-made tasks, each with a line on why it '
+            'might help. The icons have colour now, and you can see the card '
+            'before you save it.',
+      ),
+      open: (host) => _go(host, const VisualScheduleScreen()),
     ),
     _NewThing(
       Icons.emoji_events_rounded,
-      tr('Kayo na ang pumipili ng pabuya', 'You choose every reward'),
+      tr('May larawan na ang pabuya', 'Rewards have a picture now'),
       tr(
-        'Inalis na namin ang tatlong halimbawang pabuya. Kayo ang mas nakakaalam '
-            'kung ano ang tunay na pabuya sa bahay ninyo.',
-        'We removed the three sample rewards. You know better than we do what '
-            'a real reward is in your home.',
+        'Hindi pa nakakabasa ang marami sa mga batang ito. May larawan na ang '
+            'bawat pabuya para makilala nila ito, at makikita mo kung ilang '
+            'bituin na ang naipon bago ka magtakda.',
+        'Many of these children cannot read yet. Every reward carries a '
+            'picture they can recognise, and you can see how many stars there '
+            'already are before you set a price.',
       ),
       open: StarRewardDialog.show,
     ),
     _NewThing(
-      Icons.palette_rounded,
-      tr('Mas malambot na kulay', 'Softer colours'),
+      Icons.wb_twilight_rounded,
+      tr('Isang linya para sa iyo', 'A line for you'),
       tr(
-        'Inalis namin ang matingkad na puti sa buong app. Mas madali na itong '
-            'tingnan, lalo na sa gabi.',
-        'We removed the harsh white from the whole app. It is easier on the '
-            'eyes now, especially at night.',
-      ),
-    ),
-    _NewThing(
-      Icons.system_update_rounded,
-      tr('Kusang nag-a-update', 'Updates on its own'),
-      tr(
-        'Kapag may bagong bersyon, tahimik itong naidodownload sa likod at '
-            'tatanungin ka lang kung kailan mo gustong i-restart.',
-        'When a new version is out, it quietly downloads in the background '
-            'and only asks when you want to restart.',
+        'Sa itaas ng Bahay, may paalalang para sa iyo \u2014 hindi sa bata. Iba ito '
+            'kada araw. Ang buong app ay humihingi ng gagawin mo; ito lang ang '
+            'hindi.',
+        'At the top of Home there is a line for you, not for your child. It '
+            'changes each day. Everything else here asks something of you; this '
+            'is the one thing that does not.',
       ),
     ),
     _NewThing(
       Icons.groups_rounded,
       tr('Grupo ng mga magulang', 'Group of parents'),
       tr(
-        'May Facebook group na ng mga gumagamit ng app. Nasa Bahay na ang link.',
-        'There is now a Facebook group for app users. The link is on Home.',
+        'Nandiyan pa rin ang Facebook group ng mga gumagamit ng app. Sabihin '
+            'ninyo kung ano ang kulang \u2014 galing doon ang halos lahat ng nasa '
+            'listahang ito.',
+        'The Facebook group for app users is still there. Tell us what is '
+            'missing \u2014 nearly everything on this list came from it.',
       ),
       open: openAudhdGroup,
     ),

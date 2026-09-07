@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: tr('Ang bituin ni Kiko', "Kiko's stars"),
         body: tr(
           'Tumataas ito sa bawat larong natapos at milestone na naabot. '
-              'Pindutin para makita ang mga mungkahing pabuya sa bata.',
+              'Pindutin para makita ang mga pabuyang itinakda mo para sa anak mo.',
           'This goes up with every activity finished and milestone reached. '
               'Tap it to see the rewards you have set for your child.',
         ),

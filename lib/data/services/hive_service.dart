@@ -63,7 +63,10 @@ class HiveService {
   static const String _multiProfileMigrationKey = 'migrated_to_multi_profile';
 
   static const String hasSeenOnboardingKey = 'has_seen_onboarding';
-  static const String hasSeenHomeTourKey = 'has_seen_home_tour_v5';
+
+  /// Itinataas kapag nagbago ang tinuturo nito. Naging lima ang bottom nav sa
+  /// v6, kaya ang nakakita na ng v5 na tour ay tinuruan ng tatlo.
+  static const String hasSeenHomeTourKey = 'has_seen_home_tour_v6';
   static const String hasSeenScheduleTourKey = 'has_seen_schedule_tour_v4';
 
   /// I-initialize ang Hive sa app startup
