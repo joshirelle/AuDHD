@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,24 +13,33 @@ import '../core/theme/app_theme.dart';
 const String playStoreUrl =
     'https://play.google.com/store/apps/details?id=com.audhd.app';
 
-/// Bubukas ang Play Store; doon mismo magra-rate ang magulang, hindi sa loob
-/// ng app. Habang nasa closed testing, pribadong napupunta sa developer ang
-/// isinulat nila at hindi ito lumalabas sa publiko.
+/// Punan kapag naibigay na ng App Store Connect ang Apple ID ng app.
+const String appStoreAppId = '';
+
+const String _appStoreUrl =
+    'https://apps.apple.com/app/id$appStoreAppId?action=write-review';
+
+/// Bubukas ang store ng plataporma; doon mismo magra-rate ang magulang, hindi
+/// sa loob ng app. Habang nasa closed testing, pribadong napupunta sa developer
+/// ang isinulat nila at hindi ito lumalabas sa publiko.
 Future<void> openPlayStoreListing(BuildContext context) async {
+  final isApple = Platform.isIOS || Platform.isMacOS;
   // Hindi dumadaan sa canLaunchUrl: nagbabalik ito ng false sa ilang device
   // kahit kayang buksan ang link.
-  final isLaunched = await launchUrl(
-    Uri.parse(playStoreUrl),
-    mode: LaunchMode.externalApplication,
-  );
+  final isLaunched = isApple && appStoreAppId.isEmpty
+      ? false
+      : await launchUrl(
+          Uri.parse(isApple ? _appStoreUrl : playStoreUrl),
+          mode: LaunchMode.externalApplication,
+        );
   if (isLaunched || !context.mounted) return;
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         tr(
-          'Hindi mabuksan ang Play Store. Subukan ulit mamaya.',
-          'Could not open the Play Store. Please try again later.',
+          'Hindi mabuksan ang store. Subukan ulit mamaya.',
+          'Could not open the store. Please try again later.',
         ),
       ),
       backgroundColor: AppColors.danger,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 
@@ -12,6 +14,9 @@ class UpdateService {
   /// Tahimik na sumusuko kapag walang Play Store, walang koneksyon, o luma ang
   /// bersyon ng device — hindi dahilan ang update para masira ang app.
   static Future<void> checkAndPrompt(BuildContext context) async {
+    // Play-only ang in_app_update; sa iOS, ang App Store na ang nag-a-update.
+    if (!Platform.isAndroid) return;
+
     try {
       final info = await InAppUpdate.checkForUpdate();
 
