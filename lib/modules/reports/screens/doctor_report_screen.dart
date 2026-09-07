@@ -57,6 +57,29 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
     }
   }
 
+  Future<void> _print(ChildProfile child) async {
+    setState(() => _isSharing = true);
+    try {
+      await Printing.layoutPdf(onLayout: (format) => _buildPdf(child));
+    } catch (error) {
+      debugPrint('DoctorReportScreen: $error');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            tr(
+              'Hindi ma-print ang ulat. Subukan ulit.',
+              'The report could not be printed. Please try again.',
+            ),
+          ),
+          backgroundColor: AppColors.danger,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isSharing = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final child = HiveService.getChildProfile();
@@ -139,7 +162,10 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
             canChangeOrientation: false,
             canDebug: false,
             allowSharing: false,
-            allowPrinting: true,
+            // Sarili nating pindutan ang pag-print: ang action bar ng package
+            // ay may sariling SafeArea na nagiging malaking blangkong guhit sa
+            // iPhone na may home indicator.
+            allowPrinting: false,
             loadingWidget: const CircularProgressIndicator(
               color: AppColors.logoGreen,
             ),
@@ -151,44 +177,76 @@ class _DoctorReportScreenState extends State<DoctorReportScreen> {
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: SizedBox(
               height: 54,
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _isSharing ? null : () => _share(child),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.logoGreen,
-                  disabledBackgroundColor: AppColors.divider,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                icon: _isSharing
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: AppColors.surface,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 54,
+                    height: 54,
+                    child: OutlinedButton(
+                      onPressed: _isSharing ? null : () => _print(child),
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        side: const BorderSide(
+                          color: AppColors.logoGreen,
+                          width: 2,
                         ),
-                      )
-                    : const Icon(
-                        Icons.ios_share_rounded,
-                        color: AppColors.surface,
+                        shape: const CircleBorder(),
                       ),
-                label: Text(
-                  _isSharing
-                      ? tr('Inihahanda...', 'Preparing...')
-                      : tr(
-                          'I-share sa Doktor (PDF)',
-                          'Share with Doctor (PDF)',
-                        ),
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: _isSharing ? AppColors.textMuted : AppColors.surface,
-                    fontFamily: 'Nunito',
+                      child: Icon(
+                        Icons.print_rounded,
+                        color: _isSharing
+                            ? AppColors.textMuted
+                            : AppColors.logoGreen,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 54,
+                      child: ElevatedButton.icon(
+                        onPressed: _isSharing ? null : () => _share(child),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.logoGreen,
+                          disabledBackgroundColor: AppColors.divider,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        icon: _isSharing
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.surface,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.ios_share_rounded,
+                                color: AppColors.surface,
+                              ),
+                        label: Text(
+                          _isSharing
+                              ? tr('Inihahanda...', 'Preparing...')
+                              : tr(
+                                  'I-share sa Doktor (PDF)',
+                                  'Share with Doctor (PDF)',
+                                ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: _isSharing
+                                ? AppColors.textMuted
+                                : AppColors.surface,
+                            fontFamily: 'Nunito',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -517,8 +517,8 @@ class DoctorPdfService {
         data: ranked
             .map(
               (entry) => [
-                entry.key.titleTagalog,
-                entry.key.timeOfDay.label,
+                entry.key.title,
+                entry.key.timeOfDay.displayLabel,
                 '${entry.value} / $rangeDays',
                 '${(entry.value * 100 / rangeDays).round()}%',
               ],

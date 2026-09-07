@@ -21,8 +21,7 @@ enum ScheduleTimeOfDay {
 
   const ScheduleTimeOfDay(this.label, this.labelEnglish);
 
-  /// Para sa screen. Nananatiling Filipino ang `label` para hindi magbago ang
-  /// ulat na binabasa ng doktor.
+  /// Sumusunod sa wikang pinili ng magulang, pati sa ulat para sa doktor.
   String get displayLabel => tr(label, labelEnglish);
 }
 
