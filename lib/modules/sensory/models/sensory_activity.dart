@@ -1,6 +1,7 @@
 import '../../../core/constants/sensory_labels.dart';
 import '../../../core/enums/skill_area.dart';
 import '../../../core/i18n/language_controller.dart';
+import '../../../data/models/child_profile.dart';
 
 class SensoryActivity {
   final String id;
@@ -23,6 +24,13 @@ class SensoryActivity {
   final String? safetyNoteEnglish;
   final List<String>? materialsNeededEnglish;
 
+  /// Kaninong tag ito partikular na bagay. Blangko = pangkalahatan.
+  ///
+  /// Pang-ayos LANG ng pagkakasunod sa buong listahan. Hindi ito nakakaapekto
+  /// sa araw-araw na anim — galing iyon sa Sensory Checklist, at ang sinukat
+  /// ay mas matimbang kaysa sa tag na isinulat sa profile.
+  final Set<SupportFocus> relevantTo;
+
   const SensoryActivity({
     required this.id,
     required this.titleTagalog,
@@ -39,6 +47,7 @@ class SensoryActivity {
     this.stepByStepEnglish,
     this.safetyNoteEnglish,
     this.materialsNeededEnglish,
+    this.relevantTo = const {},
   });
 
   String get title => tr(titleTagalog, titleEnglish);
@@ -90,7 +99,16 @@ class SensoryActivity {
       materialsNeededEnglish: (json['materialsNeededEnglish'] as List?)
           ?.map((item) => item as String)
           .toList(),
+      relevantTo: _focusFrom(json['supportFocus']),
     );
+  }
+
+  /// Hindi pinapansin ang hindi kilalang pangalan: mas mabuting mawala ang
+  /// isang tag kaysa hindi mabasa ang buong gawain.
+  static Set<SupportFocus> _focusFrom(dynamic raw) {
+    if (raw is! List) return const {};
+    final names = raw.whereType<String>().toSet();
+    return SupportFocus.values.where((f) => names.contains(f.name)).toSet();
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +124,7 @@ class SensoryActivity {
       'descriptionTagalog': descriptionTagalog,
       'stepByStepTagalog': stepByStepTagalog,
       'safetyNoteTagalog': safetyNoteTagalog,
+      'supportFocus': relevantTo.map((f) => f.name).toList(),
     };
   }
 }

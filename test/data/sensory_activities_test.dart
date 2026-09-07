@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kiko_app/core/enums/skill_area.dart';
+import 'package:kiko_app/core/utils/support_focus_split.dart';
+import 'package:kiko_app/data/models/child_profile.dart';
 import 'package:kiko_app/modules/sensory/models/sensory_activity.dart';
 
 /// Binabasa ang tunay na asset, hindi kopya — dito lumalabas ang maling tag na
@@ -55,5 +57,49 @@ void main() {
     for (var i = 1; i <= 18; i++) {
       expect(ids, contains('act_${i.toString().padLeft(2, '0')}'));
     }
+  });
+
+  group('pag-aayos ayon sa tag ng bata', () {
+    /// Halos kalahati ng gumagamit ay wala pang diagnosis.
+    test('nakikita pa rin ang lahat ng gawain kapag walang tag', () {
+      final (forChild, rest) = splitByFocus(
+        activities,
+        const [],
+        (a) => a.relevantTo,
+      );
+
+      expect(forChild, isEmpty);
+      expect(rest.length, activities.length);
+    });
+
+    test('walang nawawala o nadodoble sa paghahati', () {
+      for (final tag in SupportFocus.values) {
+        final (forChild, rest) = splitByFocus(activities, [
+          tag,
+        ], (a) => a.relevantTo);
+        final ids = [...forChild, ...rest].map((a) => a.id).toList();
+
+        expect(ids.length, activities.length, reason: tag.name);
+        expect(ids.toSet().length, ids.length, reason: tag.name);
+      }
+    });
+
+    /// Kung walang gawain ang isang tag, walang mangyayari sa magulang na
+    /// pumili nito \u2014 at hindi niya malalaman kung bakit.
+    test('may kahit isang gawain ang bawat tag na nag-aayos', () {
+      for (final tag in tagsThatSort) {
+        final (forChild, _) = splitByFocus(activities, [
+          tag,
+        ], (a) => a.relevantTo);
+
+        expect(forChild, isNotEmpty, reason: 'Walang gawain ang ${tag.name}');
+      }
+    });
+
+    /// Kapag lahat ay may tag, walang naiiwan sa ibaba at nawawala ang saysay
+    /// ng paghahati.
+    test('may naiiwang gawaing walang tag', () {
+      expect(activities.where((a) => a.relevantTo.isEmpty), isNotEmpty);
+    });
   });
 }

@@ -63,26 +63,122 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
               _buildFilters(),
               const SizedBox(height: 8),
               Expanded(
-                child: cards.isEmpty
-                    ? _buildEmptySaved()
-                    : GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-                        itemCount: cards.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 14,
-                              mainAxisSpacing: 14,
-                              mainAxisExtent: 235,
-                            ),
-                        itemBuilder: (context, index) =>
-                            _buildTile(cards[index]),
-                      ),
+                child: cards.isEmpty ? _buildEmptySaved() : _buildCards(cards),
               ),
             ],
           );
         },
       ),
+    );
+  }
+
+  /// Inuuna ang tumutugma sa tag ng bata, pero walang naitatago.
+  ///
+  /// Nawawala ang dalawang pamagat kapag walang tag ang bata o kapag walang
+  /// naiwan sa kabila — ang pamagat na walang kasunod ay hindi paghahati.
+  Widget _buildCards(List<GuideCard> cards) {
+    final child = HiveService.getActiveChild();
+
+    // Hindi hinahati ang naka-save: sinadya na ng magulang ang listahang iyon.
+    final (forChild, rest) = _savedOnly
+        ? (const <GuideCard>[], cards)
+        : GuideCards.splitFor(cards, child?.supportFocus ?? const []);
+
+    if (forChild.isEmpty || rest.isEmpty || child == null) {
+      return CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            sliver: _buildSliverGrid(cards),
+          ),
+        ],
+      );
+    }
+
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+          sliver: SliverToBoxAdapter(
+            child: _buildSectionHeader(
+              tr(
+                'PARA KAY ${child.displayName.toUpperCase()}',
+                'FOR ${child.displayName.toUpperCase()}',
+              ),
+              note: tr(
+                'Nakabatay sa mga tag sa profile niya. Nakikita mo pa rin ang '
+                    'lahat sa ibaba.',
+                'Based on the tags on their profile. Everything is still below.',
+              ),
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          sliver: _buildSliverGrid(forChild),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+          sliver: SliverToBoxAdapter(
+            child: _buildSectionHeader(tr('IBA PANG PAKSA', 'MORE TOPICS')),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          sliver: _buildSliverGrid(rest),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSliverGrid(List<GuideCard> cards) {
+    return SliverGrid(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 14,
+        mainAxisExtent: 235,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => _buildTile(cards[index]),
+        childCount: cards.length,
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String label, {String? note}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.8,
+            color: AppColors.textDark,
+            fontFamily: 'Nunito',
+          ),
+        ),
+        if (note != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            note,
+            style: const TextStyle(
+              fontSize: 11,
+              height: 1.4,
+              color: AppColors.textMuted,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ],
+        const SizedBox(height: 8),
+        const SizedBox(
+          height: 1,
+          width: double.infinity,
+          child: ColoredBox(color: AppColors.divider),
+        ),
+      ],
     );
   }
 

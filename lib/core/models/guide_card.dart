@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/models/child_profile.dart';
 import '../i18n/language_controller.dart';
 import '../theme/app_theme.dart';
 
@@ -44,6 +45,7 @@ class GuideCard {
     required this.quote,
     required this.icon,
     required this.actionTips,
+    this.relevantTo = const {},
   });
 
   final String id;
@@ -64,4 +66,11 @@ class GuideCard {
 
   /// Bawat isa ay may sariling tsek na naaalala ng app.
   final List<String> actionTips;
+
+  /// Kaninong tag ito partikular na tumutugma. Blangko = pangkalahatan.
+  ///
+  /// Pang-ayos LANG ito ng pagkakasunod. Hindi ito ipinapakita kahit saan at
+  /// walang itinatago — kung lilitaw ang pangalan ng kondisyon sa isang card,
+  /// nagiging paanyaya na itong mag-diagnose ng sariling anak.
+  final Set<SupportFocus> relevantTo;
 }

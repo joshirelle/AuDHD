@@ -136,6 +136,45 @@ class ObservationAreas {
             'Give their topic time first, then slowly join yours onto it.',
           ),
         ),
+        ObservationPattern(
+          title: tr('Walang takot sa estranghero', 'No wariness of strangers'),
+          body: tr(
+            'May batang lumalapit agad sa hindi kilala, yumayakap, o sumasama '
+                'nang walang pag-aalinlangan. Madalas itong pinupuri bilang '
+                'palakaibigan.',
+            'Some children walk straight up to people they do not know, hug '
+                'them, or go along without hesitating. This often gets praised '
+                'as being friendly.',
+          ),
+          help: tr(
+            'Ituro ang isang simpleng patakaran na pareho sa lahat ng lugar, '
+                'at sabihin ito sa doktor. Hindi ito kabaligtaran ng kahihiyan '
+                '— pareho itong tungkol sa pagbasa ng sitwasyon.',
+            'Teach one simple rule that holds everywhere, and mention it to the '
+                'doctor. It is not the opposite of shyness — both are about '
+                'reading a situation.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Mas gusto ang matanda o mas bata',
+            'Prefers older or younger children',
+          ),
+          body: tr(
+            'May batang mas panatag sa kausap na matanda o sa mas batang '
+                'kalaro kaysa sa kaedad niya. Sa dalawang iyon, mas malinaw '
+                'kung sino ang susunod at sino ang mauuna.',
+            'Some children are more at ease with adults or with younger '
+                'playmates than with children their own age. With those two, it '
+                'is clearer who leads and who follows.',
+          ),
+          help: tr(
+            'Huwag itong pilitin. Itala kung kanino siya panatag — nagsasabi '
+                'ito kung ano ang nakakatulong sa kanya.',
+            'Do not force it. Note who they are at ease with — it says '
+                'something about what helps them.',
+          ),
+        ),
       ],
     ),
     ObservationArea(
@@ -176,6 +215,60 @@ class ObservationAreas {
                 'ihinto ang ginagawa niya.',
             'Come close and touch their arm before speaking. Give a warning '
                 'before stopping what they are doing.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr('Nawawala ang gamit', 'Things go missing'),
+          body: tr(
+            'May batang paulit-ulit na naiiwan ang tumbler, lapis, o kuwaderno. '
+                'Hindi ito kawalan ng pagpapahalaga — nasa ibang lugar ang isip '
+                'niya sa mismong sandali ng pag-alis.',
+            'Some children leave the water bottle, the pencil, or the notebook '
+                'behind again and again. It is not that they do not care — '
+                'their mind was elsewhere at the moment of leaving.',
+          ),
+          help: tr(
+            'Isang lugar lang para sa bawat gamit, at isang tingin bago umalis. '
+                'Mas mabisa ang nakikitang paalala kaysa sa sinasabi.',
+            'One place for each thing, and one look back before leaving. A '
+                'reminder they can see works better than one they hear.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Naririnig pero hindi natutuloy',
+            'Hears it but it does not happen',
+          ),
+          body: tr(
+            'Nauulit niya ang sinabi mo pero hindi pa rin nagagawa. Nasa '
+                'pagitan ito ng pagkarinig at ng paggalaw — hindi sa pandinig, '
+                'at hindi sa kagustuhan.',
+            'They can repeat what you said and still not do it. It sits between '
+                'hearing and moving — not in the ears, and not in the wanting.',
+          ),
+          help: tr(
+            'Isang utos lang bawat pagkakataon, at hintayin ang unang hakbang '
+                'bago sabihin ang susunod.',
+            'One instruction at a time, and wait for the first step before you '
+                'say the next.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Mahirap magsimula kahit gusto niya',
+            'Hard to start even when willing',
+          ),
+          body: tr(
+            'May batang gustong-gusto na ngang gawin ang isang bagay pero '
+                'hindi makaumpisa. Nakaupo siya sa harap nito nang matagal.',
+            'Some children genuinely want to do the thing and still cannot '
+                'begin. They sit in front of it for a long time.',
+          ),
+          help: tr(
+            'Simulan mo ang unang hakbang kasama niya, tapos umalis ka. Madalas '
+                'ang pagsisimula lang ang mabigat.',
+            'Do the first step with them, then step away. It is often only the '
+                'starting that is heavy.',
           ),
         ),
       ],
@@ -232,6 +325,155 @@ class ObservationAreas {
                 'ilang linggo ang mas kapaki-pakinabang kaysa sa isang araw.',
             'Write down what you see in the Behavior Log. A pattern across a '
                 'few weeks is far more useful than a single day.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Hindi napapansin ang sakit o lamig',
+            'Does not seem to notice pain or cold',
+          ),
+          body: tr(
+            'May batang hindi umiiyak sa gasgas, hindi nagrereklamo sa init o '
+                'lamig, o hindi napapansin ang basang damit. Hindi ibig sabihin '
+                'na hindi niya nararamdaman.',
+            'Some children do not cry at a scrape, do not complain about heat '
+                'or cold, or do not notice wet clothes. It does not mean they '
+                'feel nothing.',
+          ),
+          help: tr(
+            'Tingnan ang katawan niya paminsan-minsan kahit walang reklamo, at '
+                'sabihin ito sa doktor. Kaligtasan ito, hindi lang pandama.',
+            'Check them over now and then even with no complaint, and tell the '
+                'doctor. This is a safety matter, not only a sensory one.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Naririnig ang hindi natin naririnig',
+            'Hears what the rest of us do not',
+          ),
+          body: tr(
+            'May batang nababagabag ng bentilador, ng ref, o ng aircon na '
+                'matagal na nating hindi napapansin. Nandiyan ito buong araw, '
+                'kaya buong araw din siyang nakikinig.',
+            'Some children are bothered by the fan, the fridge, or the aircon '
+                'that the rest of us stopped noticing long ago. It is there all '
+                'day, so they are listening to it all day.',
+          ),
+          help: tr(
+            'Tanungin siya kung ano ang naririnig niya sa isang tahimik na '
+                'silid. Ang sagot ay madalas nakakagulat.',
+            'Ask them what they can hear in a quiet room. The answer is often '
+                'surprising.',
+          ),
+        ),
+      ],
+    ),
+    ObservationArea(
+      id: 'damdamin',
+      category: GuideCategory.emotion,
+      icon: Icons.favorite_rounded,
+      title: tr('Damdamin', 'Feelings'),
+      intro: tr(
+        'Magkaiba ang laki ng nararamdaman ng bawat bata, at magkaiba rin ang '
+            'daan palabas nito. Dalawang batang parehong nabibigatan ay '
+            'maaaring magmukhang magkasalungat.',
+        'Feelings come in different sizes for different children, and they '
+            'find different ways out. Two children who are both struggling can '
+            'look like opposites.',
+      ),
+      patterns: [
+        ObservationPattern(
+          title: tr(
+            'Mabilis sumabog, mabilis matapos',
+            'Flares fast, passes fast',
+          ),
+          body: tr(
+            'May batang mabilis magalit at parang wala nang nangyari '
+                'pagkaraan ng ilang minuto. Totoo ang bigat noong sandaling '
+                'iyon kahit maikli lang ito.',
+            'Some children flare quickly and seem to have moved on minutes '
+                'later. The weight in that moment was real even if it was '
+                'brief.',
+          ),
+          help: tr(
+            'Huwag balikan agad ang usapan. Hintayin munang bumalik siya bago '
+                'pag-usapan ang nangyari.',
+            'Do not go back to it straight away. Wait until they are back '
+                'before talking about what happened.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr('Walang palatandaan hanggang sa huli', 'No warning at all'),
+          body: tr(
+            'May batang mukhang ayos lang hanggang sa biglang hindi na. Wala '
+                'kang nakitang paunti-unting paglaki \u2014 dumating ito nang '
+                'buo.',
+            'Some children look fine right up until they are suddenly not. You '
+                'saw nothing build \u2014 it arrived whole.',
+          ),
+          help: tr(
+            'Itala ang oras, ang lugar, at ang nauna rito. Ang hindi nakikita '
+                'sa isang araw ay madalas nakikita sa loob ng dalawang linggo.',
+            'Write down the time, the place, and what came before. What is '
+                'invisible in one day often shows across two weeks.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr(
+            'Matagal bumalik pagkatapos',
+            'Takes a long time to come back',
+          ),
+          body: tr(
+            'May batang tapos na ang iyakan pero hindi pa rin siya ang dating '
+                'siya kahit lumipas ang oras. Nangangailangan pa siya ng '
+                'panahon na hindi natin nakikita.',
+            'For some children the crying stops but they are not themselves '
+                'again for hours. They are still needing time we cannot see.',
+          ),
+          help: tr(
+            'Huwag hingin ang paumanhin o ang paliwanag habang nasa ganitong '
+                'kalagayan. Panatagin muna, saka mag-usap.',
+            'Do not ask for an apology or an explanation while they are still '
+                'in it. Settle first, talk later.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr('Nag-aalala nang maaga pa', 'Worries long in advance'),
+          body: tr(
+            'May batang nag-aalala tungkol sa mangyayari sa susunod na linggo, '
+                'o sa isang bagay na tapos na. Paulit-ulit ang tanong kahit '
+                'nasagot na.',
+            'Some children worry about next week, or about something already '
+                'over. The same question comes back even after it has been '
+                'answered.',
+          ),
+          help: tr(
+            'Isang malinaw na sagot, tapos ulitin mo ang parehong sagot. Ang '
+                'bagong salita sa bawat pagtatanong ay nagdadagdag ng '
+                'pag-aalala.',
+            'One clear answer, then repeat the same answer. New words each time '
+                'add to the worry.',
+          ),
+        ),
+        ObservationPattern(
+          title: tr('Ang galit ay pasarili', 'The anger turns inward'),
+          body: tr(
+            'May batang sinasabing masama siya, tanga siya, o dapat wala na '
+                'siya. Maaari rin niyang saktan ang sarili niya kapag sobrang '
+                'bigat.',
+            'Some children say they are bad, that they are stupid, or that they '
+                'should not be here. Some may hurt themselves when it gets too '
+                'heavy.',
+          ),
+          help: tr(
+            'Huwag itong balewalain at huwag ding taasan ang boses. Itala kung '
+                'kailan ito nangyayari at sabihin sa doktor o sa guidance sa '
+                'paaralan sa lalong madaling panahon. Hindi ito kailangang '
+                'pasanin nang mag-isa.',
+            'Do not brush it aside and do not raise your voice. Write down when '
+                'it happens and tell the doctor or the school guidance office '
+                'soon. This is not something to carry alone.',
           ),
         ),
       ],

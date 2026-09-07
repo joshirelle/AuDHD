@@ -2,6 +2,7 @@
   {
     "id": "act_01",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd", "sensorySensitivity"],
     "titleTagalog": "Talon sa Unan",
     "titleEnglish": "Pillow Crash Zone",
     "targetProfile": "seeking",
@@ -27,6 +28,7 @@
   {
     "id": "act_02",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Gapang Oso",
     "titleEnglish": "Bear Crawl Relay",
     "targetProfile": "seeking",
@@ -52,6 +54,7 @@
   {
     "id": "act_03",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd", "sensorySensitivity"],
     "titleTagalog": "Hilahan ng Kumot",
     "titleEnglish": "Blanket Tug-of-War",
     "targetProfile": "seeking",
@@ -77,6 +80,7 @@
   {
     "id": "act_04",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Talon Palaka",
     "titleEnglish": "Frog Jump Station",
     "targetProfile": "seeking",
@@ -102,6 +106,7 @@
   {
     "id": "act_05",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd", "sensorySensitivity"],
     "titleTagalog": "Tulak Labahan",
     "titleEnglish": "Laundry Basket Push",
     "targetProfile": "seeking",
@@ -127,6 +132,7 @@
   {
     "id": "act_06",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity", "asd"],
     "titleTagalog": "Ipit sa Unan",
     "titleEnglish": "Cushion Sandwich Press",
     "targetProfile": "seeking",
@@ -152,6 +158,7 @@
   {
     "id": "act_07",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity", "asd"],
     "titleTagalog": "Balot Kumot",
     "titleEnglish": "Blanket Burrito Roll",
     "targetProfile": "avoiding",
@@ -177,6 +184,7 @@
   {
     "id": "act_08",
     "skillArea": "fineMotor",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Hanap sa Bigas",
     "titleEnglish": "Rice & Bean Sensory Search",
     "targetProfile": "avoiding",
@@ -202,6 +210,7 @@
   {
     "id": "act_09",
     "skillArea": "fineMotor",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Pisil at Hubog",
     "titleEnglish": "Playdough Squeeze & Mold",
     "targetProfile": "avoiding",
@@ -227,6 +236,7 @@
   {
     "id": "act_10",
     "skillArea": "play",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Habol Bula",
     "titleEnglish": "Slow Bubble Catch",
     "targetProfile": "avoiding",
@@ -252,6 +262,7 @@
   {
     "id": "act_11",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Malamig na Tuwalya",
     "titleEnglish": "Cool Towel Hand Compress",
     "targetProfile": "avoiding",
@@ -277,6 +288,7 @@
   {
     "id": "act_12",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Marahang Haplos",
     "titleEnglish": "Feather Light Touch",
     "targetProfile": "avoiding",
@@ -302,6 +314,7 @@
   {
     "id": "act_13",
     "skillArea": "focus",
+    "supportFocus": ["adhd", "asd"],
     "titleTagalog": "Hinto at Lakad",
     "titleEnglish": "Red Light, Green Light",
     "targetProfile": "regulation",
@@ -327,6 +340,7 @@
   {
     "id": "act_14",
     "skillArea": "focus",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Sayaw at Tigil",
     "titleEnglish": "Freeze Dance",
     "targetProfile": "regulation",
@@ -352,6 +366,7 @@
   {
     "id": "act_15",
     "skillArea": "play",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Lobo sa Ere",
     "titleEnglish": "Balloon Keep-Up",
     "targetProfile": "regulation",
@@ -377,6 +392,7 @@
   {
     "id": "act_16",
     "skillArea": "focus",
+    "supportFocus": ["adhd", "speechDelay"],
     "titleTagalog": "Sabi Ko",
     "titleEnglish": "Simon Says",
     "targetProfile": "regulation",
@@ -402,6 +418,7 @@
   {
     "id": "act_17",
     "skillArea": "focus",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Mabagal na Robot",
     "titleEnglish": "Slow Motion Robot",
     "targetProfile": "regulation",
@@ -427,6 +444,7 @@
   {
     "id": "act_18",
     "skillArea": "fineMotor",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Tore ng Baso",
     "titleEnglish": "Cup Stacking Pyramid",
     "targetProfile": "regulation",
@@ -452,6 +470,7 @@
   {
     "id": "act_19",
     "skillArea": "dailyLiving",
+    "supportFocus": ["asd", "sensorySensitivity"],
     "titleTagalog": "Bihis Mag-isa",
     "titleEnglish": "Dress Myself",
     "targetProfile": "regulation",
@@ -477,6 +496,7 @@
   {
     "id": "act_20",
     "skillArea": "dailyLiving",
+    "supportFocus": ["sensorySensitivity", "speechDelay"],
     "titleTagalog": "Sipilyo Kasabay ng Kanta",
     "titleEnglish": "Toothbrush Song",
     "targetProfile": "avoiding",
@@ -502,6 +522,7 @@
   {
     "id": "act_21",
     "skillArea": "dailyLiving",
+    "supportFocus": ["asd"],
     "titleTagalog": "Ligpit sa Kahon",
     "titleEnglish": "Toy Box Sort",
     "targetProfile": "regulation",
@@ -527,6 +548,7 @@
   {
     "id": "act_22",
     "skillArea": "dailyLiving",
+    "supportFocus": ["sensorySensitivity"],
     "titleTagalog": "Salok at Salin",
     "titleEnglish": "Scoop and Pour",
     "targetProfile": "regulation",
@@ -627,6 +649,7 @@
   {
     "id": "act_26",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity", "adhd"],
     "titleTagalog": "Bote ng Kalmado",
     "titleEnglish": "Calm Down Bottle",
     "targetProfile": "avoiding",
@@ -652,6 +675,7 @@
   {
     "id": "act_27",
     "skillArea": "sensory",
+    "supportFocus": ["sensorySensitivity", "speechDelay"],
     "titleTagalog": "Hulaan ang Hipo",
     "titleEnglish": "Guess by Touch",
     "targetProfile": "avoiding",
@@ -677,6 +701,7 @@
   {
     "id": "act_28",
     "skillArea": "grossMotor",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Lakad sa Guhit",
     "titleEnglish": "Tape Line Walk",
     "targetProfile": "regulation",
@@ -702,6 +727,7 @@
   {
     "id": "act_29",
     "skillArea": "dailyLiving",
+    "supportFocus": ["asd"],
     "titleTagalog": "Hugas na May Bilang",
     "titleEnglish": "Counted Handwash",
     "targetProfile": "regulation",
@@ -752,6 +778,7 @@
   {
     "id": "act_31",
     "skillArea": "focus",
+    "supportFocus": ["adhd"],
     "titleTagalog": "Tapos Bago Tumunog",
     "titleEnglish": "Beat the Timer",
     "targetProfile": "regulation",
@@ -777,6 +804,7 @@
   {
     "id": "act_32",
     "skillArea": "focus",
+    "supportFocus": ["speechDelay", "adhd"],
     "titleTagalog": "Bulong at Malakas",
     "titleEnglish": "Whisper and Loud",
     "targetProfile": "regulation",
@@ -802,6 +830,7 @@
   {
     "id": "act_33",
     "skillArea": "play",
+    "supportFocus": ["asd", "adhd"],
     "titleTagalog": "Salitan sa Tore",
     "titleEnglish": "Turn-Taking Tower",
     "targetProfile": "regulation",
@@ -827,6 +856,7 @@
   {
     "id": "act_34",
     "skillArea": "play",
+    "supportFocus": ["asd", "speechDelay"],
     "titleTagalog": "Gulong ng Bola",
     "titleEnglish": "Ball Roll Back",
     "targetProfile": "regulation",
@@ -852,6 +882,7 @@
   {
     "id": "act_35",
     "skillArea": "play",
+    "supportFocus": ["speechDelay", "asd"],
     "titleTagalog": "Tago at Hanap",
     "titleEnglish": "Hide and Find",
     "targetProfile": "seeking",
@@ -877,6 +908,7 @@
   {
     "id": "act_36",
     "skillArea": "play",
+    "supportFocus": ["speechDelay", "asd"],
     "titleTagalog": "Kwento sa Larawan",
     "titleEnglish": "Picture Story",
     "targetProfile": "regulation",

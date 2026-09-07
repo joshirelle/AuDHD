@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/enums/skill_area.dart';
 import '../../../core/i18n/language_controller.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/support_focus_split.dart';
 import '../../../data/services/hive_service.dart';
 import '../../../widgets/how_to_card.dart';
 import '../../../widgets/kiko_card.dart';
@@ -184,11 +185,94 @@ class _HomeActivitiesScreenState extends State<HomeActivitiesScreen> {
           const SizedBox(height: 10),
           _buildSkillFilters(),
           const SizedBox(height: 14),
-          for (final activity in _filteredActivities()) ...[
-            _buildActivityCard(activity),
-            const SizedBox(height: 10),
-          ],
+          ..._buildAllActivities(),
         ],
+      ],
+    );
+  }
+
+  /// Inuuna ang bagay sa tag ng bata, pero walang naitatago.
+  ///
+  /// Ang araw-araw na anim sa itaas ay hindi dinadaanan nito — galing iyon sa
+  /// sinukat na Sensory Checklist, at hindi dapat itulak ng tag na isinulat
+  /// lang sa profile ang isang bagay na sinukat.
+  List<Widget> _buildAllActivities() {
+    final visible = _filteredActivities();
+    final child = HiveService.getActiveChild();
+    final (forChild, rest) = splitByFocus(
+      visible,
+      child?.supportFocus ?? const [],
+      (activity) => activity.relevantTo,
+    );
+
+    if (child == null || forChild.isEmpty || rest.isEmpty) {
+      return [
+        for (final activity in visible) ...[
+          _buildActivityCard(activity),
+          const SizedBox(height: 10),
+        ],
+      ];
+    }
+
+    return [
+      _buildSplitHeader(
+        tr(
+          'PARA KAY ${child.displayName.toUpperCase()}',
+          'FOR ${child.displayName.toUpperCase()}',
+        ),
+        note: tr(
+          'Nakabatay sa mga tag sa profile niya. Nakikita mo pa rin ang lahat '
+              'sa ibaba.',
+          'Based on the tags on their profile. Everything is still below.',
+        ),
+      ),
+      const SizedBox(height: 12),
+      for (final activity in forChild) ...[
+        _buildActivityCard(activity),
+        const SizedBox(height: 10),
+      ],
+      const SizedBox(height: 10),
+      _buildSplitHeader(tr('IBA PANG GAWAIN', 'MORE ACTIVITIES')),
+      const SizedBox(height: 12),
+      for (final activity in rest) ...[
+        _buildActivityCard(activity),
+        const SizedBox(height: 10),
+      ],
+    ];
+  }
+
+  Widget _buildSplitHeader(String label, {String? note}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.8,
+            color: AppColors.textDark,
+            fontFamily: 'Nunito',
+          ),
+        ),
+        if (note != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            note,
+            style: const TextStyle(
+              fontSize: 11,
+              height: 1.4,
+              color: AppColors.textMuted,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ],
+        const SizedBox(height: 8),
+        const SizedBox(
+          height: 1,
+          width: double.infinity,
+          child: ColoredBox(color: AppColors.divider),
+        ),
       ],
     );
   }
