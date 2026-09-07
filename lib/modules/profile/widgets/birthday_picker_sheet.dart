@@ -15,6 +15,9 @@ Future<DateTime?> showBirthdayPicker(BuildContext context, DateTime? initial) {
   return showModalBottomSheet<DateTime>(
     context: context,
     backgroundColor: Colors.transparent,
+    // Kulang ang default na 9/16 ng screen para sa tatlong gulong at sa
+    // footer — pumuputol ito sa iPhone SE.
+    isScrollControlled: true,
     builder: (context) => _BirthdayPickerSheet(initial: initial),
   );
 }
@@ -127,42 +130,45 @@ class _BirthdayPickerSheetState extends State<_BirthdayPickerSheet> {
       ),
       child: SafeArea(
         top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 12),
-            Container(
-              width: 44,
-              height: 5,
-              decoration: BoxDecoration(
-                color: AppColors.divider,
-                borderRadius: BorderRadius.circular(3),
+        // Umaabot pa rin sa mababang screen, hal. SE na naka-landscape.
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                width: 44,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: AppColors.divider,
+                  borderRadius: BorderRadius.circular(3),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              tr('Kailan siya ipinanganak?', 'When were they born?'),
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Nunito',
-                color: AppColors.textDark,
+              const SizedBox(height: 16),
+              Text(
+                tr('Kailan siya ipinanganak?', 'When were they born?'),
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Nunito',
+                  color: AppColors.textDark,
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              tr('Igalaw ang bawat hanay.', 'Spin each column.'),
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.textMuted,
-                fontFamily: 'Nunito',
+              const SizedBox(height: 6),
+              Text(
+                tr('Igalaw ang bawat hanay.', 'Spin each column.'),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textMuted,
+                  fontFamily: 'Nunito',
+                ),
               ),
-            ),
-            const SizedBox(height: 14),
-            _buildWheels(),
-            const SizedBox(height: 16),
-            _buildFooter(),
-          ],
+              const SizedBox(height: 14),
+              _buildWheels(),
+              const SizedBox(height: 16),
+              _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
