@@ -99,65 +99,50 @@ Tinanggihan ang unang submission dahil bago ang account, hindi dahil may sira sa
 app. Anim na tanong ang hiningi. Ipadala ito sa **Reply to App Review**, at
 idagdag din sa **Notes** para hindi na ito ulitin sa susunod na submission.
 
+May 4,000 na limitasyon ang parehong field, kaya pinipiksil ang teksto.
+
 ```
 Thank you for reviewing AuDHD. Below is the information requested.
 
 1. SCREEN RECORDING
-A screen recording captured on a physical iPhone running the latest iOS is attached. It begins with launching the app and follows the typical user flow: onboarding, creating a child profile, the daily schedule, home activities, milestones, the behaviour log, the sensory checklist, and generating the doctor's report.
+A screen recording captured on a physical iPhone running the latest iOS is attached. It begins with launching the app and follows the typical flow: onboarding, creating a child profile, the daily schedule, home activities, milestones, and generating the doctor's report.
 
-The app has no account registration, no login, and no account deletion flow, because it has no accounts at all. It has no user-generated content that is shared or distributed, and no paid content or features.
+The app has no account registration, login, or account deletion flow, because it has no accounts at all. It has no user-generated content that is shared or distributed, and no paid content or features.
 
 2. PURPOSE AND TARGET AUDIENCE
 AuDHD is for parents and caregivers raising a child with autism or ADHD, primarily in the Philippines.
 
-The problem it solves: appointments with a developmental pediatrician are short and infrequent, and parents arrive without a record of what actually happened at home. Between visits they are also left without concrete things to do.
+Appointments with a developmental pediatrician are short and infrequent, and parents arrive without a record of what happened at home. Between visits they are left without concrete things to do. AuDHD gives them a visual daily schedule the child can follow, everyday activities using household objects, a milestone checklist, a place to note behaviour, and a sensory checklist, then turns those records into a PDF for the doctor.
 
-The app gives them a visual daily schedule the child can follow, everyday activities using household objects, a developmental milestone checklist, a place to note behaviour, and a sensory checklist. It turns those records into a PDF the parent can hand to the doctor.
-
-The app does not diagnose, screen, or score. It records what the parent observes. A medical disclaimer is shown during onboarding and is available at any time from the Profile screen.
+The app does not diagnose, screen, or score. It records what the parent observes. A medical disclaimer is shown during onboarding and is available at any time from Profile.
 
 3. SETTING UP AND ACCESSING FEATURES
 No login credentials or sample files are required.
 
 - Launch the app and complete the short onboarding.
-- Create a child profile with any name and any birthday. A photo is optional.
+- Create a child profile with any name and birthday. A photo is optional.
 - Every feature is then available from the bottom navigation: Home, Schedule, Play, Milestones, Profile.
-- The doctor's report is reached from Home, then "Doctor's Report".
+- The doctor's report is under Home, then "Doctor's Report".
 - An optional PIN and Face ID lock can be enabled from Profile. It is off by default.
 
-All data is stored locally on the device using Hive. Nothing is transmitted.
+All data is stored locally using Hive. Nothing is transmitted.
 
 4. EXTERNAL SERVICES, TOOLS, AND PLATFORMS
-None. The app has no backend, no analytics, no advertising SDK, and no network client of any kind. It functions with no internet connection.
+None. No backend, no analytics, no advertising SDK, and no network client of any kind. The app works with no internet connection.
 
-The only outbound links hand a URL to the system browser and leave the app:
-- A Facebook group for parents.
-- Google Maps, to show the location of a listed therapy centre or government office.
-- The App Store listing, for the "Rate" button.
-
-No data is attached to any of these; they are plain URLs opened externally.
+The only outbound links hand a plain URL to the system browser and leave the app: a Facebook group for parents, Google Maps for a listed centre or office, and the App Store listing for the Rate button. No data is attached to any of them.
 
 5. REGIONAL DIFFERENCES
-The app's features are identical in every region. Two content sets are specific to the Philippines:
-- A directory of Department of Social Welfare and Development (DSWD) offices, used to help parents request assistance with assessment costs.
-- A directory of therapy and assessment centres in the Philippines.
+Features are identical in every region. Two bundled read-only reference lists are Philippines-specific: Department of Social Welfare and Development (DSWD) offices, and therapy and assessment centres. These screens open everywhere and show the same lists; they are simply less useful outside the Philippines. Nothing is disabled or unlocked by region.
 
-Both are read-only reference lists bundled with the app. Outside the Philippines these screens still open and display the same lists; they are simply less useful. No feature is disabled or unlocked by region.
-
-Content is available in English and Filipino. The language is changed from the Profile screen and defaults to Filipino.
+Content is available in English and Filipino, switched from Profile.
 
 6. REGULATED INDUSTRY AND THIRD-PARTY MATERIAL
-AuDHD is not a regulated medical device. It performs no diagnosis, screening, scoring, measurement, or treatment recommendation, and it uses no sensors.
+AuDHD is not a regulated medical device. It performs no diagnosis, screening, scoring, measurement, or treatment recommendation, and uses no sensors. No clinical screening instrument is included in this build.
 
-The milestone content is adapted from the U.S. Centers for Disease Control and Prevention "Learn the Signs. Act Early." programme, which is publicly available material produced by a U.S. federal agency. We contacted the CDC and use the exact attribution wording they provided. All four of their stated conditions are met inside the app:
-- Attribution: "Developmental milestone content adapted from the U.S. Centers for Disease Control and Prevention, Learn the Signs. Act Early. program (www.cdc.gov/ActEarly)."
-- A non-endorsement notice: "Our use of this material does not imply endorsement by CDC, ATSDR, HHS, or the United States Government."
-- No CDC logo is used anywhere.
-- The app is free.
+Milestone content is adapted from the U.S. Centers for Disease Control and Prevention "Learn the Signs. Act Early." programme, publicly available material produced by a U.S. federal agency. We contacted the CDC and use the exact attribution wording they provided. All four of their conditions are met in the app: attribution naming the programme and www.cdc.gov/ActEarly, a notice that our use does not imply endorsement by CDC, ATSDR, HHS, or the United States Government, no CDC logo, and the app is free. Correspondence can be provided on request.
 
 The Milestones screen also states that the American Academy of Pediatrics recommends developmental screening for all children. This is a factual statement encouraging parents to consult a professional. We claim no endorsement by, or affiliation with, the CDC or the AAP.
-
-No clinical screening instrument is included in this build. Correspondence with the CDC can be provided on request.
 
 The app is already published on Google Play as com.audhd.app.
 ```
