@@ -469,7 +469,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavigationBar() {
     return Container(
       key: _navKey,
-      height: 70,
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: const BorderRadius.only(
@@ -484,20 +483,29 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          // `Expanded` at hindi `spaceAround`: sa lima, ang mahabang salita ay
-          // aagaw ng puwang sa katabi nito.
-          _buildNavItem(0, Icons.home_rounded, tr('Bahay', 'Home')),
-          _buildNavItem(1, Icons.route_rounded, tr('Iskedyul', 'Schedule')),
-          _buildNavItem(2, Icons.sports_esports_rounded, tr('Laro', 'Play')),
-          _buildNavItem(
-            3,
-            Icons.stairs_rounded,
-            tr('Milestones', 'Milestones'),
+      // Ipinapasa lang ng Scaffold ang inset sa bottomNavigationBar; ang widget
+      // ang dapat gumamit nito. Kung wala ito, tinatakpan ng navigation bar ng
+      // Android 15 pataas ang mga pindutan.
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 70,
+          child: Row(
+            children: [
+              // `Expanded` at hindi `spaceAround`: sa lima, ang mahabang salita ay
+              // aagaw ng puwang sa katabi nito.
+              _buildNavItem(0, Icons.home_rounded, tr('Bahay', 'Home')),
+              _buildNavItem(1, Icons.route_rounded, tr('Iskedyul', 'Schedule')),
+              _buildNavItem(2, Icons.sports_esports_rounded, tr('Laro', 'Play')),
+              _buildNavItem(
+                3,
+                Icons.stairs_rounded,
+                tr('Milestones', 'Milestones'),
+              ),
+              _buildNavItem(4, Icons.person_rounded, tr('Profile', 'Profile')),
+            ],
           ),
-          _buildNavItem(4, Icons.person_rounded, tr('Profile', 'Profile')),
-        ],
+        ),
       ),
     );
   }
